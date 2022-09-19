@@ -91,7 +91,8 @@
 <p>​		现有的基于卷积神经网络的模型在时间和空间上的感受野受限，忽略了长期的时间和空间上的互动与感知。</p>
 </li>
 <li><p>PhysFormer网络架构：</p>
-<p><img src="/2022/09/15/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9APhysFormer-Facial-Video-based-Physiological-Measurement-with-Temporal-Difference-Transformer/09/15/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9APhysFormer-Facial-Video-based-Physiological-Measurement-with-Temporal-Difference-Transformer/image-20220919092041506.png" alt="image-20220919092041506"></p>
+<img src="/2022/09/15/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9APhysFormer-Facial-Video-based-Physiological-Measurement-with-Temporal-Difference-Transformer/image-20220919092041506.png" alt="image-20220919092041506" style="zoom:80%;">
+
 <ol>
 <li><strong>Stem</strong>：提取粗糙的局部时空特征</li>
 <li><strong>Tube Tokens</strong>：将stem输出划分为若干个时空tube token，将时空邻近语义聚合在一起，并减少后续transformer的计算量</li>
@@ -118,6 +119,8 @@
 ]]></content>
       <tags>
         <tag>组内文章</tag>
+        <tag>Transformer</tag>
+        <tag>PPG</tag>
       </tags>
   </entry>
   <entry>

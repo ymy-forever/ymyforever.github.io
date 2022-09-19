@@ -11,13 +11,15 @@
 <meta property="og:site_name" content="ymy is watching u!!!!">
 <meta property="og:description" content="发表时间：2021  研究对象：rPPG，使用多波长 RGB 相机检测人体皮肤表面脉冲引起的细微颜色变化，实现测量心脏活动和其它生理信号。  研究意义：传统的检测方法会造成discomfort，并且长期检测不方便  Code：https:&#x2F;&#x2F;github.com&#x2F;ZitongYu&#x2F;PhysFormer  rPPG研究历史：  早期使用经典的信号处理方法检测面部细微的颜色变化； 使用非端到端方法，">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://ymyforever.netlify.app/2022/09/15/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9APhysFormer-Facial-Video-based-Physiological-Measurement-with-Temporal-Difference-Transformer/09/15/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9APhysFormer-Facial-Video-based-Physiological-Measurement-with-Temporal-Difference-Transformer/image-20220919092041506.png">
+<meta property="og:image" content="https://ymyforever.netlify.app/2022/09/15/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9APhysFormer-Facial-Video-based-Physiological-Measurement-with-Temporal-Difference-Transformer/image-20220919092041506.png">
 <meta property="article:published_time" content="2022-09-15T02:12:07.000Z">
-<meta property="article:modified_time" content="2022-09-19T03:20:18.854Z">
+<meta property="article:modified_time" content="2022-09-19T03:40:36.913Z">
 <meta property="article:author" content="ymy">
 <meta property="article:tag" content="组内文章">
+<meta property="article:tag" content="Transformer">
+<meta property="article:tag" content="PPG">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://ymyforever.netlify.app/2022/09/15/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9APhysFormer-Facial-Video-based-Physiological-Measurement-with-Temporal-Difference-Transformer/09/15/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9APhysFormer-Facial-Video-based-Physiological-Measurement-with-Temporal-Difference-Transformer/image-20220919092041506.png">
+<meta name="twitter:image" content="https://ymyforever.netlify.app/2022/09/15/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9APhysFormer-Facial-Video-based-Physiological-Measurement-with-Temporal-Difference-Transformer/image-20220919092041506.png">
 
     
     <link rel="icon" href="/images.fvicon.ico" type="image/x-icon">
@@ -183,7 +185,7 @@
                 
     <span class="article-tags">
     <i class="iconfont icon-tag"></i>
-    <a class="article-tag-none-link" href="/tags/%E7%BB%84%E5%86%85%E6%96%87%E7%AB%A0/" rel="tag">组内文章</a>
+    <a class="article-tag-none-link" href="/tags/PPG/" rel="tag">PPG</a>, <a class="article-tag-none-link" href="/tags/Transformer/" rel="tag">Transformer</a>, <a class="article-tag-none-link" href="/tags/%E7%BB%84%E5%86%85%E6%96%87%E7%AB%A0/" rel="tag">组内文章</a>
   </span>
 
 
@@ -224,7 +226,8 @@
 <p>​		现有的基于卷积神经网络的模型在时间和空间上的感受野受限，忽略了长期的时间和空间上的互动与感知。</p>
 </li>
 <li><p>PhysFormer网络架构：</p>
-<p><img src="/2022/09/15/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9APhysFormer-Facial-Video-based-Physiological-Measurement-with-Temporal-Difference-Transformer/09/15/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9APhysFormer-Facial-Video-based-Physiological-Measurement-with-Temporal-Difference-Transformer/image-20220919092041506.png" alt="image-20220919092041506"></p>
+<img src="/2022/09/15/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9APhysFormer-Facial-Video-based-Physiological-Measurement-with-Temporal-Difference-Transformer/image-20220919092041506.png" alt="image-20220919092041506" style="zoom:80%;">
+
 <ol>
 <li><strong>Stem</strong>：提取粗糙的局部时空特征</li>
 <li><strong>Tube Tokens</strong>：将stem输出划分为若干个时空tube token，将时空邻近语义聚合在一起，并减少后续transformer的计算量</li>
