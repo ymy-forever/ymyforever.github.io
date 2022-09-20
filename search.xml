@@ -172,4 +172,30 @@
         <tag>连续学习</tag>
       </tags>
   </entry>
+  <entry>
+    <title>论文阅读：Social Distancing Alert with Smartwatches</title>
+    <url>/2022/09/20/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ASocial-Distancing-Alert-with-Smartwatches/</url>
+    <content><![CDATA[<ul>
+<li><p>发表时间：2022</p>
+</li>
+<li><p>研究内容：基于智能手表的社交距离警报系统SoDA，SoDA使用加速器和陀螺仪的数据和简单有效的视觉Transformer模型，识别违反社交距离的活动。</p>
+</li>
+<li><p>code：<a href="https://github.com/aiotgroup/SoDA">https://github.com/aiotgroup/SoDA</a></p>
+</li>
+<li><p>创新点：</p>
+<ol>
+<li>应用价值</li>
+<li>创建了一个数据集</li>
+<li>证明了ViT是一种有效的方法？</li>
+</ol>
+</li>
+<li><p>模型结构：</p>
+<img src="/2022/09/20/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ASocial-Distancing-Alert-with-Smartwatches/image-20220920104544756.png" alt="image-20220920104544756" style="zoom:80%;"></li>
+</ul>
+]]></content>
+      <tags>
+        <tag>组内文章</tag>
+        <tag>Transformer</tag>
+      </tags>
+  </entry>
 </search>
