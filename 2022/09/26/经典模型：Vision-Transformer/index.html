@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html  lang="zh-CN" >
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, maximum-scale=5, viewport-fit=cover">
+    <title>经典模型：Vision Transformer | ymy is watching u!!!!</title>
+    <meta name="description" content="一、模型介绍 可参考博客：https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_39478403&#x2F;article&#x2F;details&#x2F;118704747  1.1 模型结构ViT主要使用Transformer的encoder部分    将一张图像分成若干个大小固定且相同的patch，将每个patch投影到线性空间中再加上位置编码 除了每个patch作为一个token外，在序列中添加一个额外的classif">
+<meta property="og:type" content="article">
+<meta property="og:title" content="经典模型：Vision Transformer">
+<meta property="og:url" content="https://ymyforever.netlify.app/2022/09/26/%E7%BB%8F%E5%85%B8%E6%A8%A1%E5%9E%8B%EF%BC%9AVision-Transformer/index.html">
+<meta property="og:site_name" content="ymy is watching u!!!!">
+<meta property="og:description" content="一、模型介绍 可参考博客：https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_39478403&#x2F;article&#x2F;details&#x2F;118704747  1.1 模型结构ViT主要使用Transformer的encoder部分    将一张图像分成若干个大小固定且相同的patch，将每个patch投影到线性空间中再加上位置编码 除了每个patch作为一个token外，在序列中添加一个额外的classif">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ymyforever.netlify.app/2022/09/26/%E7%BB%8F%E5%85%B8%E6%A8%A1%E5%9E%8B%EF%BC%9AVision-Transformer/image-20220926083713750.png">
+<meta property="article:published_time" content="2022-09-26T00:32:10.000Z">
+<meta property="article:modified_time" content="2022-09-27T03:20:38.628Z">
+<meta property="article:author" content="ymy">
+<meta property="article:tag" content="Transformer">
+<meta property="article:tag" content="经典模型">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ymyforever.netlify.app/2022/09/26/%E7%BB%8F%E5%85%B8%E6%A8%A1%E5%9E%8B%EF%BC%9AVision-Transformer/image-20220926083713750.png">
+
+    
+    <link rel="icon" href="/images.fvicon.ico" type="image/x-icon">
+
+    
+<link rel="stylesheet" href="/css/common.min.css">
+
+
+
+    
+    
+    
+    
+        <link href="//cdn.jsdelivr.net/npm/lightgallery.js@1.1.3/dist/css/lightgallery.min.css" rel="stylesheet">
+    
+    
+    
+<link rel="stylesheet" href="/css/iconfont.min.css">
+
+    
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+    <body>
+        <header class="header header-fixture">
+    <div class="profile-search-wrap flex sm:block">
+        
+        
+        <div class="profile sm:text-center md:px-1 lg:px-3 sm:pb-4 sm:pt-6">
+            <a id="avatar" role="link" href="https://github.com/ymy-forever" class="inline-block lg:w-16 lg:h-16 w-8 h-8 m-2" target="_blank" rel="noopener" rel="noreferrer" >
+                <img src="/images/logo.png" class="rounded-full" alt="avatar">
+            </a>
+            <h2 id="name" class="hidden lg:block">ymy_forever</h2>
+            <h3 id="title" class="hidden lg:block">Student &amp; Coder</h3>
+            
+            <small id="location" class="hidden lg:block">
+                <i class="iconfont icon-map-icon"></i>
+                Xian, China
+            </small>
+            
+        </div>
+        
+        
+<div class="search flex-1 flex lg:inline-block sm:hidden lg:px-4 lg:mt-2 lg:mb-4 lg:w-full">
+    <form id="search-form" class="my-auto flex-1 lg:border lg:border-solid lg:border-gray-200">
+        <div class="input-group table bg-gray-100 lg:bg-white w-full">
+            <input id="search-input" type="text" placeholder="搜索" class="inline-block w-full bg-gray-100 lg:bg-white p-1">
+            <span class="table-cell">
+                <button name="search tigger button" disabled>
+                    <i class="iconfont icon-search m-2"></i>
+                </button>
+            </span>
+        </div>
+    </form>
+        
+<div id="content-json" data-placeholder="搜索" class="invisible hidden">/content.json</div>
+<script id="search-teamplate" type="text/html" data-path="/content.json">
+    <div>
+        <div class="search-header bg-gray-400">
+            <input id="actual-search-input" model="keyword" ref="input" class="inline-block w-full h-10 px-2 py-1" placeholder="搜索" type="text">
+        </div>
+        <div class="search-result bg-gray-200">
+            {{#each searchPosts}}
+            <a href="/{{ path }}" class="result-item block px-2 pb-3 mb-1 pt-1 hover:bg-indigo-100">
+                <i class="iconfont icon-file"></i>
+                <h1 class="result-title inline font-medium text-lg">{{ title }}</h1>
+                <p class="result-content text-gray-600 text-sm">{{{ text }}}</p>
+            </a>
+            {{/each}}
+        </div>
+    </div>
+</script>
+
+</div>
+
+
+        <button name="menu toogle button" id="menu-toggle-btn" class="block sm:hidden p-3" role="button" aria-expanded="false">
+            <i class="iconfont icon-hamburger"></i>
+        </button>
+    </div>
+    <nav id="menu-nav" class="hidden sm:flex flex-col">
+        
+        
+            <div class="menu-item menu-home" role="menuitem">
+                <a href="/.">
+                    <i class="iconfont icon-home" aria-hidden="true"></i>
+                    <span class="menu-title">首页</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-archives" role="menuitem">
+                <a href="/archives">
+                    <i class="iconfont icon-archive" aria-hidden="true"></i>
+                    <span class="menu-title">归档</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-tags" role="menuitem">
+                <a href="/tags">
+                    <i class="iconfont icon-tag" aria-hidden="true"></i>
+                    <span class="menu-title">标签</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-about" role="menuitem">
+                <a href="/about">
+                    <i class="iconfont icon-cup" aria-hidden="true"></i>
+                    <span class="menu-title">关于</span>
+                </a>
+            </div>
+        
+        
+<div class="social-links flex sm:flex-col lg:hidden mt-5">
+    
+        <span class="social-item text-center">
+            <a target="_blank" rel="noopener" href="https://github.com/ymy-forever">
+                <i class="iconfont social-icon icon-github"></i>
+                <span class="menu-title hidden lg:inline">menu.github</span>
+            </a>
+        </span>
+    
+        <span class="social-item text-center">
+            <a href="/atom.xml">
+                <i class="iconfont social-icon icon-rss"></i>
+                <span class="menu-title hidden lg:inline">menu.rss</span>
+            </a>
+        </span>
+    
+</div>
+
+
+    </nav>
+</header>
+
+        <section class="main-section">
+            
+    <main class="flex-1 px-4 py-14 md:px-5 lg:px-8 lg:py-4 relative min-h-screen">
+    
+
+    <article class="content article article-archives article-type-list" itemscope="">
+        <header class="article-header">
+            
+    
+        <h1 class="article-title text-lg" itemprop="name">
+            经典模型：Vision Transformer
+        </h1>
+    
+
+
+
+            <p class="article-meta mb-3 text-xs">
+                <span class="article-date">
+    <i class="iconfont icon-calendar-check"></i>
+	<a href="/2022/09/26/%E7%BB%8F%E5%85%B8%E6%A8%A1%E5%9E%8B%EF%BC%9AVision-Transformer/" class="article-date">
+	  <time datetime="2022-09-26T00:32:10.000Z" itemprop="datePublished">9月 26</time>
+	</a>
+</span>
+
+                
+
+                
+    <span class="article-tags">
+    <i class="iconfont icon-tag"></i>
+    <a class="article-tag-none-link" href="/tags/Transformer/" rel="tag">Transformer</a>, <a class="article-tag-none-link" href="/tags/%E7%BB%8F%E5%85%B8%E6%A8%A1%E5%9E%8B/" rel="tag">经典模型</a>
+  </span>
+
+
+                <span class="_partial/post-comment"><i class="icon icon-comment"></i>
+                    <a href="/2022/09/26/%E7%BB%8F%E5%85%B8%E6%A8%A1%E5%9E%8B%EF%BC%9AVision-Transformer/#comments" class="article-comment-link">
+                        评论
+                    </a>
+                </span>
+                
+    
+        <span class="post-wordcount" itemprop="wordCount">字数统计: 387(字)</span>
+    
+    
+        <span class="post-readcount" itemprop="timeRequired">阅读时长: 1(分)</span>
+    
+
+
+            </p>
+        </header>
+        <div class="marked-body article-body">
+            <h2 id="一、模型介绍"><a href="#一、模型介绍" class="headerlink" title="一、模型介绍"></a>一、模型介绍</h2><ul>
+<li>可参考博客：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_39478403/article/details/118704747">https://blog.csdn.net/qq_39478403/article/details/118704747</a></li>
+</ul>
+<h3 id="1-1-模型结构"><a href="#1-1-模型结构" class="headerlink" title="1.1 模型结构"></a>1.1 模型结构</h3><p>ViT主要使用Transformer的encoder部分</p>
+<img src="/2022/09/26/%E7%BB%8F%E5%85%B8%E6%A8%A1%E5%9E%8B%EF%BC%9AVision-Transformer/image-20220926083713750.png" alt="image-20220926083713750" style="zoom: 67% margin:auto;">
+
+<ul>
+<li>将一张图像分成若干个大小固定且相同的patch，将每个patch投影到线性空间中再加上位置编码</li>
+<li>除了每个patch作为一个token外，在序列中添加一个额外的classification token</li>
+</ul>
+<p><strong>位置编码：（看下代码咋实现的）</strong></p>
+<ul>
+<li>使用可学习的一维位置编码（作者发现使用更高维的位置编码并没有带来显著的精度提升）</li>
+</ul>
+<p><strong>混合结构：</strong></p>
+<ul>
+<li>可以将原始图像使用CNN进行特征提取，将特征图按patch划分送入Transformer中。</li>
+</ul>
+<h3 id="1-2-实验设置"><a href="#1-2-实验设置" class="headerlink" title="1.2 实验设置"></a>1.2 实验设置</h3><p><strong>ViT使用：</strong></p>
+<ul>
+<li>ViT与Bert类似，先在大数据集上<strong>训练</strong>，再在downstream任务上<strong>微调</strong>。在微调时，将预训练用的预测头换成一个用0初始化的DxK的前馈层，其中K代表下游任务总的类别数。</li>
+<li>在微调时，使用更高分辨率的图像可以获得更好的结果。（patch大小不变，输入序列变成，不影响网络结构），这样会导致之前训练得到的<strong>位置编码</strong>无意义，因此在原来的位置编码上进行一个2D的插值。</li>
+</ul>
+<p><strong>实验结果：</strong></p>
+<ul>
+<li>当<strong>考虑预训练的训练代价</strong>时，ViT以更低的代价达到了SOTA水平</li>
+<li>在<strong>自监督</strong>问题上，ViT很有应用前景</li>
+</ul>
+<h2 id="二、代码复现"><a href="#二、代码复现" class="headerlink" title="二、代码复现"></a>二、代码复现</h2><ul>
+<li>Official Code：<a target="_blank" rel="noopener" href="https://github.com/google-research/vision_transformer">https://github.com/google-research/vision_transformer</a></li>
+<li>Using Code：<a target="_blank" rel="noopener" href="https://github.com/jeonsworld/ViT-pytorch">https://github.com/jeonsworld/ViT-pytorch</a></li>
+</ul>
+
+        </div>
+        
+<blockquote class="copyright">
+    <p><strong>本文链接 : </strong><a class="permalink" href="https://ymyforever.netlify.app/2022/09/26/%E7%BB%8F%E5%85%B8%E6%A8%A1%E5%9E%8B%EF%BC%9AVision-Transformer/">https://ymyforever.netlify.app/2022/09/26/经典模型：Vision-Transformer/</a></p>
+    <p><strong>This article is available under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer">Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</a> License</strong></p>
+</blockquote>
+
+
+    </article>
+    
+    <section id="comments">
+        
+    </section>
+
+
+    
+
+</main>
+
+
+<aside style="" id="sidebar" class="aside aside-fixture">
+    <div class="toc-sidebar">
+        <nav id="toc" class="article-toc">
+            <h3 class="toc-title">文章目录</h3>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E6%A8%A1%E5%9E%8B%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.</span> <span class="toc-text">一、模型介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E6%A8%A1%E5%9E%8B%E7%BB%93%E6%9E%84"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 模型结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E5%AE%9E%E9%AA%8C%E8%AE%BE%E7%BD%AE"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 实验设置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E4%BB%A3%E7%A0%81%E5%A4%8D%E7%8E%B0"><span class="toc-number">2.</span> <span class="toc-text">二、代码复现</span></a></li></ol>
+        </nav>
+    </div>
+</aside>
+
+
+
+
+
+        </section>
+        <footer class="hidden lg:block fixed bottom-0 left-0 sm:w-1/12 lg:w-1/6 bg-gray-100 z-40">
+    
+    <div class="footer-social-links">
+        
+            <a target="_blank" rel="noopener" href="https://github.com/ymy-forever">
+                <i class="iconfont icon-github"></i>
+            </a>
+        
+            <a href="/atom.xml">
+                <i class="iconfont icon-rss"></i>
+            </a>
+        
+    </div>
+    
+    
+</footer>
+
+        <div id="mask" class="hidden mask fixed inset-0 bg-gray-900 opacity-75 z-40"></div>
+        <div id="search-view-container" class="hidden shadow-xl"></div>
+        
+<script src="/js/dom-event.min.js"></script>
+
+
+
+<script src="/js/local-search.min.js"></script>
+
+
+
+    <script src="//cdn.jsdelivr.net/npm/lightgallery.js@1.1.3/dist/js/lightgallery.min.js"></script>
+    
+<script src="/js/light-gallery.min.js"></script>
+
+
+
+
+
+
+    </body>
+</html>
