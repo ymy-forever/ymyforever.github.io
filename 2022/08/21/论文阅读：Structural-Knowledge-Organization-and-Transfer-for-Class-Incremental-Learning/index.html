@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, maximum-scale=5, viewport-fit=cover">
     <title>论文阅读：Structural Knowledge Organization and Transfer for Class-Incremental Learning | ymy is watching u!!!!</title>
-    <meta name="description" content="发表时间：2021   研究问题：类增量学习   研究现状：   经典的知识蒸馏方法忽略了信息点之间的关联，当新数据远多于旧数据时，面临着严重的偏差问题；   KD：在特征空间中，孤立地限制单个训练样本的位置，样本间的关系可能会被改变，并导致分类错误。   SGKD：保持样本的结构化知识，包括样本的位置和样本间关系，确保蒸馏后样本仍能被正确地分类。        创新点：   使用一个memo">
+    <meta name="description" content="发表时间：2021  研究问题：类增量学习  研究现状：  经典的知识蒸馏方法忽略了信息点之间的关联，当新数据远多于旧数据时，面临着严重的偏差问题；  KD：在特征空间中，孤立地限制单个训练样本的位置，样本间的关系可能会被改变，并导致分类错误。  SGKD：保持样本的结构化知识，包括样本的位置和样本间关系，确保蒸馏后样本仍能被正确地分类。      创新点：  使用一个memory knowle">
 <meta property="og:type" content="article">
 <meta property="og:title" content="论文阅读：Structural Knowledge Organization and Transfer for Class-Incremental Learning">
 <meta property="og:url" content="https://ymyforever.netlify.app/2022/08/21/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AStructural-Knowledge-Organization-and-Transfer-for-Class-Incremental-Learning/index.html">
 <meta property="og:site_name" content="ymy is watching u!!!!">
-<meta property="og:description" content="发表时间：2021   研究问题：类增量学习   研究现状：   经典的知识蒸馏方法忽略了信息点之间的关联，当新数据远多于旧数据时，面临着严重的偏差问题；   KD：在特征空间中，孤立地限制单个训练样本的位置，样本间的关系可能会被改变，并导致分类错误。   SGKD：保持样本的结构化知识，包括样本的位置和样本间关系，确保蒸馏后样本仍能被正确地分类。        创新点：   使用一个memo">
+<meta property="og:description" content="发表时间：2021  研究问题：类增量学习  研究现状：  经典的知识蒸馏方法忽略了信息点之间的关联，当新数据远多于旧数据时，面临着严重的偏差问题；  KD：在特征空间中，孤立地限制单个训练样本的位置，样本间的关系可能会被改变，并导致分类错误。  SGKD：保持样本的结构化知识，包括样本的位置和样本间关系，确保蒸馏后样本仍能被正确地分类。      创新点：  使用一个memory knowle">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://ymyforever.netlify.app/2022/08/21/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AStructural-Knowledge-Organization-and-Transfer-for-Class-Incremental-Learning/image-20220822101131518.png">
 <meta property="og:image" content="https://ymyforever.netlify.app/2022/08/21/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AStructural-Knowledge-Organization-and-Transfer-for-Class-Incremental-Learning/image-20220823094630810.png">
@@ -41,7 +41,7 @@
 <link rel="stylesheet" href="/css/iconfont.min.css">
 
     
-<meta name="generator" content="Hexo 5.2.0"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
     <body>
         <header class="header header-fixture">
@@ -208,55 +208,42 @@
         </header>
         <div class="marked-body article-body">
             <ul>
-<li>
-<p>发表时间：2021</p>
+<li><p>发表时间：2021</p>
 </li>
-<li>
-<p>研究问题：类增量学习</p>
+<li><p>研究问题：类增量学习</p>
 </li>
-<li>
-<p>研究现状：</p>
+<li><p>研究现状：</p>
 <ol>
-<li>
-<p><strong>经典的知识蒸馏方法</strong>忽略了信息点之间的关联，当新数据远多于旧数据时，面临着严重的偏差问题；</p>
+<li><p><strong>经典的知识蒸馏方法</strong>忽略了信息点之间的关联，当新数据远多于旧数据时，面临着严重的偏差问题；</p>
 <ul>
-<li>
-<p>KD：在特征空间中，孤立地限制单个训练样本的位置，样本间的关系可能会被改变，并导致分类错误。</p>
+<li><p>KD：在特征空间中，孤立地限制单个训练样本的位置，样本间的关系可能会被改变，并导致分类错误。</p>
 </li>
-<li>
-<p>SGKD：保持样本的结构化知识，包括样本的位置和样本间关系，确保蒸馏后样本仍能被正确地分类。</p>
+<li><p>SGKD：保持样本的结构化知识，包括样本的位置和样本间关系，确保蒸馏后样本仍能被正确地分类。</p>
 </li>
 </ul>
-<img src="/2022/08/21/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AStructural-Knowledge-Organization-and-Transfer-for-Class-Incremental-Learning/image-20220822101131518.png" alt="image-20220822101131518" style="zoom:67%;margin:auto;">
-</li>
+<img src="/2022/08/21/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AStructural-Knowledge-Organization-and-Transfer-for-Class-Incremental-Learning/image-20220822101131518.png" alt="image-20220822101131518" style="zoom:67%;margin:auto;"></li>
 </ol>
 </li>
-<li>
-<p>创新点：</p>
+<li><p>创新点：</p>
 <ol>
-<li>
-<p>使用一个<strong>memory knowledge graph</strong>(MKG)表征历史任务的结构化知识</p>
+<li><p>使用一个<strong>memory knowledge graph</strong>(MKG)表征历史任务的结构化知识</p>
 <ul>
 <li>在特征空间中的绝对位置（MKG中用顶点表示已知example间的特征向量）</li>
 <li>example间对应关系（边表示，使用余弦距离）</li>
 </ul>
 </li>
-<li>
-<p>使用<strong>图插值机制</strong>丰富知识域、缓解类间样本不平衡问题</p>
+<li><p>使用<strong>图插值机制</strong>丰富知识域、缓解类间样本不平衡问题</p>
 <p>通过向MKG中插入假的顶点，扩充和平滑分散的数据集，假顶点通过mix两个真顶点的vector得到。</p>
 </li>
-<li>
-<p>使用**结构化图知识蒸馏（SGKD）**迁移旧知识</p>
+<li><p>使用<strong>结构化图知识蒸馏（SGKD）</strong>迁移旧知识</p>
 <ul>
 <li>顶点蒸馏损失</li>
 <li>边蒸馏损失</li>
 </ul>
-<img src="/2022/08/21/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AStructural-Knowledge-Organization-and-Transfer-for-Class-Incremental-Learning/image-20220823094630810.png" alt="image-20220823094630810" style="zoom:67%;margin:auto;">
-</li>
+<img src="/2022/08/21/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AStructural-Knowledge-Organization-and-Transfer-for-Class-Incremental-Learning/image-20220823094630810.png" alt="image-20220823094630810" style="zoom:67%;margin:auto;"></li>
 </ol>
 </li>
-<li>
-<p>人脸识别是怎么实现增加新样本的？</p>
+<li><p>人脸识别是怎么实现增加新样本的？</p>
 <p>人脸识别网络的本质是一个特征提取器，并不是分类器，识别人脸的时候，通过计算输出特征和人脸库中人脸的距离判断人脸所属对象。未涉及类增量学习。</p>
 </li>
 </ul>

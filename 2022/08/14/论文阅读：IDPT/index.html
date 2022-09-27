@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, maximum-scale=5, viewport-fit=cover">
     <title>论文阅读：IDPT, Interconnected Dual Pyramid Transformer for Face Super-Resolution | ymy is watching u!!!!</title>
-    <meta name="description" content="研究问题：人脸超分辨率技术   FSR：关注于恢复重要的面部结构   创新点：提出了一个新的、有效的基于Transformer的人脸超分辨率架构  设计了金字塔结构的encode&#x2F;decoder的Transformer架构：分别提取粗糙纹理和精细纹理。 通过一个底部的金字塔特征提取器，将双重金字塔Transformer建立起联系。 在每个spatial layer插入一个新的融合调制模块：使用">
+    <meta name="description" content="研究问题：人脸超分辨率技术  FSR：关注于恢复重要的面部结构  创新点：提出了一个新的、有效的基于Transformer的人脸超分辨率架构  设计了金字塔结构的encode&#x2F;decoder的Transformer架构：分别提取粗糙纹理和精细纹理。 通过一个底部的金字塔特征提取器，将双重金字塔Transformer建立起联系。 在每个spatial layer插入一个新的融合调制模块：">
 <meta property="og:type" content="article">
 <meta property="og:title" content="论文阅读：IDPT, Interconnected Dual Pyramid Transformer for Face Super-Resolution">
 <meta property="og:url" content="https://ymyforever.netlify.app/2022/08/14/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AIDPT/index.html">
 <meta property="og:site_name" content="ymy is watching u!!!!">
-<meta property="og:description" content="研究问题：人脸超分辨率技术   FSR：关注于恢复重要的面部结构   创新点：提出了一个新的、有效的基于Transformer的人脸超分辨率架构  设计了金字塔结构的encode&#x2F;decoder的Transformer架构：分别提取粗糙纹理和精细纹理。 通过一个底部的金字塔特征提取器，将双重金字塔Transformer建立起联系。 在每个spatial layer插入一个新的融合调制模块：使用">
+<meta property="og:description" content="研究问题：人脸超分辨率技术  FSR：关注于恢复重要的面部结构  创新点：提出了一个新的、有效的基于Transformer的人脸超分辨率架构  设计了金字塔结构的encode&#x2F;decoder的Transformer架构：分别提取粗糙纹理和精细纹理。 通过一个底部的金字塔特征提取器，将双重金字塔Transformer建立起联系。 在每个spatial layer插入一个新的融合调制模块：">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://ymyforever.netlify.app/2022/08/14/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AIDPT/1.png">
 <meta property="article:published_time" content="2022-08-14T01:31:37.000Z">
@@ -40,7 +40,7 @@
 <link rel="stylesheet" href="/css/iconfont.min.css">
 
     
-<meta name="generator" content="Hexo 5.2.0"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
     <body>
         <header class="header header-fixture">
@@ -196,7 +196,7 @@
                 </span>
                 
     
-        <span class="post-wordcount" itemprop="wordCount">字数统计: 206(字)</span>
+        <span class="post-wordcount" itemprop="wordCount">字数统计: 207(字)</span>
     
     
         <span class="post-readcount" itemprop="timeRequired">阅读时长: 1(分)</span>
@@ -207,31 +207,25 @@
         </header>
         <div class="marked-body article-body">
             <ul>
-<li>
-<p>研究问题：人脸超分辨率技术</p>
+<li><p>研究问题：人脸超分辨率技术</p>
 </li>
-<li>
-<p>FSR：关注于恢复重要的面部结构</p>
+<li><p>FSR：关注于恢复重要的面部结构</p>
 </li>
-<li>
-<p>创新点：提出了一个新的、有效的基于Transformer的人脸超分辨率架构</p>
+<li><p>创新点：提出了一个新的、有效的基于Transformer的人脸超分辨率架构</p>
 <ol>
-<li>设计了金字塔结构的encode/decoder的Transformer架构：分别提取粗糙纹理和精细纹理。</li>
+<li>设计了金字塔结构的encode&#x2F;decoder的Transformer架构：分别提取粗糙纹理和精细纹理。</li>
 <li>通过一个底部的金字塔特征提取器，将双重金字塔Transformer建立起联系。</li>
 <li>在每个spatial layer插入一个新的融合调制模块：使用粗糙纹理完善对应的精细纹理，融合浅层的粗糙纹理和对应的深层的精细纹理。</li>
 </ol>
 </li>
-<li>
-<p>FSR研究现状</p>
+<li><p>FSR研究现状</p>
 <ol>
 <li>现有技术在解决超低分辨率问题上表现很差</li>
 <li>卷积难以描述不同域间的关联和捕捉远域间的依赖</li>
 </ol>
 </li>
-<li>
-<p>网络结构：</p>
-<img src="/2022/08/14/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AIDPT/1.png" alt="image-20220821153651772" style="zoom:80%;">
-</li>
+<li><p>网络结构： </p>
+<img src="/2022/08/14/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AIDPT/1.png" alt="image-20220821153651772" style="zoom:80%;"></li>
 </ul>
 
         </div>
