@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, maximum-scale=5, viewport-fit=cover">
     <title>论文阅读：Rethinking the ST-GCNs for 3D skeleton-based human action recognition | ymy is watching u!!!!</title>
-    <meta name="description" content="发表时间：2021 ST-GCN：Spatial-Temporal Graph Convolutional Network，用于解决骨骼数据的动作识别问题。 研究内容： 证明了在ST-GCN中很多操作对于人体动作识别是没必要的 提出了一个简单有效的策略捕捉全局图的相关性，对输入序列进行有效建模，同时将输入图序列降入欧几里得空间，可以使用多尺度时域滤波器捕捉动态信息。   研究现状： 骨骼数据成为">
+    <meta name="description" content="发表时间：2021 ST-GCN：Spatial-Temporal Graph Convolutional Network，用于解决骨骼数据的动作识别问题。 研究内容：  证明了在ST-GCN中很多操作对于人体动作识别是没必要的 提出了一个简单有效的策略捕捉全局图的相关性，对输入序列进行有效建模，同时将输入图序列降入欧几里得空间，可以使用多尺度时域滤波器捕捉动态信息。   研究现状：  骨骼数据">
 <meta property="og:type" content="article">
 <meta property="og:title" content="论文阅读：Rethinking the ST-GCNs for 3D skeleton-based human action recognition">
 <meta property="og:url" content="https://ymyforever.netlify.app/2022/09/20/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ARethinking-the-ST-GCNs-for-3D-skeleton-based-human-action-recognition/index.html">
 <meta property="og:site_name" content="ymy is watching u!!!!">
-<meta property="og:description" content="发表时间：2021 ST-GCN：Spatial-Temporal Graph Convolutional Network，用于解决骨骼数据的动作识别问题。 研究内容： 证明了在ST-GCN中很多操作对于人体动作识别是没必要的 提出了一个简单有效的策略捕捉全局图的相关性，对输入序列进行有效建模，同时将输入图序列降入欧几里得空间，可以使用多尺度时域滤波器捕捉动态信息。   研究现状： 骨骼数据成为">
+<meta property="og:description" content="发表时间：2021 ST-GCN：Spatial-Temporal Graph Convolutional Network，用于解决骨骼数据的动作识别问题。 研究内容：  证明了在ST-GCN中很多操作对于人体动作识别是没必要的 提出了一个简单有效的策略捕捉全局图的相关性，对输入序列进行有效建模，同时将输入图序列降入欧几里得空间，可以使用多尺度时域滤波器捕捉动态信息。   研究现状：  骨骼数据">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-09-20T02:54:50.000Z">
 <meta property="article:modified_time" content="2022-09-22T02:18:47.677Z">
@@ -207,12 +207,14 @@
             <ul>
 <li>发表时间：2021</li>
 <li>ST-GCN：Spatial-Temporal Graph Convolutional Network，用于解决骨骼数据的动作识别问题。</li>
-<li>研究内容：<ol>
+<li>研究内容：
+<ol>
 <li>证明了在ST-GCN中很多操作对于人体动作识别是没必要的</li>
 <li>提出了一个简单有效的策略捕捉全局图的相关性，对输入序列进行有效建模，同时将输入图序列降入欧几里得空间，可以使用多尺度时域滤波器捕捉动态信息。</li>
 </ol>
 </li>
-<li>研究现状：<ol>
+<li>研究现状：
+<ol>
 <li>骨骼数据成为人体动作识别的主流输入（与传统的RGB视频数据相比，信息更完整）</li>
 <li>直接将结构化的数据重新排列，使得tensor适应基础的神经网络（由于骨骼数据中没有天然的局部性概念，深度学习的能力受到限制）</li>
 <li>设计一种适应结构化数据的自定义神经网络（ST-GCN）</li>

@@ -4,19 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, maximum-scale=5, viewport-fit=cover">
     <title>论文阅读：PhysFormer: Facial Video-based Physiological Measurement with Temporal Difference Transformer | ymy is watching u!!!!</title>
-    <meta name="description" content="发表时间：2021  研究对象：rPPG，使用多波长 RGB 相机检测人体皮肤表面脉冲引起的细微颜色变化，实现测量心脏活动和其它生理信号。  研究意义：传统的检测方法会造成discomfort，并且长期检测不方便  Code：https:&#x2F;&#x2F;github.com&#x2F;ZitongYu&#x2F;PhysFormer  rPPG研究历史：  早期使用经典的信号处理方法检测面部细微的颜色变化； 使用非端到端方法，">
+    <meta name="description" content="发表时间：2021   研究对象：rPPG，使用多波长 RGB 相机检测人体皮肤表面脉冲引起的细微颜色变化，实现测量心脏活动和其它生理信号。   研究意义：传统的检测方法会造成discomfort，并且长期检测不方便   Code：https:&#x2F;&#x2F;github.com&#x2F;ZitongYu&#x2F;PhysFormer   rPPG研究历史：  早期使用经典的信号处理方法检测面部细微的颜色变化； 使用非端">
 <meta property="og:type" content="article">
 <meta property="og:title" content="论文阅读：PhysFormer: Facial Video-based Physiological Measurement with Temporal Difference Transformer">
 <meta property="og:url" content="https://ymyforever.netlify.app/2022/09/15/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9APhysFormer-Facial-Video-based-Physiological-Measurement-with-Temporal-Difference-Transformer/index.html">
 <meta property="og:site_name" content="ymy is watching u!!!!">
-<meta property="og:description" content="发表时间：2021  研究对象：rPPG，使用多波长 RGB 相机检测人体皮肤表面脉冲引起的细微颜色变化，实现测量心脏活动和其它生理信号。  研究意义：传统的检测方法会造成discomfort，并且长期检测不方便  Code：https:&#x2F;&#x2F;github.com&#x2F;ZitongYu&#x2F;PhysFormer  rPPG研究历史：  早期使用经典的信号处理方法检测面部细微的颜色变化； 使用非端到端方法，">
+<meta property="og:description" content="发表时间：2021   研究对象：rPPG，使用多波长 RGB 相机检测人体皮肤表面脉冲引起的细微颜色变化，实现测量心脏活动和其它生理信号。   研究意义：传统的检测方法会造成discomfort，并且长期检测不方便   Code：https:&#x2F;&#x2F;github.com&#x2F;ZitongYu&#x2F;PhysFormer   rPPG研究历史：  早期使用经典的信号处理方法检测面部细微的颜色变化； 使用非端">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://ymyforever.netlify.app/2022/09/15/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9APhysFormer-Facial-Video-based-Physiological-Measurement-with-Temporal-Difference-Transformer/image-20220919092041506.png">
 <meta property="article:published_time" content="2022-09-15T02:12:07.000Z">
 <meta property="article:modified_time" content="2022-09-19T03:40:36.913Z">
 <meta property="article:author" content="ymy">
-<meta property="article:tag" content="组内文章">
 <meta property="article:tag" content="Transformer">
+<meta property="article:tag" content="组内文章">
 <meta property="article:tag" content="PPG">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://ymyforever.netlify.app/2022/09/15/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9APhysFormer-Facial-Video-based-Physiological-Measurement-with-Temporal-Difference-Transformer/image-20220919092041506.png">
@@ -207,27 +207,33 @@
         </header>
         <div class="marked-body article-body">
             <ul>
-<li><p>发表时间：2021</p>
+<li>
+<p>发表时间：2021</p>
 </li>
-<li><p>研究对象：rPPG，使用多波长 RGB 相机检测人体皮肤表面脉冲引起的细微颜色变化，实现测量心脏活动和其它生理信号。</p>
+<li>
+<p>研究对象：rPPG，使用多波长 RGB 相机检测人体皮肤表面脉冲引起的细微颜色变化，实现测量心脏活动和其它生理信号。</p>
 </li>
-<li><p>研究意义：传统的检测方法会造成discomfort，并且长期检测不方便</p>
+<li>
+<p>研究意义：传统的检测方法会造成discomfort，并且长期检测不方便</p>
 </li>
-<li><p>Code：<a target="_blank" rel="noopener" href="https://github.com/ZitongYu/PhysFormer">https://github.com/ZitongYu/PhysFormer</a></p>
+<li>
+<p>Code：<a target="_blank" rel="noopener" href="https://github.com/ZitongYu/PhysFormer">https://github.com/ZitongYu/PhysFormer</a></p>
 </li>
-<li><p>rPPG研究历史：</p>
+<li>
+<p>rPPG研究历史：</p>
 <ol>
 <li>早期使用经典的信号处理方法检测面部细微的颜色变化；</li>
 <li>使用非端到端方法，首先生成预处理的信号特征，然后模型从这些特征图中捕捉rPPG特征（对预处理要求严格，忽略了全局特征）；</li>
 <li>端到端的基于深度学习的方法（容易被复杂的背景信息影响）。</li>
 </ol>
 </li>
-<li><p>研究现状：</p>
+<li>
+<p>研究现状：</p>
 <p>​		现有的基于卷积神经网络的模型在时间和空间上的感受野受限，忽略了长期的时间和空间上的互动与感知。</p>
 </li>
-<li><p>PhysFormer网络架构：</p>
+<li>
+<p>PhysFormer网络架构：</p>
 <img src="/2022/09/15/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9APhysFormer-Facial-Video-based-Physiological-Measurement-with-Temporal-Difference-Transformer/image-20220919092041506.png" alt="image-20220919092041506" style="zoom:80%;">
-
 <ol>
 <li><strong>Stem</strong>：提取粗糙的局部时空特征</li>
 <li><strong>Tube Tokens</strong>：将stem输出划分为若干个时空tube token，将时空邻近语义聚合在一起，并减少后续transformer的计算量</li>
@@ -235,20 +241,25 @@
 <li><strong>Spatio-temporal Feed-forward</strong>：</li>
 </ol>
 </li>
-<li><p>创新点：PhysFormer，一种端到端的视频transformer，联合使用了局部的和全局的时空特征。</p>
+<li>
+<p>创新点：PhysFormer，一种端到端的视频transformer，联合使用了局部的和全局的时空特征。</p>
 <ol>
 <li>使用<strong>时差引导全局注意力机制</strong>，强化rPPG的周期性特征，针对干扰完善局部时空特征；</li>
 <li>使用受label distribution learning和curriculum learning启发的频域动态约束，为PhysFormer提供详细的监督，缓解过拟合。</li>
 <li>PhysFormer不需要像其它transformer网络那样在大规模数据集上预训练，仅在rPPG数据集训练即可。</li>
 </ol>
 </li>
-<li><p><strong>Label Distribution Learning</strong>：对于面部的rPPG信号，心率相近的视频会有相似的周期性特征。为了使得模型学习到这种特征，将心率估计问题看作一个多分类问题，有多少个心率就有多少类别，类别概率向量由高斯分布组成。</p>
+<li>
+<p><strong>Label Distribution Learning</strong>：对于面部的rPPG信号，心率相近的视频会有相似的周期性特征。为了使得模型学习到这种特征，将心率估计问题看作一个多分类问题，有多少个心率就有多少类别，类别概率向量由高斯分布组成。</p>
 </li>
-<li><p><strong>Curriculum Learning Guided Dynamic Loss</strong>：课程式学习是指模型从容易样本开始学习，逐步学习困难样本。在该任务中，从时域和频域两个方面限制模型学习，时域的限制更直接更容易学习，频域的限制较难学习，因此，使用动态的loss函数，逐步提高频域loss的比例。</p>
+<li>
+<p><strong>Curriculum Learning Guided Dynamic Loss</strong>：课程式学习是指模型从容易样本开始学习，逐步学习困难样本。在该任务中，从时域和频域两个方面限制模型学习，时域的限制更直接更容易学习，频域的限制较难学习，因此，使用动态的loss函数，逐步提高频域loss的比例。</p>
 </li>
-<li><p>实验：不同模型的对比实验、消融实验</p>
+<li>
+<p>实验：不同模型的对比实验、消融实验</p>
 </li>
-<li><p>Others：注意力图可视化</p>
+<li>
+<p>Others：注意力图可视化</p>
 </li>
 </ul>
 
