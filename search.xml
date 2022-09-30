@@ -424,73 +424,59 @@
     <title>论文阅读：Deep Learning Methods for Remote Heart Rate Measurement: A Review and Future Research Agenda</title>
     <url>/2022/09/29/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ADeep-Learning-Methods-for-Remote-Heart-Rate-Measurement-A-Review-and-Future-Research-Agenda/</url>
     <content><![CDATA[<p>参考博客：<a href="https://blog.csdn.net/m0_46792836/article/details/121222265">https://blog.csdn.net/m0_46792836/article/details/121222265</a></p>
-<h2 id="简介">简介</h2>
-<p><strong>rPPG</strong>，即remote photoplethysmography，远程光电容积脉搏波描记法，通过摄像头捕捉皮肤细微的亮度变化监测心率。</p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p><strong>rPPG</strong>，即remote photoplethysmography，远程光电容积脉搏波描记法，通过摄像头捕捉皮肤细微的亮度变化监测心率。</p>
 <p>PPG是一种最常用的测量心率的方法，使用一个光源和光电探测器测量皮下血管体积的变化，当光源照在组织上时，光探测器可以捕捉到血液流动反射或透射光强度的微小变化，产生所谓的PPG信号，光的吸收遵循Beer–Lambert定律，该定律指出，血液吸收的光与光进入皮肤的渗透力和血液中血红蛋白的浓度成正比。在心动周期中，血红蛋白浓度的微小变化引起血管吸收的光量的32个波动，导致33个皮肤强度值的变化。</p>
 <p>但对于穿戴式或接触式的监测设备，不适用于检测新生儿或皮肤脆弱的患者，长期检测可能会导致患者不舒服或皮肤感染。</p>
 <p>在rPPG中，使用相机作为光探测器捕捉皮肤微小的颜色变化，自然光作为光源。其DRM（色反射）模型如下图所示，可以看到相机同时捕捉到皮肤表面产生的镜面反射和身体产生的漫反射，其中镜面反射并不包含有意义的生理信息，因此需要对捕捉到的信号进行精细处理。</p>
-<img src="/2022/09/29/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ADeep-Learning-Methods-for-Remote-Heart-Rate-Measurement-A-Review-and-Future-Research-Agenda/Users\zxkj\AppData\Roaming\Typora\typora-user-images\image-20220929213602840.png" alt="image-20220929213602840" style="zoom:67%;">
+<p><img src="/2022/09/29/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ADeep-Learning-Methods-for-Remote-Heart-Rate-Measurement-A-Review-and-Future-Research-Agenda/image-20220929213602840.png" alt="image-20220929213602840" style="zoom:67%; margin:auto;"></p>
 <p>传统的远程心率测量方法如下图所示，首先对视频进行人脸检测，接着从人脸上选择感兴趣的区域（ROI），以此获得包含强信号的区域，此后从ROI内的像素提取rPPG信号，最后对rPPG信号进一步处理（如频率分析和峰值检测等）获取心率信息。</p>
-<img src="/2022/09/29/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ADeep-Learning-Methods-for-Remote-Heart-Rate-Measurement-A-Review-and-Future-Research-Agenda/Users\zxkj\AppData\Roaming\Typora\typora-user-images\image-20220930082244032.png" alt="image-20220930082244032" style="zoom: 67%;">
+<p><img src="/2022/09/29/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ADeep-Learning-Methods-for-Remote-Heart-Rate-Measurement-A-Review-and-Future-Research-Agenda/image-20220930082244032.png" alt="image-20220930082244032" style="zoom: 67%; margin:auto;"></p>
 <p>基于深度学习的远程心率检测方法可以分为<strong>端到端</strong>和<strong>混合深度学习</strong>的方法。</p>
-<h2 id="端到端的深度学习方法">端到端的深度学习方法</h2>
-<p>所谓的端到端的方法，即模型直接将视频作为输入，产生心率或rPPG信号输出。这种方法需要大量的训练数据，同时训练结果难以验证，我们需要做更多的工作对模型进行解释。</p>
+<h2 id="端到端的深度学习方法"><a href="#端到端的深度学习方法" class="headerlink" title="端到端的深度学习方法"></a>端到端的深度学习方法</h2><p>所谓的端到端的方法，即模型直接将视频作为输入，产生心率或rPPG信号输出。这种方法需要大量的训练数据，同时训练结果难以验证，我们需要做更多的工作对模型进行解释。</p>
 <p>端到端的心率检测方法又可以分为如下两种：</p>
-<img src="/2022/09/29/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ADeep-Learning-Methods-for-Remote-Heart-Rate-Measurement-A-Review-and-Future-Research-Agenda/Users\zxkj\AppData\Roaming\Typora\typora-user-images\image-20220930085223073.png" alt="image-20220930085223073" style="zoom:80%;">
-<h3 id="2D-CNN">2D CNN</h3>
-<p>2D CNN只考虑了视频帧的空间信息。</p>
+<p><img src="/2022/09/29/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ADeep-Learning-Methods-for-Remote-Heart-Rate-Measurement-A-Review-and-Future-Research-Agenda/image-20220930085223073.png" alt="image-20220930085223073" style="zoom: 67%; margin: auto;"></p>
+<h3 id="2D-CNN"><a href="#2D-CNN" class="headerlink" title="2D CNN"></a>2D CNN</h3><p>2D CNN只考虑了视频帧的空间信息。</p>
 <ul>
 <li>HR-CNN（2018）：包含提取器和HR估计器的两步CNN，提取器从视频帧序列中提取rPPG信号，使其信噪比最大化。HR-CNN解决了<strong>视频压缩伪影</strong>的问题。</li>
 <li>DeepPhys（2018）：同时训练一个运动模型和外观模型，运动模型将相邻视频帧间的归一化差作为模型的输入表示，对帧中的运动和颜色变化进行建模；外观模型通过注意力机制引导运动模型学习运动表征。该模型可以更好地<strong>捕捉不同光照条件下的生理信号</strong>，对光照变化和被试运动更有鲁棒性。</li>
 <li>MTTS-CAN（2020）：DeepPhys的改进，引入时间移位模块（TSM）捕获时间信息，TSM允许相邻帧之间的信息交换，避免昂贵的3D卷积操作。</li>
 </ul>
-<h3 id="时空网络——3D-CNN">时空网络——3D CNN</h3>
-<p>3D CNN可以利用视频中包含的时间信息，时空网络（STNs）有效地表示视频流中生理信号的时空信息。</p>
+<h3 id="时空网络——3D-CNN"><a href="#时空网络——3D-CNN" class="headerlink" title="时空网络——3D CNN"></a>时空网络——3D CNN</h3><p>3D CNN可以利用视频中包含的时间信息，时空网络（STNs）有效地表示视频流中生理信号的时空信息。</p>
 <ul>
 <li>3D CNN PhysNet：旨在定位每个个体心跳的峰值，以准确估计被试的HR和HRV。</li>
 <li>两阶段STN：包括一个时空视频增强网络（3D STVEN）和一个时空3D CNN（rPPGNet），压缩的面部视频通过3D STVEN以提高视频质量，同时保留尽可能多的信息；增强后的视频输入rPPGNet以提取rPPG信号，rPPGNet使用注意力机制从皮肤区域获取主导的rPPG特征。</li>
 <li>AutoHR：使用神经结构搜索（NAS）自动找到最适合的主干3D CNN，使用一种三维卷积操作时域差分卷积（TDC）帮助跟踪感兴趣区域。</li>
 </ul>
-<h3 id="时空网络——2D-CNN-RNN">时空网络——2D CNN+RNN</h3>
-<p>使用2D CNN提取空间信息，用RNN提取时间前后信息并结合。</p>
+<h3 id="时空网络——2D-CNN-RNN"><a href="#时空网络——2D-CNN-RNN" class="headerlink" title="时空网络——2D CNN+RNN"></a>时空网络——2D CNN+RNN</h3><p>使用2D CNN提取空间信息，用RNN提取时间前后信息并结合。</p>
 <ul>
 <li>基于RNN的PhysNet：首先将输入信息输入到2D CNN中提取RGB视频帧的空间特征，然后利用RNN在时域内传播这些空间特征。但研究证明，基于3D CNN的PhysNet比基于RNN的PhysNet获得了更好的性能。</li>
 </ul>
-<img src="/2022/09/29/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ADeep-Learning-Methods-for-Remote-Heart-Rate-Measurement-A-Review-and-Future-Research-Agenda/Users\zxkj\AppData\Roaming\Typora\typora-user-images\image-20220930105928378.png" alt="image-20220930105928378" style="zoom: 67%;">
-<h2 id="混合深度学习方法">混合深度学习方法</h2>
-<p>所谓的混合深度学习方法，是指深度学习技术只应用在检测过程中的某些部分，如信号优化、信号提取或心率估计。</p>
-<h3 id="用于信号优化的深度学习方法">用于信号优化的深度学习方法</h3>
-<p>所谓的信号优化就是使用人脸检测或皮肤分割，以<strong>忽略不相关的背景信息</strong>。</p>
+<p><img src="/2022/09/29/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ADeep-Learning-Methods-for-Remote-Heart-Rate-Measurement-A-Review-and-Future-Research-Agenda/image-20220930105928378.png" alt="image-20220930105928378" style="zoom: 67%; margin:auto;"></p>
+<h2 id="混合深度学习方法"><a href="#混合深度学习方法" class="headerlink" title="混合深度学习方法"></a>混合深度学习方法</h2><p>所谓的混合深度学习方法，是指深度学习技术只应用在检测过程中的某些部分，如信号优化、信号提取或心率估计。</p>
+<h3 id="用于信号优化的深度学习方法"><a href="#用于信号优化的深度学习方法" class="headerlink" title="用于信号优化的深度学习方法"></a>用于信号优化的深度学习方法</h3><p>所谓的信号优化就是使用人脸检测或皮肤分割，以<strong>忽略不相关的背景信息</strong>。</p>
 <ul>
 <li>创建一个用于皮肤检测的2D CNN，用于分割出皮肤所在区域，对检测到的皮肤区域进行常规rPPG算法。但这种方法利用了人脸的所有皮肤区域提取rPPG信号，可能包含不必要的噪声。</li>
 <li>Deep-HR：采用接受域块（RFB）网络对感兴趣区域进行目标检测，该方法设计了GAN增强检测到的ROI，对检测到的ROI进行再生，将这个高质量的ROI（这个过程也可以看作后面的信号提取的过程）用于后续的信号提取。</li>
 </ul>
-<h3 id="用于信号提取的深度学习">用于信号提取的深度学习</h3>
-<p>信号提取的目标是从视频中<strong>提取高质量的rPPG信号</strong>进行HR估计（感觉是指去噪这个过程）。</p>
+<h3 id="用于信号提取的深度学习"><a href="#用于信号提取的深度学习" class="headerlink" title="用于信号提取的深度学习"></a>用于信号提取的深度学习</h3><p>信号提取的目标是从视频中<strong>提取高质量的rPPG信号</strong>进行HR估计（感觉是指去噪这个过程）。</p>
 <ul>
-<li>
-<p>LSTM：使用LSTM网络对噪声污染的rPPG信号进行滤波，得到无噪声的rPPG信号。由于数据不足的问题，在训练时可以首先在合成数据上进行训练，然后在真实数据集上微调。</p>
+<li><p>LSTM：使用LSTM网络对噪声污染的rPPG信号进行滤波，得到无噪声的rPPG信号。由于数据不足的问题，在训练时可以首先在合成数据上进行训练，然后在真实数据集上微调。</p>
 </li>
-<li>
-<p>2D CNN MetaPhys：使用预训练的2D CNN TS-CAN用于信号提取，并提出元学习方法，利用模型不可知元学习作为个性化参数更新模式，可以在只有少量训练样本的情况下快速适应。作者认为该方法可以减少由于肤色造成的偏差。</p>
+<li><p>2D CNN MetaPhys：使用预训练的2D CNN TS-CAN用于信号提取，并提出元学习方法，利用模型不可知元学习作为个性化参数更新模式，可以在只有少量训练样本的情况下快速适应。作者认为该方法可以减少由于肤色造成的偏差。</p>
 </li>
-<li>
-<p>3D CNN Siamese-rPPG：基于Siamese 3D CNN框架，作者认为不同的面部区域应反映相同的rPPG特征，建立额头分支和脸颊分支进行特征提取，将两个分支的输出通过运算融合，得到最终的预测的rPPG信号。</p>
-<img src="/2022/09/29/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ADeep-Learning-Methods-for-Remote-Heart-Rate-Measurement-A-Review-and-Future-Research-Agenda/Users\zxkj\AppData\Roaming\Typora\typora-user-images\image-20220930142543663.png" alt="image-20220930142543663" style="zoom:67%;">
+<li><p>3D CNN Siamese-rPPG：基于Siamese 3D CNN框架，作者认为不同的面部区域应反映相同的rPPG特征，建立额头分支和脸颊分支进行特征提取，将两个分支的输出通过运算融合，得到最终的预测的rPPG信号。</p>
+<p><img src="/2022/09/29/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ADeep-Learning-Methods-for-Remote-Heart-Rate-Measurement-A-Review-and-Future-Research-Agenda/image-20220930142543663.png" alt="image-20220930142543663" style="zoom: 67%; margin: auto;"></p>
 </li>
-<li>
-<p>3D CNN HeartTrack：利用带有注意力机制的3D CNN进行信号提取，在三维时空注意网络中，利用硬注意力机制忽略不相关的背景信息，利用软注意力机制过滤所覆盖的区域。再将提取到的信号送入1D CNN进行时间序列分析。</p>
+<li><p>3D CNN HeartTrack：利用带有注意力机制的3D CNN进行信号提取，在三维时空注意网络中，利用硬注意力机制忽略不相关的背景信息，利用软注意力机制过滤所覆盖的区域。再将提取到的信号送入1D CNN进行时间序列分析。</p>
 </li>
 </ul>
-<h3 id="用于心率估计的深度学习">用于心率估计的深度学习</h3>
-<p>对于提取到的rPPG信号，传统的方法是使用带通滤波器滤波，然后进行频率分析或峰值检测来估计心率。对于深度学习方法，<strong>将心率估计看作回归问题求解</strong>。</p>
+<h3 id="用于心率估计的深度学习"><a href="#用于心率估计的深度学习" class="headerlink" title="用于心率估计的深度学习"></a>用于心率估计的深度学习</h3><p>对于提取到的rPPG信号，传统的方法是使用带通滤波器滤波，然后进行频率分析或峰值检测来估计心率。对于深度学习方法，<strong>将心率估计看作回归问题求解</strong>。</p>
 <p>HR信号有两种表示：</p>
 <ol>
 <li>频谱图像：对提取的rPPG信号进行短时傅里叶变换和带通滤波，得到频域表示，将频域表示和时域信号结合，形成频谱图像。</li>
 <li>时空图：将ROI像素RGB通道的颜色信息串接在时间序列中，成行排列，形成时空地图。这种信号表示方法可以抑制与HR信号无关的信息。</li>
 </ol>
-<h2 id="应用场景">应用场景</h2>
-<ul>
+<h2 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h2><ul>
 <li>流行病控制</li>
 <li>防伪：通过捕捉异常生物信号检测深度造假的视频</li>
 <li>远程医疗</li>
@@ -500,8 +486,7 @@
 <li>新生儿检测</li>
 <li>健康跟踪</li>
 </ul>
-<h2 id="研究缺口">研究缺口</h2>
-<ul>
+<h2 id="研究缺口"><a href="#研究缺口" class="headerlink" title="研究缺口"></a>研究缺口</h2><ul>
 <li>影响因素：基于rPPG的远程HR测量收到光照变化、运动伪影、肤色变化和视频压缩等诸多因素的影响。<strong>新方法应提供如何从技术和生物物理角度处理这些挑战的见解</strong></li>
 <li>测量其他生命体征</li>
 <li>数据集：目前数据集抓鱼用于解决运动伪影、照明变化，对于肤色变化、多人检测、远距离、新生儿检测也需要克服。</li>
