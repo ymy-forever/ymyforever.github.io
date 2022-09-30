@@ -4,23 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, maximum-scale=5, viewport-fit=cover">
     <title>经典模型：Video Swin Transformer | ymy is watching u!!!!</title>
-    <meta name="description" content="模型结构 Video Swin Transformer的结构整体如下图所示，与Swin-T相比多了时间维度。  3D Patch Partition 在初始时，设置每个token的大小为2x4x4x3，因此，每个视频被划分为T2×H4×W4\frac{T}{2}\times \frac{H}{4} \times \frac{W}{4}2T​×4H​×4W​个tokens，每个token的维度为96">
+    <meta name="description" content="模型结构Video Swin Transformer的结构整体如下图所示，与Swin-T相比多了时间维度。   3D Patch Partition在初始时，设置每个token的大小为2x4x4x3，因此，每个视频被划分为$\frac{T}{2}\times \frac{H}{4} \times \frac{W}{4}$个tokens，每个token的维度为96。 Linear Embedding">
 <meta property="og:type" content="article">
 <meta property="og:title" content="经典模型：Video Swin Transformer">
 <meta property="og:url" content="https://ymyforever.netlify.app/2022/09/28/%E7%BB%8F%E5%85%B8%E6%A8%A1%E5%9E%8B%EF%BC%9AVideo-Swin-Transformer/index.html">
 <meta property="og:site_name" content="ymy is watching u!!!!">
-<meta property="og:description" content="模型结构 Video Swin Transformer的结构整体如下图所示，与Swin-T相比多了时间维度。  3D Patch Partition 在初始时，设置每个token的大小为2x4x4x3，因此，每个视频被划分为T2×H4×W4\frac{T}{2}\times \frac{H}{4} \times \frac{W}{4}2T​×4H​×4W​个tokens，每个token的维度为96">
+<meta property="og:description" content="模型结构Video Swin Transformer的结构整体如下图所示，与Swin-T相比多了时间维度。   3D Patch Partition在初始时，设置每个token的大小为2x4x4x3，因此，每个视频被划分为$\frac{T}{2}\times \frac{H}{4} \times \frac{W}{4}$个tokens，每个token的维度为96。 Linear Embedding">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://ymyforever.netlify.app/2022/09/28/%E7%BB%8F%E5%85%B8%E6%A8%A1%E5%9E%8B%EF%BC%9AVideo-Swin-Transformer/Users/zxkj/AppData/Roaming/Typora/typora-user-images/image-20220928191836623.png">
-<meta property="og:image" content="https://ymyforever.netlify.app/2022/09/28/%E7%BB%8F%E5%85%B8%E6%A8%A1%E5%9E%8B%EF%BC%9AVideo-Swin-Transformer/Users/zxkj/AppData/Roaming/Typora/typora-user-images/image-20220928200155711.png">
-<meta property="og:image" content="https://ymyforever.netlify.app/2022/09/28/%E7%BB%8F%E5%85%B8%E6%A8%A1%E5%9E%8B%EF%BC%9AVideo-Swin-Transformer/Users/zxkj/AppData/Roaming/Typora/typora-user-images/image-20220928210505074.png">
+<meta property="og:image" content="https://ymyforever.netlify.app/2022/09/28/%E7%BB%8F%E5%85%B8%E6%A8%A1%E5%9E%8B%EF%BC%9AVideo-Swin-Transformer/image-20220928191836623.png">
+<meta property="og:image" content="https://ymyforever.netlify.app/2022/09/28/%E7%BB%8F%E5%85%B8%E6%A8%A1%E5%9E%8B%EF%BC%9AVideo-Swin-Transformer/image-20220928200155711.png">
+<meta property="og:image" content="https://ymyforever.netlify.app/2022/09/28/%E7%BB%8F%E5%85%B8%E6%A8%A1%E5%9E%8B%EF%BC%9AVideo-Swin-Transformer/image-20220928210505074.png">
 <meta property="article:published_time" content="2022-09-28T11:10:10.000Z">
-<meta property="article:modified_time" content="2022-09-29T02:15:04.824Z">
+<meta property="article:modified_time" content="2022-09-30T08:10:25.966Z">
 <meta property="article:author" content="ymy">
 <meta property="article:tag" content="经典模型">
 <meta property="article:tag" content="Transformer">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://ymyforever.netlify.app/2022/09/28/%E7%BB%8F%E5%85%B8%E6%A8%A1%E5%9E%8B%EF%BC%9AVideo-Swin-Transformer/Users/zxkj/AppData/Roaming/Typora/typora-user-images/image-20220928191836623.png">
+<meta name="twitter:image" content="https://ymyforever.netlify.app/2022/09/28/%E7%BB%8F%E5%85%B8%E6%A8%A1%E5%9E%8B%EF%BC%9AVideo-Swin-Transformer/image-20220928191836623.png">
 
     
     <link rel="icon" href="/images.fvicon.ico" type="image/x-icon">
@@ -197,7 +197,7 @@
                 </span>
                 
     
-        <span class="post-wordcount" itemprop="wordCount">字数统计: 480(字)</span>
+        <span class="post-wordcount" itemprop="wordCount">字数统计: 465(字)</span>
     
     
         <span class="post-readcount" itemprop="timeRequired">阅读时长: 1(分)</span>
@@ -207,34 +207,26 @@
             </p>
         </header>
         <div class="marked-body article-body">
-            <h2 id="模型结构">模型结构</h2>
-<p>Video Swin Transformer的结构整体如下图所示，与Swin-T相比多了时间维度。</p>
-<img src="/2022/09/28/%E7%BB%8F%E5%85%B8%E6%A8%A1%E5%9E%8B%EF%BC%9AVideo-Swin-Transformer/Users\zxkj\AppData\Roaming\Typora\typora-user-images\image-20220928191836623.png" alt="image-20220928191836623" style="zoom:80%; margin:auto;">
-<h3 id="3D-Patch-Partition">3D Patch Partition</h3>
-<p>在初始时，设置每个token的大小为2x4x4x3，因此，每个视频被划分为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mi>T</mi><mn>2</mn></mfrac><mo>×</mo><mfrac><mi>H</mi><mn>4</mn></mfrac><mo>×</mo><mfrac><mi>W</mi><mn>4</mn></mfrac></mrow><annotation encoding="application/x-tex">\frac{T}{2}\times \frac{H}{4} \times \frac{W}{4}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.217331em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.872331em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.217331em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.872331em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">4</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.08125em;">H</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.217331em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.872331em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">4</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">W</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span>个tokens，每个token的维度为96。</p>
-<h3 id="Linear-Embedding-2">Linear Embedding</h3>
-<p>将每一个token投影到指定的维度C。</p>
-<h3 id="Video-Swin-Transformer-Block">Video Swin Transformer Block</h3>
-<p>对于两个相邻的Video Swin Transformer Block，仍采用和Swin Transformer相同的处理方法，每个3D W-MSA后接一个3D SW-MSA。</p>
-<img src="/2022/09/28/%E7%BB%8F%E5%85%B8%E6%A8%A1%E5%9E%8B%EF%BC%9AVideo-Swin-Transformer/Users\zxkj\AppData\Roaming\Typora\typora-user-images\image-20220928200155711.png" alt="image-20220928200155711" style="zoom:67%; margin:auto;">
-<h4 id="3D-W-MSA">3D W-MSA</h4>
-<p>3D W-MSA与W-MSA相似，对于大小为8x8x8的输入，使用4x4x4的窗口大小，在stage1中窗口的数目为2x2x2，在每个窗口内部进行自注意力计算。</p>
-<img src="/2022/09/28/%E7%BB%8F%E5%85%B8%E6%A8%A1%E5%9E%8B%EF%BC%9AVideo-Swin-Transformer/Users\zxkj\AppData\Roaming\Typora\typora-user-images\image-20220928210505074.png" alt="image-20220928210505074" style="zoom:67%; margin:auto;">
-<h4 id="3D-SW-MSA">3D SW-MSA</h4>
-<p>3D SW-MSA与SW-MSA相同，使用移动窗口补充计算不同窗口中token间的自注意力，为了降低移动窗口后增加的窗口数，同样使用拼接与mask技术，保持窗口数的恒定。</p>
-<h3 id="Patch-Merging-2">Patch Merging</h3>
-<p>在进行patch合并时，不从时间维度进行下采样，而是从空间维度对2x2的patch进行合并，合并之后使用一个线性层投影将其维度减半。</p>
-<h2 id="实验结果">实验结果</h2>
-<h3 id="不同的时空注意力设计">不同的时空注意力设计</h3>
-<ul>
+            <h2 id="模型结构"><a href="#模型结构" class="headerlink" title="模型结构"></a>模型结构</h2><p>Video Swin Transformer的结构整体如下图所示，与Swin-T相比多了时间维度。</p>
+<img src="/2022/09/28/%E7%BB%8F%E5%85%B8%E6%A8%A1%E5%9E%8B%EF%BC%9AVideo-Swin-Transformer/image-20220928191836623.png" alt="image-20220928191836623" style="zoom:80%; margin:auto;">
+
+<h3 id="3D-Patch-Partition"><a href="#3D-Patch-Partition" class="headerlink" title="3D Patch Partition"></a>3D Patch Partition</h3><p>在初始时，设置每个token的大小为2x4x4x3，因此，每个视频被划分为$\frac{T}{2}\times \frac{H}{4} \times \frac{W}{4}$个tokens，每个token的维度为96。</p>
+<h3 id="Linear-Embedding"><a href="#Linear-Embedding" class="headerlink" title="Linear Embedding"></a>Linear Embedding</h3><p>将每一个token投影到指定的维度C。</p>
+<h3 id="Video-Swin-Transformer-Block"><a href="#Video-Swin-Transformer-Block" class="headerlink" title="Video Swin Transformer Block"></a>Video Swin Transformer Block</h3><p>对于两个相邻的Video Swin Transformer Block，仍采用和Swin Transformer相同的处理方法，每个3D W-MSA后接一个3D SW-MSA。</p>
+<img src="/2022/09/28/%E7%BB%8F%E5%85%B8%E6%A8%A1%E5%9E%8B%EF%BC%9AVideo-Swin-Transformer/image-20220928200155711.png" alt="image-20220928200155711" style="zoom:67%; margin:auto;">
+
+<h4 id="3D-W-MSA"><a href="#3D-W-MSA" class="headerlink" title="3D W-MSA"></a>3D W-MSA</h4><p>3D W-MSA与W-MSA相似，对于大小为8x8x8的输入，使用4x4x4的窗口大小，在stage1中窗口的数目为2x2x2，在每个窗口内部进行自注意力计算。</p>
+<img src="/2022/09/28/%E7%BB%8F%E5%85%B8%E6%A8%A1%E5%9E%8B%EF%BC%9AVideo-Swin-Transformer/image-20220928210505074.png" alt="image-20220928210505074" style="zoom:67%; margin:auto;">
+
+<h4 id="3D-SW-MSA"><a href="#3D-SW-MSA" class="headerlink" title="3D SW-MSA"></a>3D SW-MSA</h4><p>3D SW-MSA与SW-MSA相同，使用移动窗口补充计算不同窗口中token间的自注意力，为了降低移动窗口后增加的窗口数，同样使用拼接与mask技术，保持窗口数的恒定。</p>
+<h3 id="Patch-Merging"><a href="#Patch-Merging" class="headerlink" title="Patch Merging"></a>Patch Merging</h3><p>在进行patch合并时，不从时间维度进行下采样，而是从空间维度对2x2的patch进行合并，合并之后使用一个线性层投影将其维度减半。</p>
+<h2 id="实验结果"><a href="#实验结果" class="headerlink" title="实验结果"></a>实验结果</h2><h3 id="不同的时空注意力设计"><a href="#不同的时空注意力设计" class="headerlink" title="不同的时空注意力设计"></a>不同的时空注意力设计</h3><ul>
 <li>joint：在每一个3D窗口中联合计算时空注意力。</li>
 <li>split：在空间swin transformer的基础上添加了两个时间transformer层</li>
 <li>factorized：先是一个空间MSA层，再接一个时间MSA层。</li>
 </ul>
 <p>实验证明，在视频分类任务中，综合考虑速度与精度，joint模式达到了最佳，作者认为空间域的局部性减少了joint的计算量，同时保持了有效性。</p>
-<h3 id="3D-token的时间维度与窗口的时间维度">3D token的时间维度与窗口的时间维度</h3>
-<p>总的来说，3D token的时间维度与窗口的时间维度越大，精度越高，相应的计算成本也越高。</p>
-<h2 id="代码实现">代码实现</h2>
+<h3 id="3D-token的时间维度与窗口的时间维度"><a href="#3D-token的时间维度与窗口的时间维度" class="headerlink" title="3D token的时间维度与窗口的时间维度"></a>3D token的时间维度与窗口的时间维度</h3><p>总的来说，3D token的时间维度与窗口的时间维度越大，精度越高，相应的计算成本也越高。</p>
 
         </div>
         
@@ -260,7 +252,7 @@
     <div class="toc-sidebar">
         <nav id="toc" class="article-toc">
             <h3 class="toc-title">文章目录</h3>
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E7%BB%93%E6%9E%84"><span class="toc-number">1.</span> <span class="toc-text">模型结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3D-Patch-Partition"><span class="toc-number">1.1.</span> <span class="toc-text">3D Patch Partition</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Linear-Embedding-2"><span class="toc-number">1.2.</span> <span class="toc-text">Linear Embedding</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Video-Swin-Transformer-Block"><span class="toc-number">1.3.</span> <span class="toc-text">Video Swin Transformer Block</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3D-W-MSA"><span class="toc-number">1.3.1.</span> <span class="toc-text">3D W-MSA</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3D-SW-MSA"><span class="toc-number">1.3.2.</span> <span class="toc-text">3D SW-MSA</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Patch-Merging-2"><span class="toc-number">1.4.</span> <span class="toc-text">Patch Merging</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E7%BB%93%E6%9E%9C"><span class="toc-number">2.</span> <span class="toc-text">实验结果</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8D%E5%90%8C%E7%9A%84%E6%97%B6%E7%A9%BA%E6%B3%A8%E6%84%8F%E5%8A%9B%E8%AE%BE%E8%AE%A1"><span class="toc-number">2.1.</span> <span class="toc-text">不同的时空注意力设计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3D-token%E7%9A%84%E6%97%B6%E9%97%B4%E7%BB%B4%E5%BA%A6%E4%B8%8E%E7%AA%97%E5%8F%A3%E7%9A%84%E6%97%B6%E9%97%B4%E7%BB%B4%E5%BA%A6"><span class="toc-number">2.2.</span> <span class="toc-text">3D token的时间维度与窗口的时间维度</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-number">3.</span> <span class="toc-text">代码实现</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E7%BB%93%E6%9E%84"><span class="toc-number">1.</span> <span class="toc-text">模型结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3D-Patch-Partition"><span class="toc-number">1.1.</span> <span class="toc-text">3D Patch Partition</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Linear-Embedding"><span class="toc-number">1.2.</span> <span class="toc-text">Linear Embedding</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Video-Swin-Transformer-Block"><span class="toc-number">1.3.</span> <span class="toc-text">Video Swin Transformer Block</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3D-W-MSA"><span class="toc-number">1.3.1.</span> <span class="toc-text">3D W-MSA</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3D-SW-MSA"><span class="toc-number">1.3.2.</span> <span class="toc-text">3D SW-MSA</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Patch-Merging"><span class="toc-number">1.4.</span> <span class="toc-text">Patch Merging</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E7%BB%93%E6%9E%9C"><span class="toc-number">2.</span> <span class="toc-text">实验结果</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8D%E5%90%8C%E7%9A%84%E6%97%B6%E7%A9%BA%E6%B3%A8%E6%84%8F%E5%8A%9B%E8%AE%BE%E8%AE%A1"><span class="toc-number">2.1.</span> <span class="toc-text">不同的时空注意力设计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3D-token%E7%9A%84%E6%97%B6%E9%97%B4%E7%BB%B4%E5%BA%A6%E4%B8%8E%E7%AA%97%E5%8F%A3%E7%9A%84%E6%97%B6%E9%97%B4%E7%BB%B4%E5%BA%A6"><span class="toc-number">2.2.</span> <span class="toc-text">3D token的时间维度与窗口的时间维度</span></a></li></ol></li></ol>
         </nav>
     </div>
 </aside>
