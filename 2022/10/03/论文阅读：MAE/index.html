@@ -3,21 +3,21 @@
     <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, maximum-scale=5, viewport-fit=cover">
-    <title>神经网络基础知识 | ymy is watching u!!!!</title>
-    <meta name="description" content="3D CNN参考博客： ​		https:&#x2F;&#x2F;blog.csdn.net&#x2F;auto1993&#x2F;article&#x2F;details&#x2F;70948249 ​		https:&#x2F;&#x2F;blog.csdn.net&#x2F;YOULANSHENGMENG&#x2F;article&#x2F;details&#x2F;121328554 使用3D CNN可以捕获视频中的时间和空间的特征信息。 Conv3D3D卷积：对于下面的采用3D卷积核进行的卷积操作，通过堆">
+    <title>论文阅读：MAE | ymy is watching u!!!!</title>
+    <meta name="description" content="参考：https:&#x2F;&#x2F;www.bilibili.com&#x2F;video&#x2F;BV1sq4y1q77t&#x2F; 代码：https:&#x2F;&#x2F;github.com&#x2F;facebookresearch&#x2F;mae 模型概述MAE即Masked Autoencoders（其auto是指“自“的意思，而不是自动，指label也来自图片本身），可以看作CV版的Bert，基于ViT方法。 MAE的整体思路是将图片中的一些patches进">
 <meta property="og:type" content="article">
-<meta property="og:title" content="神经网络基础知识">
-<meta property="og:url" content="https://ymyforever.netlify.app/2022/09/27/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/index.html">
+<meta property="og:title" content="论文阅读：MAE">
+<meta property="og:url" content="https://ymyforever.netlify.app/2022/10/03/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AMAE/index.html">
 <meta property="og:site_name" content="ymy is watching u!!!!">
-<meta property="og:description" content="3D CNN参考博客： ​		https:&#x2F;&#x2F;blog.csdn.net&#x2F;auto1993&#x2F;article&#x2F;details&#x2F;70948249 ​		https:&#x2F;&#x2F;blog.csdn.net&#x2F;YOULANSHENGMENG&#x2F;article&#x2F;details&#x2F;121328554 使用3D CNN可以捕获视频中的时间和空间的特征信息。 Conv3D3D卷积：对于下面的采用3D卷积核进行的卷积操作，通过堆">
+<meta property="og:description" content="参考：https:&#x2F;&#x2F;www.bilibili.com&#x2F;video&#x2F;BV1sq4y1q77t&#x2F; 代码：https:&#x2F;&#x2F;github.com&#x2F;facebookresearch&#x2F;mae 模型概述MAE即Masked Autoencoders（其auto是指“自“的意思，而不是自动，指label也来自图片本身），可以看作CV版的Bert，基于ViT方法。 MAE的整体思路是将图片中的一些patches进">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://img-blog.csdn.net/20170429133650515?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQVVUTzE5OTM=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
-<meta property="article:published_time" content="2022-09-27T09:31:15.000Z">
-<meta property="article:modified_time" content="2022-09-30T10:30:57.157Z">
+<meta property="og:image" content="https://ymyforever.netlify.app/2022/10/03/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AMAE/image-20221003114506533.png">
+<meta property="article:published_time" content="2022-10-03T03:18:57.000Z">
+<meta property="article:modified_time" content="2022-10-04T02:49:30.930Z">
 <meta property="article:author" content="ymy">
-<meta property="article:tag" content="神经网络基础知识">
+<meta property="article:tag" content="Transformer">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://img-blog.csdn.net/20170429133650515?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQVVUTzE5OTM=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta name="twitter:image" content="https://ymyforever.netlify.app/2022/10/03/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AMAE/image-20221003114506533.png">
 
     
     <link rel="icon" href="/images.fvicon.ico" type="image/x-icon">
@@ -164,7 +164,7 @@
             
     
         <h1 class="article-title text-lg" itemprop="name">
-            神经网络基础知识
+            论文阅读：MAE
         </h1>
     
 
@@ -173,8 +173,8 @@
             <p class="article-meta mb-3 text-xs">
                 <span class="article-date">
     <i class="iconfont icon-calendar-check"></i>
-	<a href="/2022/09/27/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="article-date">
-	  <time datetime="2022-09-27T09:31:15.000Z" itemprop="datePublished">9月 27</time>
+	<a href="/2022/10/03/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AMAE/" class="article-date">
+	  <time datetime="2022-10-03T03:18:57.000Z" itemprop="datePublished">10月 3</time>
 	</a>
 </span>
 
@@ -183,18 +183,18 @@
                 
     <span class="article-tags">
     <i class="iconfont icon-tag"></i>
-    <a class="article-tag-none-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" rel="tag">神经网络基础知识</a>
+    <a class="article-tag-none-link" href="/tags/Transformer/" rel="tag">Transformer</a>
   </span>
 
 
                 <span class="_partial/post-comment"><i class="icon icon-comment"></i>
-                    <a href="/2022/09/27/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/#comments" class="article-comment-link">
+                    <a href="/2022/10/03/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AMAE/#comments" class="article-comment-link">
                         评论
                     </a>
                 </span>
                 
     
-        <span class="post-wordcount" itemprop="wordCount">字数统计: 345(字)</span>
+        <span class="post-wordcount" itemprop="wordCount">字数统计: 387(字)</span>
     
     
         <span class="post-readcount" itemprop="timeRequired">阅读时长: 1(分)</span>
@@ -204,22 +204,32 @@
             </p>
         </header>
         <div class="marked-body article-body">
-            <h2 id="3D-CNN"><a href="#3D-CNN" class="headerlink" title="3D CNN"></a>3D CNN</h2><p>参考博客：</p>
-<p>​		<a target="_blank" rel="noopener" href="https://blog.csdn.net/auto1993/article/details/70948249">https://blog.csdn.net/auto1993/article/details/70948249</a></p>
-<p>​		<a target="_blank" rel="noopener" href="https://blog.csdn.net/YOULANSHENGMENG/article/details/121328554">https://blog.csdn.net/YOULANSHENGMENG/article/details/121328554</a></p>
-<p>使用3D CNN可以捕获视频中的<strong>时间</strong>和<strong>空间</strong>的特征信息。</p>
-<h3 id="Conv3D"><a href="#Conv3D" class="headerlink" title="Conv3D"></a>Conv3D</h3><p>3D卷积：对于下面的采用3D卷积核进行的卷积操作，通过堆叠多个连续的帧组成一个立方体，在立方体中运用3D卷积核，卷积层中每一个特征map都与上一层中多个邻近的连续帧相连，以此捕捉运动信息。下图卷积操作的时间维度为3（对连续的三帧图像进行卷积操作）。</p>
-<img src="https://img-blog.csdn.net/20170429133650515?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQVVUTzE5OTM=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="img" style="zoom:80%;">
+            <p>参考：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1sq4y1q77t/">https://www.bilibili.com/video/BV1sq4y1q77t/</a></p>
+<p>代码：<a target="_blank" rel="noopener" href="https://github.com/facebookresearch/mae">https://github.com/facebookresearch/mae</a></p>
+<h2 id="模型概述"><a href="#模型概述" class="headerlink" title="模型概述"></a>模型概述</h2><p>MAE即Masked Autoencoders（其auto是指“自“的意思，而不是自动，指label也来自图片本身），可以看作CV版的Bert，基于ViT方法。</p>
+<p>MAE的整体思路是将图片中的一些patches进行mask，然后对masked掉的patches进行预测。如下图所示：</p>
+<img src="/2022/10/03/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AMAE/image-20221003114506533.png" alt="image-20221003114506533" style="zoom:80%; margin:auto;">
 
-<p>tip：<strong>3D卷积核只能从cube中提取一种类型的特征</strong>（在整个cube中卷积核的权值是共享的），若要提取多种特征，可以采用多种卷积核。</p>
-<p>在pytorch中，同样有Conv3D的实现，使用样例如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"></span><br><span class="line"><span class="comment"># Sample intput | 随机输入</span></span><br><span class="line"><span class="comment"># (batch_size, channel, fram_size, height, width)</span></span><br><span class="line">net_input = torch.randn(<span class="number">32</span>, <span class="number">3</span>, <span class="number">10</span>, <span class="number">224</span>, <span class="number">224</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 所有维度同一个参数配置</span></span><br><span class="line">conv = nn.Conv3d(<span class="number">3</span>, <span class="number">64</span>, kernel_size=<span class="number">3</span>, stride=<span class="number">2</span>, padding=<span class="number">1</span>)</span><br><span class="line">net_output = conv(net_input)</span><br><span class="line"><span class="built_in">print</span>(net_output.shape)  <span class="comment"># shape=[32, 64, 5, 112, 112] | 相当于每一个维度上的卷积核大小都是3，步长都是2，pad都是1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 每一维度不同参数配置</span></span><br><span class="line">conv = nn.Conv3d(<span class="number">3</span>, <span class="number">64</span>, (<span class="number">2</span>, <span class="number">3</span>, <span class="number">3</span>), stride=(<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>), padding=(<span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>))</span><br><span class="line">net_output = conv(net_input)</span><br><span class="line"><span class="built_in">print</span>(net_output.shape) <span class="comment"># shape=[32, 64, 9, 112, 112]</span></span><br></pre></td></tr></table></figure>
+<h2 id="NLP与CV"><a href="#NLP与CV" class="headerlink" title="NLP与CV"></a>NLP与CV</h2><p>作者认为造成NLP与CV任务中masked autoencoding的不同，主要来自以下几个方面：</p>
+<ol>
+<li>文本与图像的信息密度不同，文本是人为生成的，具有<strong>高语义和信息密度</strong>，而图像则具有大量的冗余信息</li>
+<li>对于自编码器的解码器，CV任务需要还原的是语义层次比较低的像素信息（解码器更加复杂），而NLP任务需要还原的是语义层次比较高的文本信息（解码器简单）</li>
+</ol>
+<h2 id="MAE具体实现"><a href="#MAE具体实现" class="headerlink" title="MAE具体实现"></a>MAE具体实现</h2><ul>
+<li><p>masking：将一张图片分成若干个patches，然后随机选取部分patches进行mask，仅保留少量的patches，以减少冗余信息。</p>
+</li>
+<li><p>MAE Encoder：采用完全和ViT相同的方法，对于被masked掉的patches，直接不输入Encoder。</p>
+</li>
+<li><p>MAE Decoder：解码器同样使用一个Transformer，对于所有patches，通过一个共享的、可以学到的向量来表示，对于每一个块要加上位置编码信息，解码器只有在预训练的时候需要使用。</p>
+</li>
+<li><p>Reconstruction target：对于解码器的输出通过一个线形层投影到对应的输出shape，使用MSE对被masked的patches计算loss。</p>
+</li>
+</ul>
 
-<h3 id="3D-CNN-1"><a href="#3D-CNN-1" class="headerlink" title="3D CNN"></a>3D CNN</h3>
         </div>
         
 <blockquote class="copyright">
-    <p><strong>本文链接 : </strong><a class="permalink" href="https://ymyforever.netlify.app/2022/09/27/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">https://ymyforever.netlify.app/2022/09/27/神经网络基础知识/</a></p>
+    <p><strong>本文链接 : </strong><a class="permalink" href="https://ymyforever.netlify.app/2022/10/03/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AMAE/">https://ymyforever.netlify.app/2022/10/03/论文阅读：MAE/</a></p>
     <p><strong>This article is available under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer">Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</a> License</strong></p>
 </blockquote>
 
@@ -240,7 +250,7 @@
     <div class="toc-sidebar">
         <nav id="toc" class="article-toc">
             <h3 class="toc-title">文章目录</h3>
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#3D-CNN"><span class="toc-number">1.</span> <span class="toc-text">3D CNN</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Conv3D"><span class="toc-number">1.1.</span> <span class="toc-text">Conv3D</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3D-CNN-1"><span class="toc-number">1.2.</span> <span class="toc-text">3D CNN</span></a></li></ol></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">模型概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NLP%E4%B8%8ECV"><span class="toc-number">2.</span> <span class="toc-text">NLP与CV</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MAE%E5%85%B7%E4%BD%93%E5%AE%9E%E7%8E%B0"><span class="toc-number">3.</span> <span class="toc-text">MAE具体实现</span></a></li></ol>
         </nav>
     </div>
 </aside>
