@@ -550,4 +550,86 @@
     <url>/2022/10/02/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ASwin-Transformer-V2-Scaling-Up-Capacity-and-Resolution/</url>
     <content><![CDATA[]]></content>
   </entry>
+  <entry>
+    <title>论文阅读：Benchmarking Joint Face Spoofing and Forgery Detection with Visual and Physiological Cues</title>
+    <url>/2022/10/04/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ABenchmarking-Joint-Face-Spoofing-and-Forgery-Detection-with-Visual-and-Physiological-Cues/</url>
+    <content><![CDATA[<ul>
+<li>发表时间：2022</li>
+<li>研究内容：基于视觉和生理线索的联合人脸欺骗和伪造检测标杆</li>
+<li>FAS：Face Anti-Spoofing，活体检测</li>
+<li>Face Forgery Detection：人脸伪造检测（Deepfake检测）</li>
+</ul>
+<h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h2><p>目前大多数的<strong>活体检测</strong>和<strong>人脸伪造检测</strong>方法关注以下两个方面：</p>
+<ol>
+<li>单模态的视觉外观或生理信号（rPPG信号）</li>
+<li>分离FAS或人脸伪造检测的特征表示</li>
+</ol>
+<p>但这两种方面存在如下问题：</p>
+<ol>
+<li>单模态的外观和rPPG特征对于高保真的3D面罩或视频回放袭击来说相对脆弱。</li>
+<li>对于FAS和人脸欺诈识别任务，有丰富的常用特征，可用于以多任务学习的方式设计一个FAS和人脸欺诈识别联合系统。</li>
+</ol>
+<p>本文<strong>贡献</strong>：</p>
+<ol>
+<li>建立了第一个活体检测和伪造识别的benchmark，该benchmark同时使用视觉外观和生理rPPG信号。</li>
+<li>设计了一个双分支的生理网络，同时使用面部时空的rPPG信号和其对应的连续小波变换作为输入。加强了rPPG周期性的区别。</li>
+<li>在进行多模态融合前，对视觉外观和rPPG特征实施a weighted batch and layer normalization，以消除模态偏差，提高融合效果。</li>
+<li>研究发现，无论单模态还是多模态模型，通过在活体检测和人脸伪造检测两个任务上进行联合训练可以显著提高模型泛化能力。</li>
+</ol>
+<h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>基于rPPG或外观+rPPG的活体检测与人脸伪造识别技术还不成熟。主要包括如下两个原因：</p>
+<ol>
+<li>由于外部干扰，时域rPPG信号的周期性识别受到限制（无法区分是真实的还是伪造的）。</li>
+<li>由于模态偏差，外观与rPPG信号的直接融合会导致负效果。</li>
+</ol>
+<h2 id="相关工作"><a href="#相关工作" class="headerlink" title="相关工作"></a>相关工作</h2><p><strong>Physiological rPPG based FAS：</strong>使用rPPG信号进行活体检测。主要包括如下几种做法：</p>
+<ul>
+<li>考虑真实的面部和打印出的面部的心跳区别；</li>
+<li>通过比较面部的rPPG信号和背景噪音判断是否为活体；</li>
+<li>使用transformer架构提取全局的周期性的信息用于活体检测；</li>
+<li>通过评分级融合结合外观和rPPG预测实现活体检测</li>
+</ul>
+<p><strong>Physiological rPPG based face forgery detection：</strong>使用rPPG信号进行伪造人脸识别，主要包括如下几种做法：</p>
+<ul>
+<li>与活体检测类似，通过判断心率是否包含固定周期性模式；</li>
+<li>从时间域和功率谱域提取rPPG信号的特征，描述时间一致性和空间相干性；</li>
+</ul>
+<h2 id="实现方法"><a href="#实现方法" class="headerlink" title="实现方法"></a>实现方法</h2><p><strong>Joint Face Spoofing and Forgery Detection：</strong>联合训练两种任务</p>
+<ul>
+<li><p>联合训练架构：在多任务训练中有如下三种设置方式：</p>
+<img src="/2022/10/04/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ABenchmarking-Joint-Face-Spoofing-and-Forgery-Detection-with-Visual-and-Physiological-Cues/image-20221005201731187.png" alt="image-20221005201731187" style="zoom:67%; margin:auto;">
+</li>
+<li><p>联合训练采样策略</p>
+<ul>
+<li>随机采样：每个batch中的数据从两任务的混合数据中随机采样（比例不定）</li>
+<li>同步采样：每个batch中的数据来自两任务的数据各占一半</li>
+<li>交替采样：每个SGD step轮流学习每个任务（即一个batch学习FAS，一个batch学习伪造人脸识别）</li>
+<li>按任务采样：先学习一个任务（全部数据），再学习另一个任务。</li>
+</ul>
+</li>
+</ul>
+<p><strong>Two-branch Physiological Network：</strong>同时使用面部时空的rPPG信号和其对应的连续小波变换作为输入。</p>
+<p>文章使用的两分支的生理网络如下图所示，使用两个结构相同但参数不同的编码器获得时域、时频域特征，将两种特征拼接形成通用的rPPG特征，然后接一个二分类头进行预测，同时为了训练的稳定性，对于两个分支添加额外的二分类头，模型的Loss由上述三个头的loss组成。</p>
+<img src="/2022/10/04/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ABenchmarking-Joint-Face-Spoofing-and-Forgery-Detection-with-Visual-and-Physiological-Cues/image-20221005204141328.png" alt="image-20221005204141328" style="zoom:67%; margin:auto;">
+
+<ul>
+<li>MSTmap（Multi-scale Spatial-temporal map）：多尺度时空图，考虑局部和全局的生理信号。</li>
+<li>WaveletMap：基于连续小波变换的时频图</li>
+</ul>
+<p><strong>Weighted Normalization for Appearance and rPPG Fusion：</strong>多模态融合</p>
+<p>对于每个模态使用batch normalization和layer normalization，然后再将两个模态进行连接。如下所示：</p>
+<img src="/2022/10/04/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ABenchmarking-Joint-Face-Spoofing-and-Forgery-Detection-with-Visual-and-Physiological-Cues/image-20221005212654204.png" alt="image-20221005212654204" style="zoom: 50%; margin:auto;">
+
+
+
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>未来研究方向：</p>
+<ol>
+<li>探索多任务学习和多模态融合的策略</li>
+<li>除了基于rPPG的颜色变化，利用面部运动的语义线索和上下文动态进行活体检测和伪造人脸识别。</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>rPPG</tag>
+        <tag>FAS</tag>
+      </tags>
+  </entry>
 </search>
