@@ -15,11 +15,11 @@
 <meta property="og:image" content="https://pic3.zhimg.com/80/v2-8ba548951eb9a627c45e67a654641576_720w.webp">
 <meta property="og:image" content="https://pic4.zhimg.com/80/v2-c088862cb3f9790751f558ecac7b49c3_720w.webp">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/19293651-b1bbd94eaca4a61b.png?imageMogr2/auto-orient/strip|imageView2/2/w/496/format/webp">
-<meta property="og:image" content="https://ymyforever.netlify.app/2022/09/27/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/Users/zxkj/AppData/Roaming/Typora/typora-user-images/image-20221015151341198.png">
+<meta property="og:image" content="https://ymyforever.netlify.app/2022/09/27/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20221015151341198.png">
 <meta property="og:image" content="https://pic4.zhimg.com/80/v2-6b6cbc16d5dd7fb0bc044b238e3a948f_720w.webp">
-<meta property="og:image" content="https://ymyforever.netlify.app/2022/09/27/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/Users/zxkj/AppData/Roaming/Typora/typora-user-images/image-20221015172029434.png">
+<meta property="og:image" content="https://ymyforever.netlify.app/2022/09/27/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20221015172029434.png">
 <meta property="article:published_time" content="2022-09-27T09:31:15.000Z">
-<meta property="article:modified_time" content="2022-10-15T10:56:33.609Z">
+<meta property="article:modified_time" content="2022-10-15T11:05:56.999Z">
 <meta property="article:author" content="ymy">
 <meta property="article:tag" content="神经网络基础知识">
 <meta name="twitter:card" content="summary">
@@ -233,18 +233,18 @@ B-->c[3D-CDC]</pre>
 </ol>
 <h3 id="LBP（Local-Binary-Patterns）"><a href="#LBP（Local-Binary-Patterns）" class="headerlink" title="LBP（Local Binary Patterns）"></a>LBP（Local Binary Patterns）</h3><p>LBP即局部二值模式，是一种经典的传统手工特征提取方法。</p>
 <p>在3x3邻域，将周围像素点的灰度值与中心像素值进行比较，大于中心像素记为1，小于中心像素记为0。这样将产生8个二进制数，然后转换为十进制的LBP码，用LBP码反映该区域的纹理信息。</p>
-<img src="https://pic3.zhimg.com/80/v2-8ba548951eb9a627c45e67a654641576_720w.webp" alt="img" style="zoom:80%;">
+<img src="https://pic3.zhimg.com/80/v2-8ba548951eb9a627c45e67a654641576_720w.webp" alt="img" style="zoom:100%; margin:auto;">
 
 <p>对于图像中的每个像素点，都对应一个LBP码，LBP码聚合了邻域内的差分信息，对光照变化较为鲁棒，同时描述了细粒度的纹理信息，早期在人脸识别中广泛使用。</p>
 <h3 id="中心差分卷积（Central-Difference-Convolution）"><a href="#中心差分卷积（Central-Difference-Convolution）" class="headerlink" title="中心差分卷积（Central Difference Convolution）"></a>中心差分卷积（Central Difference Convolution）</h3><p>Q：为什么vanilla卷积不好使？</p>
 <p>A：vanilla卷积是直接聚合局部的亮度级的信息，容易受到光照等因素影响，同时难以表征细粒度的特征。应用到活体检测任务中，受光照等因素影响会导致模型泛化能力变弱，难以表征细粒度的特征则会导致模型难以学到防伪本质的细节信息。根据上述描述，使用空间差分特征可以缓解vanilla卷积存在的问题。</p>
 <p>CDC的工作原理如下图所示：</p>
-<img src="https://pic4.zhimg.com/80/v2-c088862cb3f9790751f558ecac7b49c3_720w.webp" alt="img" style="zoom:80%;">
+<img src="https://pic4.zhimg.com/80/v2-c088862cb3f9790751f558ecac7b49c3_720w.webp" alt="img" style="zoom:100%; margin:auto;">
 
 <p>其数值形式的卷积过程如下所示，用区域内的像素与中心像素作差值，然后再进行卷积操作。</p>
 <img src="https://upload-images.jianshu.io/upload_images/19293651-b1bbd94eaca4a61b.png?imageMogr2/auto-orient/strip|imageView2/2/w/496/format/webp" alt="img" style="zoom:100%;">
 
-<img src="/2022/09/27/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/Users\zxkj\AppData\Roaming\Typora\typora-user-images\image-20221015151341198.png" alt="image-20221015151341198" style="zoom:80%;">
+<img src="/2022/09/27/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20221015151341198.png" alt="image-20221015151341198" style="zoom:80%; margin:auto;">
 
 <p>θ控制差分卷积的贡献，即gradient-level的信息。</p>
 <p>其实现代码如下所示：</p>
@@ -259,7 +259,7 @@ B-->c[3D-CDC]</pre>
 <li>3D-CDC-TR：计算差分前采用temporal average pooling融合上下文信息，<strong>抗时域间噪声扰动</strong>。</li>
 </ul>
 <p>三种差分卷积的公式如下所示：</p>
-<img src="/2022/09/27/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/Users\zxkj\AppData\Roaming\Typora\typora-user-images\image-20221015172029434.png" alt="image-20221015172029434" style="zoom: 80%;">
+<img src="/2022/09/27/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/image-20221015172029434.png" alt="image-20221015172029434" style="zoom: 80%; margin:auto;">
 
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># https://github.com/ZitongYu/3DCDC-NAS/blob/master/3DCDC.py</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># vanilla</span></span><br><span class="line">self.conv = nn.Conv3d(in_channels, out_channels, kernel_size=kernel_size, stride=stride, padding=padding,</span><br><span class="line">                      dilation=dilation, groups=groups, bias=bias)</span><br><span class="line">out_normal = self.conv(x)</span><br><span class="line"></span><br><span class="line"><span class="comment"># CDC_ST</span></span><br><span class="line">kernel_diff = self.conv.weight.<span class="built_in">sum</span>(<span class="number">2</span>).<span class="built_in">sum</span>(<span class="number">2</span>).<span class="built_in">sum</span>(<span class="number">2</span>)</span><br><span class="line">kernel_diff = kernel_diff[:, :, <span class="literal">None</span>, <span class="literal">None</span>, <span class="literal">None</span>]</span><br><span class="line">out_diff = F.conv3d(<span class="built_in">input</span>=x, weight=kernel_diff, bias=self.conv.bias, stride=self.conv.stride,</span><br><span class="line">                    padding=<span class="number">0</span>, dilation=self.conv.dilation, groups=self.conv.groups)</span><br><span class="line"><span class="keyword">return</span> out_normal - self.theta * out_diff</span><br><span class="line"></span><br><span class="line"><span class="comment"># CDC_T</span></span><br><span class="line">kernel_diff = self.conv.weight[:, :, <span class="number">0</span>, :, :].<span class="built_in">sum</span>(<span class="number">2</span>).<span class="built_in">sum</span>(<span class="number">2</span>) + self.conv.weight[:, :, <span class="number">2</span>, :, :].<span class="built_in">sum</span>(<span class="number">2</span>).<span class="built_in">sum</span>(<span class="number">2</span>)</span><br><span class="line">kernel_diff = kernel_diff[:, :, <span class="literal">None</span>, <span class="literal">None</span>, <span class="literal">None</span>]</span><br><span class="line">out_diff = F.conv3d(<span class="built_in">input</span>=x, weight=kernel_diff, bias=self.conv.bias, stride=self.conv.stride,</span><br><span class="line">                    padding=<span class="number">0</span>, dilation=self.conv.dilation, groups=self.conv.groups)</span><br><span class="line"><span class="keyword">return</span> out_normal - self.theta * out_diff</span><br><span class="line"></span><br><span class="line"><span class="comment"># CDC_TR</span></span><br><span class="line">local_avg = self.avgpool(x)</span><br><span class="line">kernel_diff = self.conv.weight[:, :, <span class="number">0</span>, :, :].<span class="built_in">sum</span>(<span class="number">2</span>).<span class="built_in">sum</span>(<span class="number">2</span>) + self.conv.weight[:, :, <span class="number">2</span>, :, :].<span class="built_in">sum</span>(<span class="number">2</span>).<span class="built_in">sum</span>(<span class="number">2</span>)</span><br><span class="line">kernel_diff = kernel_diff[:, :, <span class="literal">None</span>, <span class="literal">None</span>, <span class="literal">None</span>]</span><br><span class="line">out_diff = F.conv3d(<span class="built_in">input</span>=local_avg, weight=kernel_diff, bias=self.conv.bias, stride=self.conv.stride,</span><br><span class="line">                    padding=<span class="number">0</span>, groups=self.conv.groups)</span><br><span class="line"><span class="keyword">return</span> out_normal - self.theta * out_diff</span><br></pre></td></tr></table></figure>
 
