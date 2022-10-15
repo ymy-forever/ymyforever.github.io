@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html  lang="zh-CN" >
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, maximum-scale=5, viewport-fit=cover">
+    <title>视频理解 | ymy is watching u!!!!</title>
+    <meta name="description" content="双流网络  论文：《Two-stream convolutional networks for action recognition in videos》  提出的具有两个分支的神经网络，将两个分支的输出融合后进行分类。   空间流神经网络：捕捉apperance信息，将视频帧作为处理对象，就是普通的图像处理网络，可以使用imagenet上的预训练网络。 时间流神经网络：捕捉两帧间光流的运动信息，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="视频理解">
+<meta property="og:url" content="https://ymyforever.netlify.app/2022/10/09/%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3/index.html">
+<meta property="og:site_name" content="ymy is watching u!!!!">
+<meta property="og:description" content="双流网络  论文：《Two-stream convolutional networks for action recognition in videos》  提出的具有两个分支的神经网络，将两个分支的输出融合后进行分类。   空间流神经网络：捕捉apperance信息，将视频帧作为处理对象，就是普通的图像处理网络，可以使用imagenet上的预训练网络。 时间流神经网络：捕捉两帧间光流的运动信息，">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ymyforever.netlify.app/2022/10/09/%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3/image-20221009101114213.png">
+<meta property="og:image" content="https://ymyforever.netlify.app/2022/10/09/%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3/image-20221009100000394.png">
+<meta property="og:image" content="https://ymyforever.netlify.app/2022/10/09/%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3/image-20221009100819605.png">
+<meta property="og:image" content="https://ymyforever.netlify.app/2022/10/09/%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3/image-20221010205800716.png">
+<meta property="og:image" content="https://ymyforever.netlify.app/2022/10/09/%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3/image-20221011160226907.png">
+<meta property="og:image" content="https://ymyforever.netlify.app/2022/10/09/%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3/image-20221012102455303.png">
+<meta property="og:image" content="https://ymyforever.netlify.app/2022/10/09/%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3/image-20221012112941810.png">
+<meta property="og:image" content="https://ymyforever.netlify.app/2022/10/09/%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3/image-20221012115426776.png">
+<meta property="og:image" content="https://ymyforever.netlify.app/2022/10/09/%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3/image-20221014103245936.png">
+<meta property="og:image" content="https://ymyforever.netlify.app/2022/10/09/%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3/image-20221014104229339.png">
+<meta property="og:image" content="https://ymyforever.netlify.app/2022/10/09/%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3/image-20221014105622585.png">
+<meta property="og:image" content="https://ymyforever.netlify.app/2022/10/09/%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3/image-20221014113000002.png">
+<meta property="og:image" content="https://ymyforever.netlify.app/2022/10/09/%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3/image-20221015084134927.png">
+<meta property="article:published_time" content="2022-10-09T01:28:23.000Z">
+<meta property="article:modified_time" content="2022-10-15T01:46:46.560Z">
+<meta property="article:author" content="ymy">
+<meta property="article:tag" content="视频理解">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ymyforever.netlify.app/2022/10/09/%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3/image-20221009101114213.png">
+
+    
+    <link rel="icon" href="/images.fvicon.ico" type="image/x-icon">
+
+    
+<link rel="stylesheet" href="/css/common.min.css">
+
+
+
+    
+    
+    
+    
+        <link href="//cdn.jsdelivr.net/npm/lightgallery.js@1.1.3/dist/css/lightgallery.min.css" rel="stylesheet">
+    
+    
+    
+<link rel="stylesheet" href="/css/iconfont.min.css">
+
+    
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+    <body>
+        <header class="header header-fixture">
+    <div class="profile-search-wrap flex sm:block">
+        
+        
+        <div class="profile sm:text-center md:px-1 lg:px-3 sm:pb-4 sm:pt-6">
+            <a id="avatar" role="link" href="https://github.com/ymy-forever" class="inline-block lg:w-16 lg:h-16 w-8 h-8 m-2" target="_blank" rel="noopener" rel="noreferrer" >
+                <img src="/images/logo.png" class="rounded-full" alt="avatar">
+            </a>
+            <h2 id="name" class="hidden lg:block">ymy_forever</h2>
+            <h3 id="title" class="hidden lg:block">Student &amp; Coder</h3>
+            
+            <small id="location" class="hidden lg:block">
+                <i class="iconfont icon-map-icon"></i>
+                Xian, China
+            </small>
+            
+        </div>
+        
+        
+<div class="search flex-1 flex lg:inline-block sm:hidden lg:px-4 lg:mt-2 lg:mb-4 lg:w-full">
+    <form id="search-form" class="my-auto flex-1 lg:border lg:border-solid lg:border-gray-200">
+        <div class="input-group table bg-gray-100 lg:bg-white w-full">
+            <input id="search-input" type="text" placeholder="搜索" class="inline-block w-full bg-gray-100 lg:bg-white p-1">
+            <span class="table-cell">
+                <button name="search tigger button" disabled>
+                    <i class="iconfont icon-search m-2"></i>
+                </button>
+            </span>
+        </div>
+    </form>
+        
+<div id="content-json" data-placeholder="搜索" class="invisible hidden">/content.json</div>
+<script id="search-teamplate" type="text/html" data-path="/content.json">
+    <div>
+        <div class="search-header bg-gray-400">
+            <input id="actual-search-input" model="keyword" ref="input" class="inline-block w-full h-10 px-2 py-1" placeholder="搜索" type="text">
+        </div>
+        <div class="search-result bg-gray-200">
+            {{#each searchPosts}}
+            <a href="/{{ path }}" class="result-item block px-2 pb-3 mb-1 pt-1 hover:bg-indigo-100">
+                <i class="iconfont icon-file"></i>
+                <h1 class="result-title inline font-medium text-lg">{{ title }}</h1>
+                <p class="result-content text-gray-600 text-sm">{{{ text }}}</p>
+            </a>
+            {{/each}}
+        </div>
+    </div>
+</script>
+
+</div>
+
+
+        <button name="menu toogle button" id="menu-toggle-btn" class="block sm:hidden p-3" role="button" aria-expanded="false">
+            <i class="iconfont icon-hamburger"></i>
+        </button>
+    </div>
+    <nav id="menu-nav" class="hidden sm:flex flex-col">
+        
+        
+            <div class="menu-item menu-home" role="menuitem">
+                <a href="/.">
+                    <i class="iconfont icon-home" aria-hidden="true"></i>
+                    <span class="menu-title">首页</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-archives" role="menuitem">
+                <a href="/archives">
+                    <i class="iconfont icon-archive" aria-hidden="true"></i>
+                    <span class="menu-title">归档</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-tags" role="menuitem">
+                <a href="/tags">
+                    <i class="iconfont icon-tag" aria-hidden="true"></i>
+                    <span class="menu-title">标签</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-about" role="menuitem">
+                <a href="/about">
+                    <i class="iconfont icon-cup" aria-hidden="true"></i>
+                    <span class="menu-title">关于</span>
+                </a>
+            </div>
+        
+        
+<div class="social-links flex sm:flex-col lg:hidden mt-5">
+    
+        <span class="social-item text-center">
+            <a target="_blank" rel="noopener" href="https://github.com/ymy-forever">
+                <i class="iconfont social-icon icon-github"></i>
+                <span class="menu-title hidden lg:inline">menu.github</span>
+            </a>
+        </span>
+    
+        <span class="social-item text-center">
+            <a href="/atom.xml">
+                <i class="iconfont social-icon icon-rss"></i>
+                <span class="menu-title hidden lg:inline">menu.rss</span>
+            </a>
+        </span>
+    
+</div>
+
+
+    </nav>
+</header>
+
+        <section class="main-section">
+            
+    <main class="flex-1 px-4 py-14 md:px-5 lg:px-8 lg:py-4 relative min-h-screen">
+    
+
+    <article class="content article article-archives article-type-list" itemscope="">
+        <header class="article-header">
+            
+    
+        <h1 class="article-title text-lg" itemprop="name">
+            视频理解
+        </h1>
+    
+
+
+
+            <p class="article-meta mb-3 text-xs">
+                <span class="article-date">
+    <i class="iconfont icon-calendar-check"></i>
+	<a href="/2022/10/09/%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3/" class="article-date">
+	  <time datetime="2022-10-09T01:28:23.000Z" itemprop="datePublished">10月 9</time>
+	</a>
+</span>
+
+                
+
+                
+    <span class="article-tags">
+    <i class="iconfont icon-tag"></i>
+    <a class="article-tag-none-link" href="/tags/%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3/" rel="tag">视频理解</a>
+  </span>
+
+
+                <span class="_partial/post-comment"><i class="icon icon-comment"></i>
+                    <a href="/2022/10/09/%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3/#comments" class="article-comment-link">
+                        评论
+                    </a>
+                </span>
+                
+    
+        <span class="post-wordcount" itemprop="wordCount">字数统计: 2.4k(字)</span>
+    
+    
+        <span class="post-readcount" itemprop="timeRequired">阅读时长: 8(分)</span>
+    
+
+
+            </p>
+        </header>
+        <div class="marked-body article-body">
+            <h2 id="双流网络">双流网络</h2>
+<ul>
+<li>论文：《Two-stream convolutional networks for action recognition in videos》</li>
+</ul>
+<p>提出的具有两个分支的神经网络，将两个分支的输出融合后进行分类。</p>
+<img src="/2022/10/09/%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3/image-20221009101114213.png" alt="image-20221009101114213" style="zoom:80%; margin:auto;">
+<ul>
+<li>空间流神经网络：捕捉apperance信息，将视频帧作为处理对象，就是普通的图像处理网络，可以使用imagenet上的预训练网络。</li>
+<li>时间流神经网络：捕捉两帧间光流的运动信息，一般将光流的运动信息分解为水平方向和竖直方向，如下图所示。对于L帧的视频，最终将得到L-1个光流图</li>
+</ul>
+<img src="/2022/10/09/%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3/image-20221009100000394.png" alt="image-20221009100000394" style="zoom:80%; margin:auto;">
+<h3 id="光流图">光流图</h3>
+<p>对于从视频帧中得到的光流图，要利用光流图间的信息，作者提出了两种光流图叠加方式：</p>
+<ol>
+<li>optical flow stacking：直接将光流图对应位置叠加在一起，简单但没有充分利用光流信息</li>
+<li>trajectory stacking：沿光流轨迹进行数值叠加（理论上有效，但实验效果不如1）</li>
+</ol>
+<img src="/2022/10/09/%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3/image-20221009100819605.png" alt="image-20221009100819605" style="zoom:80%; margin:auto;">
+<p><strong>Bi-directional optical flow</strong>：</p>
+<p>​	双向光流，在一个帧的前向和后向区间进行光流计算，达到双向传递的效果。</p>
+<h2 id="I3D">I3D</h2>
+<ul>
+<li>论文《Quo Vadis, Action Recognition? A New Model and the Kinetics Dataset》</li>
+<li>参考：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1tY4y1p7hq">https://www.bilibili.com/video/BV1tY4y1p7hq</a></li>
+</ul>
+<p>这篇论文主要有两个贡献：</p>
+<ol>
+<li>提出了I3D</li>
+<li>提出了一个数据集Kinetics（类别均衡、规模适中、可玩性强，可作为视频任务的预训练数据集，地位相当于图片任务中的ImageNet）</li>
+</ol>
+<h3 id="Inflated-3D-Network">Inflated 3D Network</h3>
+<p>把一个2D模型直接扩张到3D，使用2D模型的参数去初始化3D模型。现在常说的I3D网络一般是指基于ResNet的3D网络。</p>
+<p>对于视频动作识别任务，网络发展主要经过如下a,b,c,d四个阶段。其中e为作者在Kinetics数据集上提出的I3D网络。</p>
+<img src="/2022/10/09/%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3/image-20221010205800716.png" alt="image-20221010205800716" style="zoom:80%; margin:auto;">
+<p>作者提出这种网络的根据是，随着训练集规模的增大，使用3D CNN可以取得比2D CNN更好的效果，同时，使用光流信息，可以帮助模型取得更好的结果。</p>
+<p><strong>Inflating 2D ConvNets into 3D</strong></p>
+<p><em>2D Network &gt;&gt;&gt; 3D Network</em></p>
+<p>保持2D网络的架构不变，直接将2D的卷积层、池化层等膨胀到3D（？实现了后向兼容），得到对应的3D神经网络架构。</p>
+<p>tip：作者以及后人经过实验发现，最好不要做<strong>时间维度上的下采样</strong>。</p>
+<p><strong>Bootstrapping 3D Filters from 2D  Filters</strong></p>
+<p><em>2D Model &gt;&gt;&gt; 3D Model</em></p>
+<p>将2D模型的参数在时间维度上进行复制，即得到对应的3D模型。通过代码的实现如下所示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">temporal_dim = weights3d[key3d].shape[<span class="number">2</span>]</span><br><span class="line">inflated_2d = nd.broadcast_to(temporal_2d, shape=[<span class="number">0</span>, <span class="number">0</span>, temporal_dim, <span class="number">0</span>, <span class="number">0</span>]) / temporal_dim</span><br></pre></td></tr></table></figure>
+<p>代码中除以temporal_dim的操作，是为了实现一个rescaling，使得对于分类任务，2D网络和3D网络的输出完全一致。</p>
+<h2 id="基于深度学习的视频动作识别综述">基于深度学习的视频动作识别综述</h2>
+<ul>
+<li>论文：《A Comprehensive Study of Deep Video Action Recognition》</li>
+<li>参考：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1fL4y157yA">https://www.bilibili.com/video/BV1fL4y157yA</a></li>
+</ul>
+<p>截至Video Transformer提出前，视频动作识别模型的发展历程如下图所示：</p>
+<img src="/2022/10/09/%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3/image-20221011160226907.png" alt="image-20221011160226907" style="zoom:67%; margin:auto;">
+<h3 id="Hand-crafted–-CNN">Hand-crafted–&gt;CNN</h3>
+<p>DeepVideo：没啥意思，通过一系列2D卷积操作，对视频进行分类。</p>
+<h3 id="双流网络-2">双流网络</h3>
+<p>双流网络是在2D CNN基础上，添加一个处理光流的分支。针对初版双流网络的问题，主要在如下四个方面进行改进。</p>
+<ol>
+<li>将late fusion改造为一种合适的early fusion；</li>
+<li>把双流网络中使用的CNN网络进行变体，如融入之后提出的ResNet等；</li>
+<li>双流网络的空间流和时间流分支是直接抽取特征后进行分类，可以换成RNN或LSTM等充分利用时序信息；</li>
+<li>双流网络利用的是短时间内的视频信息，而一个动作往往持续时间较长，如何进行长视频的理解也是需要解决的问题。</li>
+</ol>
+<p>==双流网络目前仍存在的一个问题是，抽取光流的过程耗时巨大，在推理时，仍然需要花费较长时间去抽取光流，无法达到实时处理的要求（实时处理一般要求帧率达25fps）；另一方面，光流图的存储占据空间较多。==</p>
+<h4 id="Beyond-Short-Snippets（引入LSTM）">Beyond Short Snippets（引入LSTM）</h4>
+<p>提高特征提取使用的帧数</p>
+<ul>
+<li>Conv Pooling：</li>
+<li>LSTM：带来的提升有限，可能是因为短时内语义信息没有显著变化，而LSTM只有在语义信息发生较大变化时作用显著。</li>
+</ul>
+<h4 id="Convolutional-Fusion（使用early-fusion）">Convolutional Fusion（使用early fusion）</h4>
+<ul>
+<li>spatial fusion：在空间层面上对特征图进行fusion</li>
+<li>在网络的哪个部分进行fusion</li>
+<li>temporal fusion：如何在时间轴维度上进行fusion</li>
+</ul>
+<h4 id="TSN（Temporal-Segment-Networks，解决长视频理解问题）">TSN（Temporal Segment Networks，解决长视频理解问题）</h4>
+<p>将一个视频分成多个段，每个段分别送入双流网络（不同段的双流网络共享一组参数），将不同段在空间流输出的结果进行segmental consensus（共识），同样对时间流的输出结果进行相同计算，然后两个流的输出融合后，得到最终输出结果。</p>
+<img src="/2022/10/09/%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3/image-20221012102455303.png" alt="image-20221012102455303" style="zoom:80%; margin:auto;">
+<p>除此之外，这篇论文也提出了一些技巧：</p>
+<ol>
+<li>Cross Modality Pre-training：将空间流和时间流（即光流）输入看作多模态问题，使用ImageNet上训练的模型对光流分支进行初始化，需要对预训练模型进行一下改造（将原来3通道的卷积加权平均，应用到20个通道的光流输入上），这种思想与I3D之后使用的方法类似。</li>
+<li>Partial BN：缓解BN在视频理解任务上的过拟合问题，在视频数据集上对预训练模型进行训练时，冻住除第一层外的所有BN层。</li>
+<li>corner cropping：强制模型在边角位置进行裁剪</li>
+<li>scale- jittering：通过改变输入的长宽比，增加输入的多样性</li>
+</ol>
+<h3 id="3D-CNN">3D CNN</h3>
+<p>在双流网已经取得很好效果的时候，人们关注于3D CNN网络，旨在提高模型的速度，以达到实时的效果。</p>
+<pre class="mermaid">graph LR
+A[C3D]-->B[I3D]
+B-->C[Non-local]
+C-->D[R2+1D]
+D-->E[SlowFast]</pre>
+<h4 id="C3D（2015）">C3D（2015）</h4>
+<p>C3D提出了类似于VGG的3D卷积神经网络，在sports 1million数据集上进行训练，该模型可以分为特征抽取和分类两部分，作者提供了训练好的特征抽取模型接口，使得C3D在视频理解领域流行起来。</p>
+<img src="/2022/10/09/%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3/image-20221012112941810.png" alt="image-20221012112941810" style="zoom:80%; margin:auto;">
+<h4 id="I3D（2017）">I3D（2017）</h4>
+<p>I3D的主要贡献包括如下两方面：</p>
+<ol>
+<li>降低了视频理解模型的训练难度（将2D模型膨胀至3D）</li>
+<li>提出了一个很好、很大的数据集</li>
+</ol>
+<h4 id="Non-local（2018）">Non-local（2018）</h4>
+<p>使用自注意力机制替代LSTM，用在视频理解网络中，进行长距离建模。</p>
+<p>Non-local模块与自注意力模块相近，只是扩展到了3D上，在<strong>时间和空间</strong>维度上进行自注意力计算，同样具有即插即用的性质。</p>
+<img src="/2022/10/09/%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3/image-20221012115426776.png" alt="image-20221012115426776" style="zoom: 67%; margin:auto;">
+<h4 id="R-2-1-D（2018）">R(2+1)D（2018）</h4>
+<p>作者做了大量的实验，探究视频理解任务中的网络结构。经过实验证明，使用R(2+1)D的结构，把3D卷积拆分成两个卷积，先在空间上做2D的卷积，再在时间上做1D的卷积。</p>
+<img src="/2022/10/09/%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3/image-20221014103245936.png" alt="image-20221014103245936" style="zoom:67%; margin:auto;">
+<p>R(2+1)D的具体拆分方法如下图所示：其中a表示正常的3D卷积，b表示R(2+1)D，Mi指特征投射操作，进行维度变化，使得R(2+1)D网络参数尽可能与3D网络保持一致，从而证明R(2+1)D网络的优越性。</p>
+<img src="/2022/10/09/%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3/image-20221014104229339.png" alt="image-20221014104229339" style="zoom:80%; margin:auto;">
+<p>该方法的有效性，可以从以下几个方面解释：</p>
+<ol>
+<li>relu操作增多，提高了模型的非线性学习能力</li>
+<li>1D和2D网络比3D网络更容易训练与优化</li>
+</ol>
+<h4 id="SlowFast（2019）">SlowFast（2019）</h4>
+<p>SlowFast借鉴了双流网络的思想，但并没有使用光流。</p>
+<p>SlowFast网络的原理来自人体视觉细胞，用80%的细胞去捕捉慢的场景信息，用20%的细胞捕捉快的高频率的运动信息。对应到网络结构上，抽取低帧率图像输入到慢分支中（小输入大网络），抽取高帧率图像输出快分支中（大输入小网络），同时每组卷积层后都跟一个later connection，</p>
+<img src="/2022/10/09/%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3/image-20221014105622585.png" alt="image-20221014105622585" style="zoom:67%; margin:auto;">
+<h3 id="Video-Transformer">Video Transformer</h3>
+<p>将Transformer直接应用到视频理解领域，扩展到在时间和空间两个维度进行自注意力计算，计算成本极高，很难训练起来。因此人们通过对时间和空间注意力<strong>拆分</strong>的方式，降低计算成本的同时，尽可能提升模型性能。</p>
+<h4 id="Timesformer（2021）">Timesformer（2021）</h4>
+<p>Timesformer比较了几种Video Transformer的实现方式。经过实验验证，T+S的实现取得了最好的效果。</p>
+<img src="/2022/10/09/%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3/image-20221014113000002.png" alt="image-20221014113000002" style="zoom:80%; margin:auto;">
+<ul>
+<li>S：即经典的用在图像处理上的ViT</li>
+<li>ST：暴力地在时间和空间两个维度计算注意力，但内存占用太大，难以实现</li>
+<li>T+S：借鉴了R(2+1)D的思想，先在时间上计算自注意力，再在空间上计算自注意力</li>
+<li>L+G：先在局部的小窗口计算自注意力，再在全局计算自注意力</li>
+<li>T+W+H：只沿着特定的轴做attention，</li>
+</ul>
+<p>以上几种方法进行可视化后如下图所示，其中蓝色的色块表示基准点，其它相同颜色的色块则表示用于同基准点计算attention。</p>
+<img src="/2022/10/09/%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3/image-20221015084134927.png" alt="image-20221015084134927" style="zoom: 67%; margin: auto;">
+<ul>
+<li>L+G：其中黄色的色块表示计算local attention的色块，紫色的色块表示计算global attention的色块（为了降低计算量，global也缩小了范围）</li>
+</ul>
+<h4 id="transformer未来方向">transformer未来方向</h4>
+<p>在视频理解领域，transformer大致有如下几个研究方向：</p>
+<ol>
+<li>利用transformer长时间建模的能力，进行长视频理解</li>
+<li>多模态学习</li>
+<li>自监督学习</li>
+</ol>
+
+        </div>
+        
+<blockquote class="copyright">
+    <p><strong>本文链接 : </strong><a class="permalink" href="https://ymyforever.netlify.app/2022/10/09/%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3/">https://ymyforever.netlify.app/2022/10/09/视频理解/</a></p>
+    <p><strong>This article is available under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer">Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</a> License</strong></p>
+</blockquote>
+
+
+    </article>
+    
+    <section id="comments">
+        
+    </section>
+
+
+    
+
+</main>
+
+
+<aside style="" id="sidebar" class="aside aside-fixture">
+    <div class="toc-sidebar">
+        <nav id="toc" class="article-toc">
+            <h3 class="toc-title">文章目录</h3>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8C%E6%B5%81%E7%BD%91%E7%BB%9C"><span class="toc-number">1.</span> <span class="toc-text">双流网络</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%89%E6%B5%81%E5%9B%BE"><span class="toc-number">1.1.</span> <span class="toc-text">光流图</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#I3D"><span class="toc-number">2.</span> <span class="toc-text">I3D</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Inflated-3D-Network"><span class="toc-number">2.1.</span> <span class="toc-text">Inflated 3D Network</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84%E8%A7%86%E9%A2%91%E5%8A%A8%E4%BD%9C%E8%AF%86%E5%88%AB%E7%BB%BC%E8%BF%B0"><span class="toc-number">3.</span> <span class="toc-text">基于深度学习的视频动作识别综述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Hand-crafted%E2%80%93-CNN"><span class="toc-number">3.1.</span> <span class="toc-text">Hand-crafted–&gt;CNN</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8C%E6%B5%81%E7%BD%91%E7%BB%9C-2"><span class="toc-number">3.2.</span> <span class="toc-text">双流网络</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Beyond-Short-Snippets%EF%BC%88%E5%BC%95%E5%85%A5LSTM%EF%BC%89"><span class="toc-number">3.2.1.</span> <span class="toc-text">Beyond Short Snippets（引入LSTM）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Convolutional-Fusion%EF%BC%88%E4%BD%BF%E7%94%A8early-fusion%EF%BC%89"><span class="toc-number">3.2.2.</span> <span class="toc-text">Convolutional Fusion（使用early fusion）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#TSN%EF%BC%88Temporal-Segment-Networks%EF%BC%8C%E8%A7%A3%E5%86%B3%E9%95%BF%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3%E9%97%AE%E9%A2%98%EF%BC%89"><span class="toc-number">3.2.3.</span> <span class="toc-text">TSN（Temporal Segment Networks，解决长视频理解问题）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3D-CNN"><span class="toc-number">3.3.</span> <span class="toc-text">3D CNN</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#C3D%EF%BC%882015%EF%BC%89"><span class="toc-number">3.3.1.</span> <span class="toc-text">C3D（2015）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#I3D%EF%BC%882017%EF%BC%89"><span class="toc-number">3.3.2.</span> <span class="toc-text">I3D（2017）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Non-local%EF%BC%882018%EF%BC%89"><span class="toc-number">3.3.3.</span> <span class="toc-text">Non-local（2018）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#R-2-1-D%EF%BC%882018%EF%BC%89"><span class="toc-number">3.3.4.</span> <span class="toc-text">R(2+1)D（2018）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#SlowFast%EF%BC%882019%EF%BC%89"><span class="toc-number">3.3.5.</span> <span class="toc-text">SlowFast（2019）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Video-Transformer"><span class="toc-number">3.4.</span> <span class="toc-text">Video Transformer</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Timesformer%EF%BC%882021%EF%BC%89"><span class="toc-number">3.4.1.</span> <span class="toc-text">Timesformer（2021）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#transformer%E6%9C%AA%E6%9D%A5%E6%96%B9%E5%90%91"><span class="toc-number">3.4.2.</span> <span class="toc-text">transformer未来方向</span></a></li></ol></li></ol></li></ol>
+        </nav>
+    </div>
+</aside>
+
+
+
+
+
+        </section>
+        <footer class="hidden lg:block fixed bottom-0 left-0 sm:w-1/12 lg:w-1/6 bg-gray-100 z-40">
+    
+    <div class="footer-social-links">
+        
+            <a target="_blank" rel="noopener" href="https://github.com/ymy-forever">
+                <i class="iconfont icon-github"></i>
+            </a>
+        
+            <a href="/atom.xml">
+                <i class="iconfont icon-rss"></i>
+            </a>
+        
+    </div>
+    
+    
+</footer>
+
+        <div id="mask" class="hidden mask fixed inset-0 bg-gray-900 opacity-75 z-40"></div>
+        <div id="search-view-container" class="hidden shadow-xl"></div>
+        
+<script src="/js/dom-event.min.js"></script>
+
+
+
+<script src="/js/local-search.min.js"></script>
+
+
+
+    <script src="//cdn.jsdelivr.net/npm/lightgallery.js@1.1.3/dist/js/lightgallery.min.js"></script>
+    
+<script src="/js/light-gallery.min.js"></script>
+
+
+
+
+
+
+    </body>
+</html>
