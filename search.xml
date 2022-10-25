@@ -807,28 +807,28 @@ B-->c[3D-CDC]</pre>
   <entry>
     <title>视频理解</title>
     <url>/2022/10/09/%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3/</url>
-    <content><![CDATA[<h2 id="双流网络">双流网络</h2>
-<ul>
+    <content><![CDATA[<h2 id="双流网络"><a href="#双流网络" class="headerlink" title="双流网络"></a>双流网络</h2><ul>
 <li>论文：《Two-stream convolutional networks for action recognition in videos》</li>
 </ul>
 <p>提出的具有两个分支的神经网络，将两个分支的输出融合后进行分类。</p>
 <img src="/2022/10/09/%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3/image-20221009101114213.png" alt="image-20221009101114213" style="zoom:80%; margin:auto;">
+
 <ul>
 <li>空间流神经网络：捕捉apperance信息，将视频帧作为处理对象，就是普通的图像处理网络，可以使用imagenet上的预训练网络。</li>
 <li>时间流神经网络：捕捉两帧间光流的运动信息，一般将光流的运动信息分解为水平方向和竖直方向，如下图所示。对于L帧的视频，最终将得到L-1个光流图</li>
 </ul>
 <img src="/2022/10/09/%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3/image-20221009100000394.png" alt="image-20221009100000394" style="zoom:80%; margin:auto;">
-<h3 id="光流图">光流图</h3>
-<p>对于从视频帧中得到的光流图，要利用光流图间的信息，作者提出了两种光流图叠加方式：</p>
+
+<h3 id="光流图"><a href="#光流图" class="headerlink" title="光流图"></a>光流图</h3><p>对于从视频帧中得到的光流图，要利用光流图间的信息，作者提出了两种光流图叠加方式：</p>
 <ol>
 <li>optical flow stacking：直接将光流图对应位置叠加在一起，简单但没有充分利用光流信息</li>
 <li>trajectory stacking：沿光流轨迹进行数值叠加（理论上有效，但实验效果不如1）</li>
 </ol>
 <img src="/2022/10/09/%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3/image-20221009100819605.png" alt="image-20221009100819605" style="zoom:80%; margin:auto;">
+
 <p><strong>Bi-directional optical flow</strong>：</p>
 <p>​	双向光流，在一个帧的前向和后向区间进行光流计算，达到双向传递的效果。</p>
-<h2 id="I3D">I3D</h2>
-<ul>
+<h2 id="I3D"><a href="#I3D" class="headerlink" title="I3D"></a>I3D</h2><ul>
 <li>论文《Quo Vadis, Action Recognition? A New Model and the Kinetics Dataset》</li>
 <li>参考：<a href="https://www.bilibili.com/video/BV1tY4y1p7hq">https://www.bilibili.com/video/BV1tY4y1p7hq</a></li>
 </ul>
@@ -837,10 +837,10 @@ B-->c[3D-CDC]</pre>
 <li>提出了I3D</li>
 <li>提出了一个数据集Kinetics（类别均衡、规模适中、可玩性强，可作为视频任务的预训练数据集，地位相当于图片任务中的ImageNet）</li>
 </ol>
-<h3 id="Inflated-3D-Network">Inflated 3D Network</h3>
-<p>把一个2D模型直接扩张到3D，使用2D模型的参数去初始化3D模型。现在常说的I3D网络一般是指基于ResNet的3D网络。</p>
+<h3 id="Inflated-3D-Network"><a href="#Inflated-3D-Network" class="headerlink" title="Inflated 3D Network"></a>Inflated 3D Network</h3><p>把一个2D模型直接扩张到3D，使用2D模型的参数去初始化3D模型。现在常说的I3D网络一般是指基于ResNet的3D网络。</p>
 <p>对于视频动作识别任务，网络发展主要经过如下a,b,c,d四个阶段。其中e为作者在Kinetics数据集上提出的I3D网络。</p>
 <img src="/2022/10/09/%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3/image-20221010205800716.png" alt="image-20221010205800716" style="zoom:80%; margin:auto;">
+
 <p>作者提出这种网络的根据是，随着训练集规模的增大，使用3D CNN可以取得比2D CNN更好的效果，同时，使用光流信息，可以帮助模型取得更好的结果。</p>
 <p><strong>Inflating 2D ConvNets into 3D</strong></p>
 <p><em>2D Network &gt;&gt;&gt; 3D Network</em></p>
@@ -850,40 +850,37 @@ B-->c[3D-CDC]</pre>
 <p><em>2D Model &gt;&gt;&gt; 3D Model</em></p>
 <p>将2D模型的参数在时间维度上进行复制，即得到对应的3D模型。通过代码的实现如下所示：</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">temporal_dim = weights3d[key3d].shape[<span class="number">2</span>]</span><br><span class="line">inflated_2d = nd.broadcast_to(temporal_2d, shape=[<span class="number">0</span>, <span class="number">0</span>, temporal_dim, <span class="number">0</span>, <span class="number">0</span>]) / temporal_dim</span><br></pre></td></tr></table></figure>
+
 <p>代码中除以temporal_dim的操作，是为了实现一个rescaling，使得对于分类任务，2D网络和3D网络的输出完全一致。</p>
-<h2 id="基于深度学习的视频动作识别综述">基于深度学习的视频动作识别综述</h2>
-<ul>
+<h2 id="基于深度学习的视频动作识别综述"><a href="#基于深度学习的视频动作识别综述" class="headerlink" title="基于深度学习的视频动作识别综述"></a>基于深度学习的视频动作识别综述</h2><ul>
 <li>论文：《A Comprehensive Study of Deep Video Action Recognition》</li>
 <li>参考：<a href="https://www.bilibili.com/video/BV1fL4y157yA">https://www.bilibili.com/video/BV1fL4y157yA</a></li>
 </ul>
 <p>截至Video Transformer提出前，视频动作识别模型的发展历程如下图所示：</p>
 <img src="/2022/10/09/%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3/image-20221011160226907.png" alt="image-20221011160226907" style="zoom:67%; margin:auto;">
-<h3 id="Hand-crafted–-CNN">Hand-crafted–&gt;CNN</h3>
-<p>DeepVideo：没啥意思，通过一系列2D卷积操作，对视频进行分类。</p>
-<h3 id="双流网络-2">双流网络</h3>
-<p>双流网络是在2D CNN基础上，添加一个处理光流的分支。针对初版双流网络的问题，主要在如下四个方面进行改进。</p>
+
+<h3 id="Hand-crafted–-gt-CNN"><a href="#Hand-crafted–-gt-CNN" class="headerlink" title="Hand-crafted–&gt;CNN"></a>Hand-crafted–&gt;CNN</h3><p>DeepVideo：没啥意思，通过一系列2D卷积操作，对视频进行分类。</p>
+<h3 id="双流网络-1"><a href="#双流网络-1" class="headerlink" title="双流网络"></a>双流网络</h3><p>双流网络是在2D CNN基础上，添加一个处理光流的分支。针对初版双流网络的问题，主要在如下四个方面进行改进。</p>
 <ol>
 <li>将late fusion改造为一种合适的early fusion；</li>
 <li>把双流网络中使用的CNN网络进行变体，如融入之后提出的ResNet等；</li>
 <li>双流网络的空间流和时间流分支是直接抽取特征后进行分类，可以换成RNN或LSTM等充分利用时序信息；</li>
 <li>双流网络利用的是短时间内的视频信息，而一个动作往往持续时间较长，如何进行长视频的理解也是需要解决的问题。</li>
 </ol>
-<p>==双流网络目前仍存在的一个问题是，抽取光流的过程耗时巨大，在推理时，仍然需要花费较长时间去抽取光流，无法达到实时处理的要求（实时处理一般要求帧率达25fps）；另一方面，光流图的存储占据空间较多。==</p>
-<h4 id="Beyond-Short-Snippets（引入LSTM）">Beyond Short Snippets（引入LSTM）</h4>
-<p>提高特征提取使用的帧数</p>
+<p>&#x3D;&#x3D;双流网络目前仍存在的一个问题是，抽取光流的过程耗时巨大，在推理时，仍然需要花费较长时间去抽取光流，无法达到实时处理的要求（实时处理一般要求帧率达25fps）；另一方面，光流图的存储占据空间较多。&#x3D;&#x3D;</p>
+<h4 id="Beyond-Short-Snippets（引入LSTM）"><a href="#Beyond-Short-Snippets（引入LSTM）" class="headerlink" title="Beyond Short Snippets（引入LSTM）"></a>Beyond Short Snippets（引入LSTM）</h4><p>提高特征提取使用的帧数</p>
 <ul>
 <li>Conv Pooling：</li>
 <li>LSTM：带来的提升有限，可能是因为短时内语义信息没有显著变化，而LSTM只有在语义信息发生较大变化时作用显著。</li>
 </ul>
-<h4 id="Convolutional-Fusion（使用early-fusion）">Convolutional Fusion（使用early fusion）</h4>
-<ul>
+<h4 id="Convolutional-Fusion（使用early-fusion）"><a href="#Convolutional-Fusion（使用early-fusion）" class="headerlink" title="Convolutional Fusion（使用early fusion）"></a>Convolutional Fusion（使用early fusion）</h4><ul>
 <li>spatial fusion：在空间层面上对特征图进行fusion</li>
 <li>在网络的哪个部分进行fusion</li>
 <li>temporal fusion：如何在时间轴维度上进行fusion</li>
 </ul>
-<h4 id="TSN（Temporal-Segment-Networks，解决长视频理解问题）">TSN（Temporal Segment Networks，解决长视频理解问题）</h4>
-<p>将一个视频分成多个段，每个段分别送入双流网络（不同段的双流网络共享一组参数），将不同段在空间流输出的结果进行segmental consensus（共识），同样对时间流的输出结果进行相同计算，然后两个流的输出融合后，得到最终输出结果。</p>
+<h4 id="TSN（Temporal-Segment-Networks，解决长视频理解问题）"><a href="#TSN（Temporal-Segment-Networks，解决长视频理解问题）" class="headerlink" title="TSN（Temporal Segment Networks，解决长视频理解问题）"></a>TSN（Temporal Segment Networks，解决长视频理解问题）</h4><p>将一个视频分成多个段，每个段分别送入双流网络（不同段的双流网络共享一组参数），将不同段在空间流输出的结果进行segmental consensus（共识），同样对时间流的输出结果进行相同计算，然后两个流的输出融合后，得到最终输出结果。</p>
 <img src="/2022/10/09/%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3/image-20221012102455303.png" alt="image-20221012102455303" style="zoom:80%; margin:auto;">
+
 <p>除此之外，这篇论文也提出了一些技巧：</p>
 <ol>
 <li>Cross Modality Pre-training：将空间流和时间流（即光流）输入看作多模态问题，使用ImageNet上训练的模型对光流分支进行初始化，需要对预训练模型进行一下改造（将原来3通道的卷积加权平均，应用到20个通道的光流输入上），这种思想与I3D之后使用的方法类似。</li>
@@ -891,45 +888,44 @@ B-->c[3D-CDC]</pre>
 <li>corner cropping：强制模型在边角位置进行裁剪</li>
 <li>scale- jittering：通过改变输入的长宽比，增加输入的多样性</li>
 </ol>
-<h3 id="3D-CNN">3D CNN</h3>
-<p>在双流网已经取得很好效果的时候，人们关注于3D CNN网络，旨在提高模型的速度，以达到实时的效果。</p>
+<h3 id="3D-CNN"><a href="#3D-CNN" class="headerlink" title="3D CNN"></a>3D CNN</h3><p>在双流网已经取得很好效果的时候，人们关注于3D CNN网络，旨在提高模型的速度，以达到实时的效果。</p>
 <pre class="mermaid">graph LR
 A[C3D]-->B[I3D]
 B-->C[Non-local]
 C-->D[R2+1D]
 D-->E[SlowFast]</pre>
-<h4 id="C3D（2015）">C3D（2015）</h4>
-<p>C3D提出了类似于VGG的3D卷积神经网络，在sports 1million数据集上进行训练，该模型可以分为特征抽取和分类两部分，作者提供了训练好的特征抽取模型接口，使得C3D在视频理解领域流行起来。</p>
+
+<h4 id="C3D（2015）"><a href="#C3D（2015）" class="headerlink" title="C3D（2015）"></a>C3D（2015）</h4><p>C3D提出了类似于VGG的3D卷积神经网络，在sports 1million数据集上进行训练，该模型可以分为特征抽取和分类两部分，作者提供了训练好的特征抽取模型接口，使得C3D在视频理解领域流行起来。</p>
 <img src="/2022/10/09/%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3/image-20221012112941810.png" alt="image-20221012112941810" style="zoom:80%; margin:auto;">
-<h4 id="I3D（2017）">I3D（2017）</h4>
-<p>I3D的主要贡献包括如下两方面：</p>
+
+<h4 id="I3D（2017）"><a href="#I3D（2017）" class="headerlink" title="I3D（2017）"></a>I3D（2017）</h4><p>I3D的主要贡献包括如下两方面：</p>
 <ol>
 <li>降低了视频理解模型的训练难度（将2D模型膨胀至3D）</li>
 <li>提出了一个很好、很大的数据集</li>
 </ol>
-<h4 id="Non-local（2018）">Non-local（2018）</h4>
-<p>使用自注意力机制替代LSTM，用在视频理解网络中，进行长距离建模。</p>
+<h4 id="Non-local（2018）"><a href="#Non-local（2018）" class="headerlink" title="Non-local（2018）"></a>Non-local（2018）</h4><p>使用自注意力机制替代LSTM，用在视频理解网络中，进行长距离建模。</p>
 <p>Non-local模块与自注意力模块相近，只是扩展到了3D上，在<strong>时间和空间</strong>维度上进行自注意力计算，同样具有即插即用的性质。</p>
 <img src="/2022/10/09/%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3/image-20221012115426776.png" alt="image-20221012115426776" style="zoom: 67%; margin:auto;">
-<h4 id="R-2-1-D（2018）">R(2+1)D（2018）</h4>
-<p>作者做了大量的实验，探究视频理解任务中的网络结构。经过实验证明，使用R(2+1)D的结构，把3D卷积拆分成两个卷积，先在空间上做2D的卷积，再在时间上做1D的卷积。</p>
+
+<h4 id="R-2-1-D（2018）"><a href="#R-2-1-D（2018）" class="headerlink" title="R(2+1)D（2018）"></a>R(2+1)D（2018）</h4><p>作者做了大量的实验，探究视频理解任务中的网络结构。经过实验证明，使用R(2+1)D的结构，把3D卷积拆分成两个卷积，先在空间上做2D的卷积，再在时间上做1D的卷积。</p>
 <img src="/2022/10/09/%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3/image-20221014103245936.png" alt="image-20221014103245936" style="zoom:67%; margin:auto;">
+
 <p>R(2+1)D的具体拆分方法如下图所示：其中a表示正常的3D卷积，b表示R(2+1)D，Mi指特征投射操作，进行维度变化，使得R(2+1)D网络参数尽可能与3D网络保持一致，从而证明R(2+1)D网络的优越性。</p>
 <img src="/2022/10/09/%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3/image-20221014104229339.png" alt="image-20221014104229339" style="zoom:80%; margin:auto;">
+
 <p>该方法的有效性，可以从以下几个方面解释：</p>
 <ol>
 <li>relu操作增多，提高了模型的非线性学习能力</li>
 <li>1D和2D网络比3D网络更容易训练与优化</li>
 </ol>
-<h4 id="SlowFast（2019）">SlowFast（2019）</h4>
-<p>SlowFast借鉴了双流网络的思想，但并没有使用光流。</p>
+<h4 id="SlowFast（2019）"><a href="#SlowFast（2019）" class="headerlink" title="SlowFast（2019）"></a>SlowFast（2019）</h4><p>SlowFast借鉴了双流网络的思想，但并没有使用光流。</p>
 <p>SlowFast网络的原理来自人体视觉细胞，用80%的细胞去捕捉慢的场景信息，用20%的细胞捕捉快的高频率的运动信息。对应到网络结构上，抽取低帧率图像输入到慢分支中（小输入大网络），抽取高帧率图像输出快分支中（大输入小网络），同时每组卷积层后都跟一个later connection，</p>
 <img src="/2022/10/09/%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3/image-20221014105622585.png" alt="image-20221014105622585" style="zoom:67%; margin:auto;">
-<h3 id="Video-Transformer">Video Transformer</h3>
-<p>将Transformer直接应用到视频理解领域，扩展到在时间和空间两个维度进行自注意力计算，计算成本极高，很难训练起来。因此人们通过对时间和空间注意力<strong>拆分</strong>的方式，降低计算成本的同时，尽可能提升模型性能。</p>
-<h4 id="Timesformer（2021）">Timesformer（2021）</h4>
-<p>Timesformer比较了几种Video Transformer的实现方式。经过实验验证，T+S的实现取得了最好的效果。</p>
+
+<h3 id="Video-Transformer"><a href="#Video-Transformer" class="headerlink" title="Video Transformer"></a>Video Transformer</h3><p>将Transformer直接应用到视频理解领域，扩展到在时间和空间两个维度进行自注意力计算，计算成本极高，很难训练起来。因此人们通过对时间和空间注意力<strong>拆分</strong>的方式，降低计算成本的同时，尽可能提升模型性能。</p>
+<h4 id="Timesformer（2021）"><a href="#Timesformer（2021）" class="headerlink" title="Timesformer（2021）"></a>Timesformer（2021）</h4><p>Timesformer比较了几种Video Transformer的实现方式。经过实验验证，T+S的实现取得了最好的效果。</p>
 <img src="/2022/10/09/%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3/image-20221014113000002.png" alt="image-20221014113000002" style="zoom:80%; margin:auto;">
+
 <ul>
 <li>S：即经典的用在图像处理上的ViT</li>
 <li>ST：暴力地在时间和空间两个维度计算注意力，但内存占用太大，难以实现</li>
@@ -939,11 +935,11 @@ D-->E[SlowFast]</pre>
 </ul>
 <p>以上几种方法进行可视化后如下图所示，其中蓝色的色块表示基准点，其它相同颜色的色块则表示用于同基准点计算attention。</p>
 <img src="/2022/10/09/%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3/image-20221015084134927.png" alt="image-20221015084134927" style="zoom: 67%; margin: auto;">
+
 <ul>
 <li>L+G：其中黄色的色块表示计算local attention的色块，紫色的色块表示计算global attention的色块（为了降低计算量，global也缩小了范围）</li>
 </ul>
-<h4 id="transformer未来方向">transformer未来方向</h4>
-<p>在视频理解领域，transformer大致有如下几个研究方向：</p>
+<h4 id="transformer未来方向"><a href="#transformer未来方向" class="headerlink" title="transformer未来方向"></a>transformer未来方向</h4><p>在视频理解领域，transformer大致有如下几个研究方向：</p>
 <ol>
 <li>利用transformer长时间建模的能力，进行长视频理解</li>
 <li>多模态学习</li>
@@ -952,6 +948,7 @@ D-->E[SlowFast]</pre>
 ]]></content>
       <tags>
         <tag>视频理解</tag>
+        <tag>综述</tag>
       </tags>
   </entry>
   <entry>
@@ -1063,6 +1060,247 @@ B-->C[测量心动周期相关生理指标心率和心跳变异性等]</pre>
 ]]></content>
       <tags>
         <tag>rPPG</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>对比学习</title>
+    <url>/2022/10/20/%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0/</url>
+    <content><![CDATA[<ul>
+<li>参考博客：<a href="https://zhuanlan.zhihu.com/p/367290573">https://zhuanlan.zhihu.com/p/367290573</a></li>
+<li>参考视频：<a href="https://www.bilibili.com/video/BV19S4y1M7hm">https://www.bilibili.com/video/BV19S4y1M7hm</a></li>
+</ul>
+<h2 id="何为对比学习？"><a href="#何为对比学习？" class="headerlink" title="何为对比学习？"></a>何为对比学习？</h2><p>对比学习是无监督或自监督学习方法的一种，其思想与NLP领域中的Bert类似，即从大量的无标签数据中吸取图像的先验知识分布，再在下游任务上微调，从而将预训练学习到的知识，迁移到下游任务上。</p>
+<p>对比学习是一种判别式自监督学习方法，对于对比学习，尚不存在明确的定义，但其存在一套固定的指导原则：通过&#x3D;&#x3D;构造相似实例和不相似实例&#x3D;&#x3D;，训练得到一个&#x3D;&#x3D;表示学习模型&#x3D;&#x3D;，通过这个模型，使得相似的实例在投影空间中比较接近，不相似的实例在投影空间中距离比较远，然后将这个表示学习模型用到下游任务上进行&#x3D;&#x3D;微调&#x3D;&#x3D;。</p>
+<p>对比学习有如下几个关键点：</p>
+<ol>
+<li>如何构造相似、不相似实例；</li>
+<li>如何构造表示学习模型结构；</li>
+<li>如何防止模型坍缩。</li>
+</ol>
+<p>在MoCo任务中，认为对比学习的关键点包括：</p>
+<ol>
+<li>代理任务</li>
+<li>目标函数</li>
+</ol>
+<p>在李沐的对比学习视频中，将对比学习划分为四个阶段，并对每个阶段的代表性工作进行了介绍。</p>
+<h2 id="百花齐放"><a href="#百花齐放" class="headerlink" title="百花齐放"></a>百花齐放</h2><h3 id="InstDisc-Instance-Discrimination"><a href="#InstDisc-Instance-Discrimination" class="headerlink" title="InstDisc(Instance Discrimination)"></a>InstDisc(Instance Discrimination)</h3><p>论文：<em>Unsupervised Feature Learning via Non-parametric Instance Discrimination</em></p>
+<p>发表时间：2018</p>
+<p>评价：对比学习的开山之作，之后的很多模型（MOCO等）都是在此基础上进行的。</p>
+<p>模型结构：使用一个卷积网络，将每个图片编码为一个特征，目的是希望这些特征在特征空间中尽可能分开。</p>
+<p>正样本：图片本身</p>
+<p>负样本：所有其它图片</p>
+<p>损失函数：使用NCE Loss作为对比学习的损失函数</p>
+<p>Memory Bank：存储所有图片的特征，memory bank里的特征是动量更新的。</p>
+<img src="/2022/10/20/%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0/image-20221022163248461.png" alt="image-20221022163248461" style="zoom:80%; margin:auto;">
+
+<p>主要贡献：</p>
+<ol>
+<li>提出了代理任务<strong>个体判别</strong>，将每个实例看作一个类别，目的是学习一个特征，从而把每个图片区分开来。</li>
+<li>提出对特征进行动量的更新。</li>
+</ol>
+<h3 id="InvaSpread"><a href="#InvaSpread" class="headerlink" title="InvaSpread"></a>InvaSpread</h3><p>论文：<em>Unsupervised Embedding Learning via Invariant and Spreading Instance Feature</em></p>
+<p>发表时间：2019</p>
+<p>评价：SimCLR的前身</p>
+<p>模型结构：没有使用额外的结构存储负样本，正负样本来自同一个mini batch，只使用一个编码器进行端到端的学习。</p>
+<p>基本思想：相似的图片具有相似的特征，不同的图片特征差异也大。</p>
+<p>正样本：</p>
+<p>负样本：</p>
+<h2 id="CV双雄"><a href="#CV双雄" class="headerlink" title="CV双雄"></a>CV双雄</h2><h2 id="不用负样本"><a href="#不用负样本" class="headerlink" title="不用负样本"></a>不用负样本</h2><h2 id="Transformer"><a href="#Transformer" class="headerlink" title="Transformer"></a>Transformer</h2>]]></content>
+      <tags>
+        <tag>对比学习</tag>
+        <tag>综述</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>经典模型：MoCo</title>
+    <url>/2022/10/22/%E7%BB%8F%E5%85%B8%E6%A8%A1%E5%9E%8B%EF%BC%9AMoCo/</url>
+    <content><![CDATA[<p>MoCo系列是在视觉领域使用对比学习的里程碑之作。共推出了三个版本。</p>
+<h2 id="MoCo-v1"><a href="#MoCo-v1" class="headerlink" title="MoCo v1"></a>MoCo v1</h2><ul>
+<li>论文名称：<em>Momentum Contrast for Unsupervised Visual Representation Learning</em></li>
+<li>发表信息：CVPR 2020，Kaiming He</li>
+<li>主要贡献：提出了一种构造大而一致字典的方法，提供一个稳定的自监督信号。同时MoCo的训练成本相比于其它对比学习方法，更加affordable。</li>
+</ul>
+<h3 id="前置信息"><a href="#前置信息" class="headerlink" title="前置信息"></a>前置信息</h3><h4 id="动量"><a href="#动量" class="headerlink" title="动量"></a>动量</h4><p>$y_t&#x3D;my_{t-1}+(1-m)x_t$，目的是让当前时刻的输出不仅仅依赖于当前时刻的输入，也要考虑上一时刻的输出。</p>
+<p>在MoCo中，作者利用动量的特性，缓慢更新编码器，从而让中间学习字典中的特征尽可能保持一致。</p>
+<h4 id="NCE-Loss-Noise-Contrastive-Estimation"><a href="#NCE-Loss-Noise-Contrastive-Estimation" class="headerlink" title="NCE Loss(Noise Contrastive Estimation)"></a>NCE Loss(Noise Contrastive Estimation)</h4><p>在有监督分类任务中，常使用Cross Entropy Loss计算loss，CE Loss的公式如下所示，其中K表示类别数。</p>
+<p>$$S_i&#x3D;-log\frac{e^i}{\sum^K_{j&#x3D;0}e^j}$$</p>
+<p>将CE Loss应用到对比学习任务上，由于类别数巨大，softmax操作将失效，同时由于样本数多，计算复杂度极高。为了解决这个问题，在对比学习中提出了NCE Loss，进行了如下改进：</p>
+<ol>
+<li>将类别数归为data sample和noise sample两类；</li>
+<li>只从数据集中抽取部分作为noise sample去计算。（样本越大，近似效果越好，因此MoCo要构造一个大字典）</li>
+</ol>
+<h3 id="核心思想"><a href="#核心思想" class="headerlink" title="核心思想"></a>核心思想</h3><h4 id="动态字典"><a href="#动态字典" class="headerlink" title="动态字典"></a>动态字典</h4><p>在NLP任务中，对比学习取得了很好的效果，因为NLP任务中的输入来自离散的信号空间，可以生成tokenize的字典，可以利用这个字典，展开无监督的学习（把字典中的每个key看作一个类别，构造有监督学习范式），建模比较容易。而视觉任务的输入是在一个连续的、高维的空间中，语义信息较弱。</p>
+<p>作者受NLP任务的启发，将对比学习中的正负样本生成过程，看作NLP中构造字典的过程。对于如下对比学习过程，$x_1$代表原始图像，$x_1^1$和$x_1^2$是对其经过两种不同的变换得到的，一般把前者看作anchor，后者看作positive，将anchor和positive输入编码器$E_{11}$和$E_{12}$（两个编码器模型可以相同，也可以不同），得到两个输出特征$f_{11}$和$f_{12}$，对于其它的原始图像，全部看作相对于anchor的negative，经过编码器$E_{12}$得到输出特征。</p>
+<p>字典是针对&#x3D;&#x3D;特征&#x3D;&#x3D;而言的，作者将$f_{11}$看作NLP中的query，其余特征全部看作key。</p>
+<img src="/2022/10/22/%E7%BB%8F%E5%85%B8%E6%A8%A1%E5%9E%8B%EF%BC%9AMoCo/image-20221023100541076.png" alt="image-20221023100541076" style="zoom:67%; margin:auto;">
+
+<p>作者认为，为了获得良好的效果，字典应该具有两个特性：</p>
+<ol>
+<li>尽可能的大（更好地从连续的高维的空间中做抽样）</li>
+<li>在训练时保持一致性（字典中的key使用相同或相似的编码器得到，使得其与query对比时，不受编码器不同的干扰）</li>
+</ol>
+<h3 id="模型结构"><a href="#模型结构" class="headerlink" title="模型结构"></a>模型结构</h3><p>Moco模型的结构与上述结构类似，只有queue和momentum encoder两部分有所不同。</p>
+<img src="/2022/10/22/%E7%BB%8F%E5%85%B8%E6%A8%A1%E5%9E%8B%EF%BC%9AMoCo/image-20221023162341556.png" alt="image-20221023162341556" style="zoom: 67%; margin: auto;">
+
+<ul>
+<li>queue：用队列存储字典，当新的mini-batch的特征进入字典时，队首的特征需要移出队列，并非每次更新整个字典，因此字典的大小可以设的非常大。</li>
+<li>momentum encoder：为了使得队列中的特征尽量保持一致，采用动量策略限制编码器的更新。</li>
+</ul>
+<p>通过队列与动量编码器两种策略，MoCo实现了构造一个又大又一致的字典。</p>
+<h4 id="对比学习配置"><a href="#对比学习配置" class="headerlink" title="对比学习配置"></a>对比学习配置</h4><ul>
+<li><p>代理任务：InstDisc，若query和key是同一个图像的不同视角，则认为其可配对。</p>
+</li>
+<li><p>损失函数：InfoNCE，NCE loss的变体，作者任务将分类问题看作简单的二分类还是太粗暴了，Info loss直观地看是一个K+1类的CE Loss（其中K是负样本数），目的是把q分成$k_+$这一类。</p>
+</li>
+</ul>
+<img src="/2022/10/22/%E7%BB%8F%E5%85%B8%E6%A8%A1%E5%9E%8B%EF%BC%9AMoCo/image-20221023171055941.png" alt="image-20221023171055941" style="zoom: 50%; margin:auto;">
+
+<ol>
+<li><p>其中超参数是一个温度参数，用于控制分布形状。</p>
+<ol start="2">
+<li>当温度参数变小时，分布将变得更集中（模型将只关注困难样本，将导致模型难以收敛，不好泛化）。</li>
+</ol>
+</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>对比学习</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>论文阅读：Synthetic Generation of Face Videos with Plethysmograph Physiology</title>
+    <url>/2022/10/24/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ASynthetic-Generation-of-Face-Videos-with-Plethysmograph-Physiology/</url>
+    <content><![CDATA[<h2 id="文章概述"><a href="#文章概述" class="headerlink" title="文章概述"></a>文章概述</h2><ul>
+<li>发表信息：2022 CVPR</li>
+</ul>
+<h3 id="主要贡献"><a href="#主要贡献" class="headerlink" title="主要贡献"></a>主要贡献</h3><ol>
+<li>提出了一个可扩展的基于物理的学习模型，可以根据潜在的血容量变化，以高保真度渲染真实的rPPG视频（可以使用任意图像和目标rPPG信号作为生成模型的输入）；</li>
+<li>合成的视频可以直接用于提高rPPG模型的性能中去，另外，可以用渲染模型为少数群体生成数据，从而减少rPPG框架中人口统计学的偏差；</li>
+<li>发布了一个真实的rPPG数据集UCAL-rPPG，这个数据集包含了不同肤色的数据。</li>
+</ol>
+<h2 id="模型框架"><a href="#模型框架" class="headerlink" title="模型框架"></a>模型框架</h2><p>模型的整体框架如图所示：</p>
+<ul>
+<li>输入人脸图像：根据种族分类的BUPT-Balancedface数据集</li>
+<li>输入PPG信号：BIDMC PPG和Respiration数据集</li>
+</ul>
+<img src="/2022/10/24/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ASynthetic-Generation-of-Face-Videos-with-Plethysmograph-Physiology/image-20221024094446621.png" alt="image-20221024094446621" style="zoom:80%; margin:auto;">
+
+<p>对于输入图像，被编码为UV反射图、3D Mesh、光照模型L和相机模型c，UV反射图经分解得到Blood Map，然后根据输入的rPPG信号，将Blood Map修改为PPG的UV图，PPG的UV图与光照模型L和相机模型c根据随机动作生成最终的合成的rPPG视频。</p>
+<p><em>ps: 各个步骤具体的实现专业性较强，且与我的主要工作相关性较弱，待之后用到时再进行学习。</em></p>
+<h3 id="模型评价指标"><a href="#模型评价指标" class="headerlink" title="模型评价指标"></a>模型评价指标</h3><p> 模型的损失函数由两部分组成：</p>
+<ol>
+<li>Loss of appearance：重建的UV map和原始线性RGB空间的map间的L2距离；</li>
+<li>Loss of CameraPrior：相机光敏灵敏度的先验值。</li>
+</ol>
+<h2 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h2><p>文章的实验在作者制作的UCLA-rPPG数据集上进行。</p>
+<h3 id="UCLA-rPPG数据集"><a href="#UCLA-rPPG数据集" class="headerlink" title="UCLA-rPPG数据集"></a>UCLA-rPPG数据集</h3><ul>
+<li>subjects：102个具有各种肤色（肤色类型根据Fitzpatrick指标从1~6变化）、年龄、性别、种族和民族的人</li>
+<li>帧率：30fps</li>
+<li>视频数：503</li>
+<li>时长：1min</li>
+</ul>
+<h3 id="实验方法"><a href="#实验方法" class="headerlink" title="实验方法"></a>实验方法</h3><p>为了验证合成的数据集对真实数据集训练模型的提升，作者先在合成的数据集上进行模型，再在真实的数据集上进行微调，从而验证合成数据集的作用。</p>
+<p>同时，为了探究模型对于不同肤色类型人群的效果，将subjects根据Fitzpatrick的6个皮肤等级，划分为3种类型。</p>
+<p>实验结果显示，使用合成的数据集训练+真实数据集微调的方法，取得了比单独使用真实数据集更好的效果。</p>
+<img src="/2022/10/24/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ASynthetic-Generation-of-Face-Videos-with-Plethysmograph-Physiology/image-20221025104458708.png" alt="image-20221025104458708" style="zoom:80%; margin:auto;">
+
+<h3 id="消融实验"><a href="#消融实验" class="headerlink" title="消融实验"></a>消融实验</h3><p>为了探究肤色对模型的影响，作者根据肤色类型进行了消融实验，实验结果如下图所示：</p>
+<img src="/2022/10/24/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ASynthetic-Generation-of-Face-Videos-with-Plethysmograph-Physiology/image-20221025111711200.png" alt="image-20221025111711200" style="zoom:80%; margin:auto;">
+
+<p>由实验结果可知，在所有肤色上训练得到的模型要好过在单一肤色上训练得到的模型。</p>
+<h3 id="跨数据集测试"><a href="#跨数据集测试" class="headerlink" title="跨数据集测试"></a>跨数据集测试</h3><p>将在UCLA数据集上训练得到的模型直接应用到UBFC数据集上，从实验结果可以看出，使用合成的数据集训练得到的模型具有更好的泛化能力。</p>
+<img src="/2022/10/24/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ASynthetic-Generation-of-Face-Videos-with-Plethysmograph-Physiology/image-20221025141510331.png" alt="image-20221025141510331" style="zoom: 67%; margin:auto;">
+
+<h2 id="模型评价"><a href="#模型评价" class="headerlink" title="模型评价"></a>模型评价</h2><p>模型仍存在如下限制：</p>
+<ol>
+<li>生成的视频不是photo-realistic，可能会因为sim2rel gap产生负面影响；</li>
+<li>生成的视频不包含背景，但有研究发现，背景可以利用进行更好的信号提取；</li>
+<li>直接对Blood UV map根据目标rPPG信号进行线性变换，作者相信使用基于生物物理学的方法可以达到更好的效果；</li>
+</ol>
+<p>除了将这个模型用于生成rPPG视频外，还可以用于绕过基于rPPG的deepfake detectors。</p>
+]]></content>
+      <tags>
+        <tag>rPPG</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>论文阅读：The Way to my Heart is through Contrastive Learning:Remote PPG from Unlabelled Video</title>
+    <url>/2022/10/17/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AThe-Way-to-my-Heart-is-through-Contrastive-Learning-Remote-PPG-from-Unlabelled-Video/</url>
+    <content><![CDATA[<ul>
+<li>发表信息：ICCV 2021</li>
+<li>参考博客：<a href="https://blog.csdn.net/m0_46792836/article/details/122203112">https://blog.csdn.net/m0_46792836/article/details/122203112</a></li>
+<li>Code：<a href="https://github.com/ToyotaResearchInstitute/RemotePPG">https://github.com/ToyotaResearchInstitute/RemotePPG</a></li>
+</ul>
+<h2 id="模型结构"><a href="#模型结构" class="headerlink" title="模型结构"></a>模型结构</h2><p>基于对比学习的自监督心率估计模型如下图所示，模型流程如下：</p>
+<p>首先从一段视频中抽取W秒的视频$x_a$，将$x_a$输入显著性采样器S，得到扭曲的视频切片$x^s_a$，对于$x^s_a$，通过几种不同的操作输入PPG信号估计器$g_{\theta}$：</p>
+<ol>
+<li>直接输入信号估计器，得到预测值$y_a$；</li>
+<li>从先验分布中采样随机频率比$r_f$，将$r_f$与$x^s_a$输入频率重采样器R，得到负样本$x_n^s$，将负样本输入信号估计器得到负样本的PPG信号$y_n$；</li>
+<li>对负样本的PPG信号$y_n$，使用$r_f$的逆进行重采样，得到正样本的PPG信号$y_p$。</li>
+</ol>
+<p>对于得到的三个输出$y_a,y_n,y_p$，使用PSE、MSE度量距离，使得$y_a$与$y_n$的距离尽可能远，$y_a$与$y_p$的距离尽可能接近。</p>
+<img src="/2022/10/17/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AThe-Way-to-my-Heart-is-through-Contrastive-Learning-Remote-PPG-from-Unlabelled-Video/image-20221020174825059.png" alt="image-20221020174825059" style="zoom:67%; margin:auto;">
+
+<h3 id="显著性采样器【可选】"><a href="#显著性采样器【可选】" class="headerlink" title="显著性采样器【可选】"></a>显著性采样器【可选】</h3><p>输入的视频序列要经过一个显著性采样器S的处理。在模型中，使用一个截断的ResNet18网络（使用ImageNet上的预训练网络初始化）作为显著性采样器，使用显著性采样器有两个目的：</p>
+<ol>
+<li>为rPPG估计器正在学习的内容提供透明度，当标注数据少时有意义；</li>
+<li>对输入图像进行变形，以在空间上加强任务显著性区域。</li>
+</ol>
+<p>对于显著性采样器，使用两个损失项进行训练：</p>
+<img src="/2022/10/17/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AThe-Way-to-my-Heart-is-through-Contrastive-Learning-Remote-PPG-from-Unlabelled-Video/image-20221021090651144.png" alt="image-20221021090651144" style="zoom: 67%; margin:auto;">
+
+<ul>
+<li>Sparsitiy：$s_i^j$指的是显著性map中第i帧的位置j处的值，这个损失项偏向于熵更小，也就是空间上稀疏的解（只关注重点区域）。</li>
+<li>Temporal：$d_{i,i+1}^j$指的是相邻两帧在像素j的显著性差异，这个损失项偏向于相邻帧间平滑的解。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># apply sparsity loss </span></span><br><span class="line"><span class="keyword">if</span> args.ss_sparsity &gt; <span class="number">0</span>:</span><br><span class="line">    entropy = -torch.<span class="built_in">sum</span>(torch.log(ss_out[<span class="number">1</span>].view(-<span class="number">1</span>)) * ss_out[<span class="number">1</span>].view(-<span class="number">1</span>))</span><br><span class="line">    loss += entropy * args.ss_sparsity / torch.numel(ss_out[<span class="number">1</span>])</span><br><span class="line"><span class="comment"># apply temporal consistency loss</span></span><br><span class="line"><span class="keyword">if</span> args.ss_temporal &gt; <span class="number">0</span>:</span><br><span class="line">    ss_diff = ss_out[<span class="number">1</span>][:,<span class="number">1</span>:,:,:,:] - ss_out[<span class="number">1</span>][:,:-<span class="number">1</span>,:,:,:]</span><br><span class="line">    ssd = torch.<span class="built_in">sum</span>(ss_diff.view(-<span class="number">1</span>) * ss_diff.view(-<span class="number">1</span>))</span><br><span class="line">    loss += ssd * args.ss_temporal / torch.numel(ss_out[<span class="number">1</span>])</span><br></pre></td></tr></table></figure>
+
+<p>经过训练后，对显著性图进行可视化如图所示：</p>
+<img src="/2022/10/17/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AThe-Way-to-my-Heart-is-through-Contrastive-Learning-Remote-PPG-from-Unlabelled-Video/image-20221021091723473.png" alt="image-20221021091723473" style="zoom:67%; margin:auto;">
+
+<h3 id="PPG估计器"><a href="#PPG估计器" class="headerlink" title="PPG估计器"></a>PPG估计器</h3><p>使用PhysNet的改进版本作为PPG估计器，主要是修改了PhysNet的Decoder部分，作者认为PhysNet在将输出返回到原始视频长度时，在输出的PPG信号中引入了混叠，作者在这里采用上采样插值与3D卷积消除混叠。PPG估计器的模型架构如下图所示：</p>
+<img src="/2022/10/17/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AThe-Way-to-my-Heart-is-through-Contrastive-Learning-Remote-PPG-from-Unlabelled-Video/image-20221021093510555.png" alt="image-20221021093510555" style="zoom: 67%; margin:auto;">
+
+<h2 id="对比学习关注问题"><a href="#对比学习关注问题" class="headerlink" title="对比学习关注问题"></a>对比学习关注问题</h2><h3 id="正负样本构造"><a href="#正负样本构造" class="headerlink" title="正负样本构造"></a>正负样本构造</h3><p>通过模型部分的介绍，我们知道，负样本是通过重采样得到的，作者选用与原始输入频率不同的输入作为负样本。</p>
+<img src="/2022/10/17/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AThe-Way-to-my-Heart-is-through-Contrastive-Learning-Remote-PPG-from-Unlabelled-Video/image-20221021094926639.png" alt="image-20221021094926639" style="zoom:67%; margin:auto;">
+
+<p>从代码中可以更具体地看到实现细节：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># iccv\src\archs\FrequencyContrast.py</span></span><br><span class="line"></span><br><span class="line">D = x_a.shape[<span class="number">2</span>]	<span class="comment"># 每个视频片段的帧数</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Resample input</span></span><br><span class="line">freq_factor = <span class="number">1.25</span> + (torch.rand(<span class="number">1</span>, device=x_a.device) / <span class="number">4</span>)	<span class="comment"># 随机产生1.25~1.5之间的频率因子</span></span><br><span class="line">target_size = <span class="built_in">int</span>(D / freq_factor)	</span><br><span class="line">resampler = nn.Upsample(size=(target_size, x_a.shape[<span class="number">3</span>], x_a.shape[<span class="number">4</span>]),</span><br><span class="line">                        mode=<span class="string">&#x27;trilinear&#x27;</span>,align_corners=<span class="literal">False</span>)	</span><br><span class="line">x_n = resampler(x_a)	<span class="comment"># [B, C, target_size, w, h]</span></span><br><span class="line">x_n = F.pad(x_n, (<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, D - target_size))<span class="comment"># &gt;&gt; [B, C, D, W, H]</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Pass both samples through backbone</span></span><br><span class="line">y_a = self.backbone(x_a).squeeze(<span class="number">4</span>).squeeze(<span class="number">3</span>)	</span><br><span class="line">y_n = self.backbone(x_n).squeeze(<span class="number">4</span>).squeeze(<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Remove padding from negative branch</span></span><br><span class="line">y_n = y_n[:,:,:target_size]	<span class="comment"># [B, 1, target_size]	# 负样本</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Resample negative PPG to create positive branch</span></span><br><span class="line">self.upsampler = nn.Upsample(size=(dataset.options.D,), mode=<span class="string">&#x27;linear&#x27;</span>, align_corners=<span class="literal">False</span>)	</span><br><span class="line">y_p = self.upsampler(y_n)	<span class="comment"># 正样本</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h3><p>使用多视角三态损失（MVTL）作为对比训练的损失函数，根据作者的假设，心率在一定的时间内是相对稳定的，即在每个视图中的信号应该是相似的。</p>
+<p>MVTL计算锚点和正视图的所有组合的距离$P_{tot}$，锚点和负视图的所有组合的距离$N_{tot}$，使用$P_{tot}-N_{tot}$并使用$V_{N^2}$进行调节，作为监督学习的损失。在论文中，使用视频视图$V_N&#x3D;4$，视频长度$V_L&#x3D;5s$。</p>
+<p>对于$P_{tot}$和$N_{tot}$的计算，使用PSD MSE（功率谱密度均方误差）作为两个PPG信号间的距离度量，首先计算每个信号的PSD，然后使用MSE计算误差。</p>
+<p>MVTL的计算代码如下所示：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># iccv\src\losses\MultiViewTripletLoss.py</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Calculate NormPSD for each branch, if needed</span></span><br><span class="line">num_temp_views = <span class="built_in">len</span>(branches[<span class="string">&#x27;anc&#x27;</span>])	<span class="comment"># num_views</span></span><br><span class="line"><span class="keyword">if</span> self.norm_psd <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">    <span class="keyword">for</span> key <span class="keyword">in</span> branches.keys():</span><br><span class="line">        <span class="keyword">for</span> temp_i <span class="keyword">in</span> <span class="built_in">range</span>(num_temp_views):</span><br><span class="line">            branches[key][temp_i] = self.norm_psd(branches[key][temp_i])	<span class="comment"># 计算PSD</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Tally the triplet loss</span></span><br><span class="line">pos_loss = self.compare_view_lists(branches[<span class="string">&#x27;anc&#x27;</span>], branches[<span class="string">&#x27;pos&#x27;</span>])</span><br><span class="line"><span class="comment"># 计算两分支views间的loss</span></span><br><span class="line">neg_loss = self.compare_view_lists(branches[<span class="string">&#x27;anc&#x27;</span>], branches[<span class="string">&#x27;neg&#x27;</span>])	</span><br><span class="line"><span class="keyword">return</span> (pos_loss - neg_loss) / num_temp_views * num_temp_views</span><br></pre></td></tr></table></figure>
+
+<h3 id="学习模型的选择与使用"><a href="#学习模型的选择与使用" class="headerlink" title="学习模型的选择与使用"></a>学习模型的选择与使用</h3><p>由于对比学习没有标注数据，作者使用<strong>无关功率比IPR</strong>作为验证指标，首先对输出PPG信号计算PSD，将信号频率分为相关频率（根据文章假设选取40-250bpm）与无关频率，IPR即不相关范围内的功率&#x2F;总功率，从在验证集上损失最小的epoch中，选取IPR最低的模型。</p>
+<h2 id="一些思考"><a href="#一些思考" class="headerlink" title="一些思考"></a>一些思考</h2><ol>
+<li>显著性采样器好像并没有太大效果，甚至在对比学习任务上取得了负效果。</li>
+</ol>
+<img src="/2022/10/17/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AThe-Way-to-my-Heart-is-through-Contrastive-Learning-Remote-PPG-from-Unlabelled-Video/image-20221021183916735.png" alt="image-20221021183916735" style="zoom: 67%; margin:auto;">
+
+<ol start="2">
+<li>正负样本的构造方法、以及对比学习技术的应用，或许可以基于一些新的对比学习方法，需要再学习一下。</li>
+<li>既然可以考虑自监督的任务，那么是否也可以考虑连续学习、迁移学习、域自适应任务？</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>rPPG</tag>
+        <tag>对比学习</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>论文阅读：XCiT: Cross-Covariance Image Transformers</title>
+    <url>/2022/10/20/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AXCiT-Cross-Covariance-Image-Transformers/</url>
+    <content><![CDATA[<h2 id="模型原理"><a href="#模型原理" class="headerlink" title="模型原理"></a>模型原理</h2><h3 id="模型框架"><a href="#模型框架" class="headerlink" title="模型框架"></a>模型框架</h3><img src="/2022/10/20/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AXCiT-Cross-Covariance-Image-Transformers/image-20221020111505288.png" alt="image-20221020111505288" style="zoom:67%; margin:auto;">
+
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><ul>
+<li><a href="https://github.com/facebookresearch/xcit">https://github.com/facebookresearch/xcit</a></li>
+</ul>
+]]></content>
+      <tags>
+        <tag>Transformer</tag>
+        <tag>项目</tag>
       </tags>
   </entry>
 </search>

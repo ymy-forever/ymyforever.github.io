@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html  lang="zh-CN" >
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, maximum-scale=5, viewport-fit=cover">
+    <title>经典模型：MoCo | ymy is watching u!!!!</title>
+    <meta name="description" content="MoCo系列是在视觉领域使用对比学习的里程碑之作。共推出了三个版本。 MoCo v1 论文名称：Momentum Contrast for Unsupervised Visual Representation Learning 发表信息：CVPR 2020，Kaiming He 主要贡献：提出了一种构造大而一致字典的方法，提供一个稳定的自监督信号。同时MoCo的训练成本相比于其它对比学习方法，更加">
+<meta property="og:type" content="article">
+<meta property="og:title" content="经典模型：MoCo">
+<meta property="og:url" content="https://ymyforever.netlify.app/2022/10/22/%E7%BB%8F%E5%85%B8%E6%A8%A1%E5%9E%8B%EF%BC%9AMoCo/index.html">
+<meta property="og:site_name" content="ymy is watching u!!!!">
+<meta property="og:description" content="MoCo系列是在视觉领域使用对比学习的里程碑之作。共推出了三个版本。 MoCo v1 论文名称：Momentum Contrast for Unsupervised Visual Representation Learning 发表信息：CVPR 2020，Kaiming He 主要贡献：提出了一种构造大而一致字典的方法，提供一个稳定的自监督信号。同时MoCo的训练成本相比于其它对比学习方法，更加">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ymyforever.netlify.app/2022/10/22/%E7%BB%8F%E5%85%B8%E6%A8%A1%E5%9E%8B%EF%BC%9AMoCo/image-20221023100541076.png">
+<meta property="og:image" content="https://ymyforever.netlify.app/2022/10/22/%E7%BB%8F%E5%85%B8%E6%A8%A1%E5%9E%8B%EF%BC%9AMoCo/image-20221023162341556.png">
+<meta property="og:image" content="https://ymyforever.netlify.app/2022/10/22/%E7%BB%8F%E5%85%B8%E6%A8%A1%E5%9E%8B%EF%BC%9AMoCo/image-20221023171055941.png">
+<meta property="article:published_time" content="2022-10-22T11:04:38.000Z">
+<meta property="article:modified_time" content="2022-10-25T07:09:17.227Z">
+<meta property="article:author" content="ymy">
+<meta property="article:tag" content="对比学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ymyforever.netlify.app/2022/10/22/%E7%BB%8F%E5%85%B8%E6%A8%A1%E5%9E%8B%EF%BC%9AMoCo/image-20221023100541076.png">
+
+    
+    <link rel="icon" href="/images.fvicon.ico" type="image/x-icon">
+
+    
+<link rel="stylesheet" href="/css/common.min.css">
+
+
+
+    
+        <link href="//cdn.jsdelivr.net/npm/katex@0.9.0/dist/katex.min.css" rel="stylesheet">
+    
+    
+    
+    
+        <link href="//cdn.jsdelivr.net/npm/lightgallery.js@1.1.3/dist/css/lightgallery.min.css" rel="stylesheet">
+    
+    
+    
+<link rel="stylesheet" href="/css/iconfont.min.css">
+
+    
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+    <body>
+        <header class="header header-fixture">
+    <div class="profile-search-wrap flex sm:block">
+        
+        
+        <div class="profile sm:text-center md:px-1 lg:px-3 sm:pb-4 sm:pt-6">
+            <a id="avatar" role="link" href="https://github.com/ymy-forever" class="inline-block lg:w-16 lg:h-16 w-8 h-8 m-2" target="_blank" rel="noopener" rel="noreferrer" >
+                <img src="/images/logo.png" class="rounded-full" alt="avatar">
+            </a>
+            <h2 id="name" class="hidden lg:block">ymy_forever</h2>
+            <h3 id="title" class="hidden lg:block">Student &amp; Coder</h3>
+            
+            <small id="location" class="hidden lg:block">
+                <i class="iconfont icon-map-icon"></i>
+                Xian, China
+            </small>
+            
+        </div>
+        
+        
+<div class="search flex-1 flex lg:inline-block sm:hidden lg:px-4 lg:mt-2 lg:mb-4 lg:w-full">
+    <form id="search-form" class="my-auto flex-1 lg:border lg:border-solid lg:border-gray-200">
+        <div class="input-group table bg-gray-100 lg:bg-white w-full">
+            <input id="search-input" type="text" placeholder="搜索" class="inline-block w-full bg-gray-100 lg:bg-white p-1">
+            <span class="table-cell">
+                <button name="search tigger button" disabled>
+                    <i class="iconfont icon-search m-2"></i>
+                </button>
+            </span>
+        </div>
+    </form>
+        
+<div id="content-json" data-placeholder="搜索" class="invisible hidden">/content.json</div>
+<script id="search-teamplate" type="text/html" data-path="/content.json">
+    <div>
+        <div class="search-header bg-gray-400">
+            <input id="actual-search-input" model="keyword" ref="input" class="inline-block w-full h-10 px-2 py-1" placeholder="搜索" type="text">
+        </div>
+        <div class="search-result bg-gray-200">
+            {{#each searchPosts}}
+            <a href="/{{ path }}" class="result-item block px-2 pb-3 mb-1 pt-1 hover:bg-indigo-100">
+                <i class="iconfont icon-file"></i>
+                <h1 class="result-title inline font-medium text-lg">{{ title }}</h1>
+                <p class="result-content text-gray-600 text-sm">{{{ text }}}</p>
+            </a>
+            {{/each}}
+        </div>
+    </div>
+</script>
+
+</div>
+
+
+        <button name="menu toogle button" id="menu-toggle-btn" class="block sm:hidden p-3" role="button" aria-expanded="false">
+            <i class="iconfont icon-hamburger"></i>
+        </button>
+    </div>
+    <nav id="menu-nav" class="hidden sm:flex flex-col">
+        
+        
+            <div class="menu-item menu-home" role="menuitem">
+                <a href="/.">
+                    <i class="iconfont icon-home" aria-hidden="true"></i>
+                    <span class="menu-title">首页</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-archives" role="menuitem">
+                <a href="/archives">
+                    <i class="iconfont icon-archive" aria-hidden="true"></i>
+                    <span class="menu-title">归档</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-tags" role="menuitem">
+                <a href="/tags">
+                    <i class="iconfont icon-tag" aria-hidden="true"></i>
+                    <span class="menu-title">标签</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-about" role="menuitem">
+                <a href="/about">
+                    <i class="iconfont icon-cup" aria-hidden="true"></i>
+                    <span class="menu-title">关于</span>
+                </a>
+            </div>
+        
+        
+<div class="social-links flex sm:flex-col lg:hidden mt-5">
+    
+        <span class="social-item text-center">
+            <a target="_blank" rel="noopener" href="https://github.com/ymy-forever">
+                <i class="iconfont social-icon icon-github"></i>
+                <span class="menu-title hidden lg:inline">menu.github</span>
+            </a>
+        </span>
+    
+        <span class="social-item text-center">
+            <a href="/atom.xml">
+                <i class="iconfont social-icon icon-rss"></i>
+                <span class="menu-title hidden lg:inline">menu.rss</span>
+            </a>
+        </span>
+    
+</div>
+
+
+    </nav>
+</header>
+
+        <section class="main-section">
+            
+    <main class="flex-1 px-4 py-14 md:px-5 lg:px-8 lg:py-4 relative min-h-screen">
+    
+
+    <article class="content article article-archives article-type-list" itemscope="">
+        <header class="article-header">
+            
+    
+        <h1 class="article-title text-lg" itemprop="name">
+            经典模型：MoCo
+        </h1>
+    
+
+
+
+            <p class="article-meta mb-3 text-xs">
+                <span class="article-date">
+    <i class="iconfont icon-calendar-check"></i>
+	<a href="/2022/10/22/%E7%BB%8F%E5%85%B8%E6%A8%A1%E5%9E%8B%EF%BC%9AMoCo/" class="article-date">
+	  <time datetime="2022-10-22T11:04:38.000Z" itemprop="datePublished">10月 22</time>
+	</a>
+</span>
+
+                
+
+                
+    <span class="article-tags">
+    <i class="iconfont icon-tag"></i>
+    <a class="article-tag-none-link" href="/tags/%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0/" rel="tag">对比学习</a>
+  </span>
+
+
+                <span class="_partial/post-comment"><i class="icon icon-comment"></i>
+                    <a href="/2022/10/22/%E7%BB%8F%E5%85%B8%E6%A8%A1%E5%9E%8B%EF%BC%9AMoCo/#comments" class="article-comment-link">
+                        评论
+                    </a>
+                </span>
+                
+    
+        <span class="post-wordcount" itemprop="wordCount">字数统计: 1.1k(字)</span>
+    
+    
+        <span class="post-readcount" itemprop="timeRequired">阅读时长: 3(分)</span>
+    
+
+
+            </p>
+        </header>
+        <div class="marked-body article-body">
+            <p>MoCo系列是在视觉领域使用对比学习的里程碑之作。共推出了三个版本。</p>
+<h2 id="MoCo-v1"><a href="#MoCo-v1" class="headerlink" title="MoCo v1"></a>MoCo v1</h2><ul>
+<li>论文名称：<em>Momentum Contrast for Unsupervised Visual Representation Learning</em></li>
+<li>发表信息：CVPR 2020，Kaiming He</li>
+<li>主要贡献：提出了一种构造大而一致字典的方法，提供一个稳定的自监督信号。同时MoCo的训练成本相比于其它对比学习方法，更加affordable。</li>
+</ul>
+<h3 id="前置信息"><a href="#前置信息" class="headerlink" title="前置信息"></a>前置信息</h3><h4 id="动量"><a href="#动量" class="headerlink" title="动量"></a>动量</h4><p>$y_t&#x3D;my_{t-1}+(1-m)x_t$，目的是让当前时刻的输出不仅仅依赖于当前时刻的输入，也要考虑上一时刻的输出。</p>
+<p>在MoCo中，作者利用动量的特性，缓慢更新编码器，从而让中间学习字典中的特征尽可能保持一致。</p>
+<h4 id="NCE-Loss-Noise-Contrastive-Estimation"><a href="#NCE-Loss-Noise-Contrastive-Estimation" class="headerlink" title="NCE Loss(Noise Contrastive Estimation)"></a>NCE Loss(Noise Contrastive Estimation)</h4><p>在有监督分类任务中，常使用Cross Entropy Loss计算loss，CE Loss的公式如下所示，其中K表示类别数。</p>
+<p>$$S_i&#x3D;-log\frac{e^i}{\sum^K_{j&#x3D;0}e^j}$$</p>
+<p>将CE Loss应用到对比学习任务上，由于类别数巨大，softmax操作将失效，同时由于样本数多，计算复杂度极高。为了解决这个问题，在对比学习中提出了NCE Loss，进行了如下改进：</p>
+<ol>
+<li>将类别数归为data sample和noise sample两类；</li>
+<li>只从数据集中抽取部分作为noise sample去计算。（样本越大，近似效果越好，因此MoCo要构造一个大字典）</li>
+</ol>
+<h3 id="核心思想"><a href="#核心思想" class="headerlink" title="核心思想"></a>核心思想</h3><h4 id="动态字典"><a href="#动态字典" class="headerlink" title="动态字典"></a>动态字典</h4><p>在NLP任务中，对比学习取得了很好的效果，因为NLP任务中的输入来自离散的信号空间，可以生成tokenize的字典，可以利用这个字典，展开无监督的学习（把字典中的每个key看作一个类别，构造有监督学习范式），建模比较容易。而视觉任务的输入是在一个连续的、高维的空间中，语义信息较弱。</p>
+<p>作者受NLP任务的启发，将对比学习中的正负样本生成过程，看作NLP中构造字典的过程。对于如下对比学习过程，$x_1$代表原始图像，$x_1^1$和$x_1^2$是对其经过两种不同的变换得到的，一般把前者看作anchor，后者看作positive，将anchor和positive输入编码器$E_{11}$和$E_{12}$（两个编码器模型可以相同，也可以不同），得到两个输出特征$f_{11}$和$f_{12}$，对于其它的原始图像，全部看作相对于anchor的negative，经过编码器$E_{12}$得到输出特征。</p>
+<p>字典是针对&#x3D;&#x3D;特征&#x3D;&#x3D;而言的，作者将$f_{11}$看作NLP中的query，其余特征全部看作key。</p>
+<img src="/2022/10/22/%E7%BB%8F%E5%85%B8%E6%A8%A1%E5%9E%8B%EF%BC%9AMoCo/image-20221023100541076.png" alt="image-20221023100541076" style="zoom:67%; margin:auto;">
+
+<p>作者认为，为了获得良好的效果，字典应该具有两个特性：</p>
+<ol>
+<li>尽可能的大（更好地从连续的高维的空间中做抽样）</li>
+<li>在训练时保持一致性（字典中的key使用相同或相似的编码器得到，使得其与query对比时，不受编码器不同的干扰）</li>
+</ol>
+<h3 id="模型结构"><a href="#模型结构" class="headerlink" title="模型结构"></a>模型结构</h3><p>Moco模型的结构与上述结构类似，只有queue和momentum encoder两部分有所不同。</p>
+<img src="/2022/10/22/%E7%BB%8F%E5%85%B8%E6%A8%A1%E5%9E%8B%EF%BC%9AMoCo/image-20221023162341556.png" alt="image-20221023162341556" style="zoom: 67%; margin: auto;">
+
+<ul>
+<li>queue：用队列存储字典，当新的mini-batch的特征进入字典时，队首的特征需要移出队列，并非每次更新整个字典，因此字典的大小可以设的非常大。</li>
+<li>momentum encoder：为了使得队列中的特征尽量保持一致，采用动量策略限制编码器的更新。</li>
+</ul>
+<p>通过队列与动量编码器两种策略，MoCo实现了构造一个又大又一致的字典。</p>
+<h4 id="对比学习配置"><a href="#对比学习配置" class="headerlink" title="对比学习配置"></a>对比学习配置</h4><ul>
+<li><p>代理任务：InstDisc，若query和key是同一个图像的不同视角，则认为其可配对。</p>
+</li>
+<li><p>损失函数：InfoNCE，NCE loss的变体，作者任务将分类问题看作简单的二分类还是太粗暴了，Info loss直观地看是一个K+1类的CE Loss（其中K是负样本数），目的是把q分成$k_+$这一类。</p>
+</li>
+</ul>
+<img src="/2022/10/22/%E7%BB%8F%E5%85%B8%E6%A8%A1%E5%9E%8B%EF%BC%9AMoCo/image-20221023171055941.png" alt="image-20221023171055941" style="zoom: 50%; margin:auto;">
+
+<ol>
+<li><p>其中超参数是一个温度参数，用于控制分布形状。</p>
+<ol start="2">
+<li>当温度参数变小时，分布将变得更集中（模型将只关注困难样本，将导致模型难以收敛，不好泛化）。</li>
+</ol>
+</li>
+</ol>
+
+        </div>
+        
+<blockquote class="copyright">
+    <p><strong>本文链接 : </strong><a class="permalink" href="https://ymyforever.netlify.app/2022/10/22/%E7%BB%8F%E5%85%B8%E6%A8%A1%E5%9E%8B%EF%BC%9AMoCo/">https://ymyforever.netlify.app/2022/10/22/经典模型：MoCo/</a></p>
+    <p><strong>This article is available under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer">Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</a> License</strong></p>
+</blockquote>
+
+
+    </article>
+    
+    <section id="comments">
+        
+    </section>
+
+
+    
+
+</main>
+
+
+<aside style="" id="sidebar" class="aside aside-fixture">
+    <div class="toc-sidebar">
+        <nav id="toc" class="article-toc">
+            <h3 class="toc-title">文章目录</h3>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#MoCo-v1"><span class="toc-number">1.</span> <span class="toc-text">MoCo v1</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%8D%E7%BD%AE%E4%BF%A1%E6%81%AF"><span class="toc-number">1.1.</span> <span class="toc-text">前置信息</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8A%A8%E9%87%8F"><span class="toc-number">1.1.1.</span> <span class="toc-text">动量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#NCE-Loss-Noise-Contrastive-Estimation"><span class="toc-number">1.1.2.</span> <span class="toc-text">NCE Loss(Noise Contrastive Estimation)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E6%80%9D%E6%83%B3"><span class="toc-number">1.2.</span> <span class="toc-text">核心思想</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E5%AD%97%E5%85%B8"><span class="toc-number">1.2.1.</span> <span class="toc-text">动态字典</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E7%BB%93%E6%9E%84"><span class="toc-number">1.3.</span> <span class="toc-text">模型结构</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0%E9%85%8D%E7%BD%AE"><span class="toc-number">1.3.1.</span> <span class="toc-text">对比学习配置</span></a></li></ol></li></ol></li></ol>
+        </nav>
+    </div>
+</aside>
+
+
+
+
+
+        </section>
+        <footer class="hidden lg:block fixed bottom-0 left-0 sm:w-1/12 lg:w-1/6 bg-gray-100 z-40">
+    
+    <div class="footer-social-links">
+        
+            <a target="_blank" rel="noopener" href="https://github.com/ymy-forever">
+                <i class="iconfont icon-github"></i>
+            </a>
+        
+            <a href="/atom.xml">
+                <i class="iconfont icon-rss"></i>
+            </a>
+        
+    </div>
+    
+    
+</footer>
+
+        <div id="mask" class="hidden mask fixed inset-0 bg-gray-900 opacity-75 z-40"></div>
+        <div id="search-view-container" class="hidden shadow-xl"></div>
+        
+<script src="/js/dom-event.min.js"></script>
+
+
+
+<script src="/js/local-search.min.js"></script>
+
+
+
+    <script src="//cdn.jsdelivr.net/npm/lightgallery.js@1.1.3/dist/js/lightgallery.min.js"></script>
+    
+<script src="/js/light-gallery.min.js"></script>
+
+
+
+
+
+
+    </body>
+</html>

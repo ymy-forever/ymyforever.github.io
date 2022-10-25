@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html  lang="zh-CN" >
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, maximum-scale=5, viewport-fit=cover">
+    <title>论文阅读：The Way to my Heart is through Contrastive Learning:Remote PPG from Unlabelled Video | ymy is watching u!!!!</title>
+    <meta name="description" content="发表信息：ICCV 2021 参考博客：https:&#x2F;&#x2F;blog.csdn.net&#x2F;m0_46792836&#x2F;article&#x2F;details&#x2F;122203112 Code：https:&#x2F;&#x2F;github.com&#x2F;ToyotaResearchInstitute&#x2F;RemotePPG  模型结构基于对比学习的自监督心率估计模型如下图所示，模型流程如下： 首先从一段视频中抽取W秒的视频$x_a$，将$x_a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="论文阅读：The Way to my Heart is through Contrastive Learning:Remote PPG from Unlabelled Video">
+<meta property="og:url" content="https://ymyforever.netlify.app/2022/10/17/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AThe-Way-to-my-Heart-is-through-Contrastive-Learning-Remote-PPG-from-Unlabelled-Video/index.html">
+<meta property="og:site_name" content="ymy is watching u!!!!">
+<meta property="og:description" content="发表信息：ICCV 2021 参考博客：https:&#x2F;&#x2F;blog.csdn.net&#x2F;m0_46792836&#x2F;article&#x2F;details&#x2F;122203112 Code：https:&#x2F;&#x2F;github.com&#x2F;ToyotaResearchInstitute&#x2F;RemotePPG  模型结构基于对比学习的自监督心率估计模型如下图所示，模型流程如下： 首先从一段视频中抽取W秒的视频$x_a$，将$x_a">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ymyforever.netlify.app/2022/10/17/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AThe-Way-to-my-Heart-is-through-Contrastive-Learning-Remote-PPG-from-Unlabelled-Video/image-20221020174825059.png">
+<meta property="og:image" content="https://ymyforever.netlify.app/2022/10/17/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AThe-Way-to-my-Heart-is-through-Contrastive-Learning-Remote-PPG-from-Unlabelled-Video/image-20221021090651144.png">
+<meta property="og:image" content="https://ymyforever.netlify.app/2022/10/17/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AThe-Way-to-my-Heart-is-through-Contrastive-Learning-Remote-PPG-from-Unlabelled-Video/image-20221021091723473.png">
+<meta property="og:image" content="https://ymyforever.netlify.app/2022/10/17/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AThe-Way-to-my-Heart-is-through-Contrastive-Learning-Remote-PPG-from-Unlabelled-Video/image-20221021093510555.png">
+<meta property="og:image" content="https://ymyforever.netlify.app/2022/10/17/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AThe-Way-to-my-Heart-is-through-Contrastive-Learning-Remote-PPG-from-Unlabelled-Video/image-20221021094926639.png">
+<meta property="og:image" content="https://ymyforever.netlify.app/2022/10/17/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AThe-Way-to-my-Heart-is-through-Contrastive-Learning-Remote-PPG-from-Unlabelled-Video/image-20221021183916735.png">
+<meta property="article:published_time" content="2022-10-17T10:08:15.000Z">
+<meta property="article:modified_time" content="2022-10-25T07:12:31.600Z">
+<meta property="article:author" content="ymy">
+<meta property="article:tag" content="rPPG">
+<meta property="article:tag" content="对比学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ymyforever.netlify.app/2022/10/17/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AThe-Way-to-my-Heart-is-through-Contrastive-Learning-Remote-PPG-from-Unlabelled-Video/image-20221020174825059.png">
+
+    
+    <link rel="icon" href="/images.fvicon.ico" type="image/x-icon">
+
+    
+<link rel="stylesheet" href="/css/common.min.css">
+
+
+
+    
+    
+    
+    
+        <link href="//cdn.jsdelivr.net/npm/lightgallery.js@1.1.3/dist/css/lightgallery.min.css" rel="stylesheet">
+    
+    
+    
+<link rel="stylesheet" href="/css/iconfont.min.css">
+
+    
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+    <body>
+        <header class="header header-fixture">
+    <div class="profile-search-wrap flex sm:block">
+        
+        
+        <div class="profile sm:text-center md:px-1 lg:px-3 sm:pb-4 sm:pt-6">
+            <a id="avatar" role="link" href="https://github.com/ymy-forever" class="inline-block lg:w-16 lg:h-16 w-8 h-8 m-2" target="_blank" rel="noopener" rel="noreferrer" >
+                <img src="/images/logo.png" class="rounded-full" alt="avatar">
+            </a>
+            <h2 id="name" class="hidden lg:block">ymy_forever</h2>
+            <h3 id="title" class="hidden lg:block">Student &amp; Coder</h3>
+            
+            <small id="location" class="hidden lg:block">
+                <i class="iconfont icon-map-icon"></i>
+                Xian, China
+            </small>
+            
+        </div>
+        
+        
+<div class="search flex-1 flex lg:inline-block sm:hidden lg:px-4 lg:mt-2 lg:mb-4 lg:w-full">
+    <form id="search-form" class="my-auto flex-1 lg:border lg:border-solid lg:border-gray-200">
+        <div class="input-group table bg-gray-100 lg:bg-white w-full">
+            <input id="search-input" type="text" placeholder="搜索" class="inline-block w-full bg-gray-100 lg:bg-white p-1">
+            <span class="table-cell">
+                <button name="search tigger button" disabled>
+                    <i class="iconfont icon-search m-2"></i>
+                </button>
+            </span>
+        </div>
+    </form>
+        
+<div id="content-json" data-placeholder="搜索" class="invisible hidden">/content.json</div>
+<script id="search-teamplate" type="text/html" data-path="/content.json">
+    <div>
+        <div class="search-header bg-gray-400">
+            <input id="actual-search-input" model="keyword" ref="input" class="inline-block w-full h-10 px-2 py-1" placeholder="搜索" type="text">
+        </div>
+        <div class="search-result bg-gray-200">
+            {{#each searchPosts}}
+            <a href="/{{ path }}" class="result-item block px-2 pb-3 mb-1 pt-1 hover:bg-indigo-100">
+                <i class="iconfont icon-file"></i>
+                <h1 class="result-title inline font-medium text-lg">{{ title }}</h1>
+                <p class="result-content text-gray-600 text-sm">{{{ text }}}</p>
+            </a>
+            {{/each}}
+        </div>
+    </div>
+</script>
+
+</div>
+
+
+        <button name="menu toogle button" id="menu-toggle-btn" class="block sm:hidden p-3" role="button" aria-expanded="false">
+            <i class="iconfont icon-hamburger"></i>
+        </button>
+    </div>
+    <nav id="menu-nav" class="hidden sm:flex flex-col">
+        
+        
+            <div class="menu-item menu-home" role="menuitem">
+                <a href="/.">
+                    <i class="iconfont icon-home" aria-hidden="true"></i>
+                    <span class="menu-title">首页</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-archives" role="menuitem">
+                <a href="/archives">
+                    <i class="iconfont icon-archive" aria-hidden="true"></i>
+                    <span class="menu-title">归档</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-tags" role="menuitem">
+                <a href="/tags">
+                    <i class="iconfont icon-tag" aria-hidden="true"></i>
+                    <span class="menu-title">标签</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-about" role="menuitem">
+                <a href="/about">
+                    <i class="iconfont icon-cup" aria-hidden="true"></i>
+                    <span class="menu-title">关于</span>
+                </a>
+            </div>
+        
+        
+<div class="social-links flex sm:flex-col lg:hidden mt-5">
+    
+        <span class="social-item text-center">
+            <a target="_blank" rel="noopener" href="https://github.com/ymy-forever">
+                <i class="iconfont social-icon icon-github"></i>
+                <span class="menu-title hidden lg:inline">menu.github</span>
+            </a>
+        </span>
+    
+        <span class="social-item text-center">
+            <a href="/atom.xml">
+                <i class="iconfont social-icon icon-rss"></i>
+                <span class="menu-title hidden lg:inline">menu.rss</span>
+            </a>
+        </span>
+    
+</div>
+
+
+    </nav>
+</header>
+
+        <section class="main-section">
+            
+    <main class="flex-1 px-4 py-14 md:px-5 lg:px-8 lg:py-4 relative min-h-screen">
+    
+
+    <article class="content article article-archives article-type-list" itemscope="">
+        <header class="article-header">
+            
+    
+        <h1 class="article-title text-lg" itemprop="name">
+            论文阅读：The Way to my Heart is through Contrastive Learning:Remote PPG from Unlabelled Video
+        </h1>
+    
+
+
+
+            <p class="article-meta mb-3 text-xs">
+                <span class="article-date">
+    <i class="iconfont icon-calendar-check"></i>
+	<a href="/2022/10/17/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AThe-Way-to-my-Heart-is-through-Contrastive-Learning-Remote-PPG-from-Unlabelled-Video/" class="article-date">
+	  <time datetime="2022-10-17T10:08:15.000Z" itemprop="datePublished">10月 17</time>
+	</a>
+</span>
+
+                
+
+                
+    <span class="article-tags">
+    <i class="iconfont icon-tag"></i>
+    <a class="article-tag-none-link" href="/tags/rPPG/" rel="tag">rPPG</a>, <a class="article-tag-none-link" href="/tags/%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0/" rel="tag">对比学习</a>
+  </span>
+
+
+                <span class="_partial/post-comment"><i class="icon icon-comment"></i>
+                    <a href="/2022/10/17/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AThe-Way-to-my-Heart-is-through-Contrastive-Learning-Remote-PPG-from-Unlabelled-Video/#comments" class="article-comment-link">
+                        评论
+                    </a>
+                </span>
+                
+    
+        <span class="post-wordcount" itemprop="wordCount">字数统计: 1.4k(字)</span>
+    
+    
+        <span class="post-readcount" itemprop="timeRequired">阅读时长: 5(分)</span>
+    
+
+
+            </p>
+        </header>
+        <div class="marked-body article-body">
+            <ul>
+<li>发表信息：ICCV 2021</li>
+<li>参考博客：<a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_46792836/article/details/122203112">https://blog.csdn.net/m0_46792836/article/details/122203112</a></li>
+<li>Code：<a target="_blank" rel="noopener" href="https://github.com/ToyotaResearchInstitute/RemotePPG">https://github.com/ToyotaResearchInstitute/RemotePPG</a></li>
+</ul>
+<h2 id="模型结构"><a href="#模型结构" class="headerlink" title="模型结构"></a>模型结构</h2><p>基于对比学习的自监督心率估计模型如下图所示，模型流程如下：</p>
+<p>首先从一段视频中抽取W秒的视频$x_a$，将$x_a$输入显著性采样器S，得到扭曲的视频切片$x^s_a$，对于$x^s_a$，通过几种不同的操作输入PPG信号估计器$g_{\theta}$：</p>
+<ol>
+<li>直接输入信号估计器，得到预测值$y_a$；</li>
+<li>从先验分布中采样随机频率比$r_f$，将$r_f$与$x^s_a$输入频率重采样器R，得到负样本$x_n^s$，将负样本输入信号估计器得到负样本的PPG信号$y_n$；</li>
+<li>对负样本的PPG信号$y_n$，使用$r_f$的逆进行重采样，得到正样本的PPG信号$y_p$。</li>
+</ol>
+<p>对于得到的三个输出$y_a,y_n,y_p$，使用PSE、MSE度量距离，使得$y_a$与$y_n$的距离尽可能远，$y_a$与$y_p$的距离尽可能接近。</p>
+<img src="/2022/10/17/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AThe-Way-to-my-Heart-is-through-Contrastive-Learning-Remote-PPG-from-Unlabelled-Video/image-20221020174825059.png" alt="image-20221020174825059" style="zoom:67%; margin:auto;">
+
+<h3 id="显著性采样器【可选】"><a href="#显著性采样器【可选】" class="headerlink" title="显著性采样器【可选】"></a>显著性采样器【可选】</h3><p>输入的视频序列要经过一个显著性采样器S的处理。在模型中，使用一个截断的ResNet18网络（使用ImageNet上的预训练网络初始化）作为显著性采样器，使用显著性采样器有两个目的：</p>
+<ol>
+<li>为rPPG估计器正在学习的内容提供透明度，当标注数据少时有意义；</li>
+<li>对输入图像进行变形，以在空间上加强任务显著性区域。</li>
+</ol>
+<p>对于显著性采样器，使用两个损失项进行训练：</p>
+<img src="/2022/10/17/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AThe-Way-to-my-Heart-is-through-Contrastive-Learning-Remote-PPG-from-Unlabelled-Video/image-20221021090651144.png" alt="image-20221021090651144" style="zoom: 67%; margin:auto;">
+
+<ul>
+<li>Sparsitiy：$s_i^j$指的是显著性map中第i帧的位置j处的值，这个损失项偏向于熵更小，也就是空间上稀疏的解（只关注重点区域）。</li>
+<li>Temporal：$d_{i,i+1}^j$指的是相邻两帧在像素j的显著性差异，这个损失项偏向于相邻帧间平滑的解。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># apply sparsity loss </span></span><br><span class="line"><span class="keyword">if</span> args.ss_sparsity &gt; <span class="number">0</span>:</span><br><span class="line">    entropy = -torch.<span class="built_in">sum</span>(torch.log(ss_out[<span class="number">1</span>].view(-<span class="number">1</span>)) * ss_out[<span class="number">1</span>].view(-<span class="number">1</span>))</span><br><span class="line">    loss += entropy * args.ss_sparsity / torch.numel(ss_out[<span class="number">1</span>])</span><br><span class="line"><span class="comment"># apply temporal consistency loss</span></span><br><span class="line"><span class="keyword">if</span> args.ss_temporal &gt; <span class="number">0</span>:</span><br><span class="line">    ss_diff = ss_out[<span class="number">1</span>][:,<span class="number">1</span>:,:,:,:] - ss_out[<span class="number">1</span>][:,:-<span class="number">1</span>,:,:,:]</span><br><span class="line">    ssd = torch.<span class="built_in">sum</span>(ss_diff.view(-<span class="number">1</span>) * ss_diff.view(-<span class="number">1</span>))</span><br><span class="line">    loss += ssd * args.ss_temporal / torch.numel(ss_out[<span class="number">1</span>])</span><br></pre></td></tr></table></figure>
+
+<p>经过训练后，对显著性图进行可视化如图所示：</p>
+<img src="/2022/10/17/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AThe-Way-to-my-Heart-is-through-Contrastive-Learning-Remote-PPG-from-Unlabelled-Video/image-20221021091723473.png" alt="image-20221021091723473" style="zoom:67%; margin:auto;">
+
+<h3 id="PPG估计器"><a href="#PPG估计器" class="headerlink" title="PPG估计器"></a>PPG估计器</h3><p>使用PhysNet的改进版本作为PPG估计器，主要是修改了PhysNet的Decoder部分，作者认为PhysNet在将输出返回到原始视频长度时，在输出的PPG信号中引入了混叠，作者在这里采用上采样插值与3D卷积消除混叠。PPG估计器的模型架构如下图所示：</p>
+<img src="/2022/10/17/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AThe-Way-to-my-Heart-is-through-Contrastive-Learning-Remote-PPG-from-Unlabelled-Video/image-20221021093510555.png" alt="image-20221021093510555" style="zoom: 67%; margin:auto;">
+
+<h2 id="对比学习关注问题"><a href="#对比学习关注问题" class="headerlink" title="对比学习关注问题"></a>对比学习关注问题</h2><h3 id="正负样本构造"><a href="#正负样本构造" class="headerlink" title="正负样本构造"></a>正负样本构造</h3><p>通过模型部分的介绍，我们知道，负样本是通过重采样得到的，作者选用与原始输入频率不同的输入作为负样本。</p>
+<img src="/2022/10/17/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AThe-Way-to-my-Heart-is-through-Contrastive-Learning-Remote-PPG-from-Unlabelled-Video/image-20221021094926639.png" alt="image-20221021094926639" style="zoom:67%; margin:auto;">
+
+<p>从代码中可以更具体地看到实现细节：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># iccv\src\archs\FrequencyContrast.py</span></span><br><span class="line"></span><br><span class="line">D = x_a.shape[<span class="number">2</span>]	<span class="comment"># 每个视频片段的帧数</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Resample input</span></span><br><span class="line">freq_factor = <span class="number">1.25</span> + (torch.rand(<span class="number">1</span>, device=x_a.device) / <span class="number">4</span>)	<span class="comment"># 随机产生1.25~1.5之间的频率因子</span></span><br><span class="line">target_size = <span class="built_in">int</span>(D / freq_factor)	</span><br><span class="line">resampler = nn.Upsample(size=(target_size, x_a.shape[<span class="number">3</span>], x_a.shape[<span class="number">4</span>]),</span><br><span class="line">                        mode=<span class="string">&#x27;trilinear&#x27;</span>,align_corners=<span class="literal">False</span>)	</span><br><span class="line">x_n = resampler(x_a)	<span class="comment"># [B, C, target_size, w, h]</span></span><br><span class="line">x_n = F.pad(x_n, (<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, D - target_size))<span class="comment"># &gt;&gt; [B, C, D, W, H]</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Pass both samples through backbone</span></span><br><span class="line">y_a = self.backbone(x_a).squeeze(<span class="number">4</span>).squeeze(<span class="number">3</span>)	</span><br><span class="line">y_n = self.backbone(x_n).squeeze(<span class="number">4</span>).squeeze(<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Remove padding from negative branch</span></span><br><span class="line">y_n = y_n[:,:,:target_size]	<span class="comment"># [B, 1, target_size]	# 负样本</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Resample negative PPG to create positive branch</span></span><br><span class="line">self.upsampler = nn.Upsample(size=(dataset.options.D,), mode=<span class="string">&#x27;linear&#x27;</span>, align_corners=<span class="literal">False</span>)	</span><br><span class="line">y_p = self.upsampler(y_n)	<span class="comment"># 正样本</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h3><p>使用多视角三态损失（MVTL）作为对比训练的损失函数，根据作者的假设，心率在一定的时间内是相对稳定的，即在每个视图中的信号应该是相似的。</p>
+<p>MVTL计算锚点和正视图的所有组合的距离$P_{tot}$，锚点和负视图的所有组合的距离$N_{tot}$，使用$P_{tot}-N_{tot}$并使用$V_{N^2}$进行调节，作为监督学习的损失。在论文中，使用视频视图$V_N&#x3D;4$，视频长度$V_L&#x3D;5s$。</p>
+<p>对于$P_{tot}$和$N_{tot}$的计算，使用PSD MSE（功率谱密度均方误差）作为两个PPG信号间的距离度量，首先计算每个信号的PSD，然后使用MSE计算误差。</p>
+<p>MVTL的计算代码如下所示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># iccv\src\losses\MultiViewTripletLoss.py</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Calculate NormPSD for each branch, if needed</span></span><br><span class="line">num_temp_views = <span class="built_in">len</span>(branches[<span class="string">&#x27;anc&#x27;</span>])	<span class="comment"># num_views</span></span><br><span class="line"><span class="keyword">if</span> self.norm_psd <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">    <span class="keyword">for</span> key <span class="keyword">in</span> branches.keys():</span><br><span class="line">        <span class="keyword">for</span> temp_i <span class="keyword">in</span> <span class="built_in">range</span>(num_temp_views):</span><br><span class="line">            branches[key][temp_i] = self.norm_psd(branches[key][temp_i])	<span class="comment"># 计算PSD</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Tally the triplet loss</span></span><br><span class="line">pos_loss = self.compare_view_lists(branches[<span class="string">&#x27;anc&#x27;</span>], branches[<span class="string">&#x27;pos&#x27;</span>])</span><br><span class="line"><span class="comment"># 计算两分支views间的loss</span></span><br><span class="line">neg_loss = self.compare_view_lists(branches[<span class="string">&#x27;anc&#x27;</span>], branches[<span class="string">&#x27;neg&#x27;</span>])	</span><br><span class="line"><span class="keyword">return</span> (pos_loss - neg_loss) / num_temp_views * num_temp_views</span><br></pre></td></tr></table></figure>
+
+<h3 id="学习模型的选择与使用"><a href="#学习模型的选择与使用" class="headerlink" title="学习模型的选择与使用"></a>学习模型的选择与使用</h3><p>由于对比学习没有标注数据，作者使用<strong>无关功率比IPR</strong>作为验证指标，首先对输出PPG信号计算PSD，将信号频率分为相关频率（根据文章假设选取40-250bpm）与无关频率，IPR即不相关范围内的功率&#x2F;总功率，从在验证集上损失最小的epoch中，选取IPR最低的模型。</p>
+<h2 id="一些思考"><a href="#一些思考" class="headerlink" title="一些思考"></a>一些思考</h2><ol>
+<li>显著性采样器好像并没有太大效果，甚至在对比学习任务上取得了负效果。</li>
+</ol>
+<img src="/2022/10/17/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AThe-Way-to-my-Heart-is-through-Contrastive-Learning-Remote-PPG-from-Unlabelled-Video/image-20221021183916735.png" alt="image-20221021183916735" style="zoom: 67%; margin:auto;">
+
+<ol start="2">
+<li>正负样本的构造方法、以及对比学习技术的应用，或许可以基于一些新的对比学习方法，需要再学习一下。</li>
+<li>既然可以考虑自监督的任务，那么是否也可以考虑连续学习、迁移学习、域自适应任务？</li>
+</ol>
+
+        </div>
+        
+<blockquote class="copyright">
+    <p><strong>本文链接 : </strong><a class="permalink" href="https://ymyforever.netlify.app/2022/10/17/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AThe-Way-to-my-Heart-is-through-Contrastive-Learning-Remote-PPG-from-Unlabelled-Video/">https://ymyforever.netlify.app/2022/10/17/论文阅读：The-Way-to-my-Heart-is-through-Contrastive-Learning-Remote-PPG-from-Unlabelled-Video/</a></p>
+    <p><strong>This article is available under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer">Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</a> License</strong></p>
+</blockquote>
+
+
+    </article>
+    
+    <section id="comments">
+        
+    </section>
+
+
+    
+
+</main>
+
+
+<aside style="" id="sidebar" class="aside aside-fixture">
+    <div class="toc-sidebar">
+        <nav id="toc" class="article-toc">
+            <h3 class="toc-title">文章目录</h3>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E7%BB%93%E6%9E%84"><span class="toc-number">1.</span> <span class="toc-text">模型结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%98%BE%E8%91%97%E6%80%A7%E9%87%87%E6%A0%B7%E5%99%A8%E3%80%90%E5%8F%AF%E9%80%89%E3%80%91"><span class="toc-number">1.1.</span> <span class="toc-text">显著性采样器【可选】</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PPG%E4%BC%B0%E8%AE%A1%E5%99%A8"><span class="toc-number">1.2.</span> <span class="toc-text">PPG估计器</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0%E5%85%B3%E6%B3%A8%E9%97%AE%E9%A2%98"><span class="toc-number">2.</span> <span class="toc-text">对比学习关注问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AD%A3%E8%B4%9F%E6%A0%B7%E6%9C%AC%E6%9E%84%E9%80%A0"><span class="toc-number">2.1.</span> <span class="toc-text">正负样本构造</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0"><span class="toc-number">2.2.</span> <span class="toc-text">损失函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E7%9A%84%E9%80%89%E6%8B%A9%E4%B8%8E%E4%BD%BF%E7%94%A8"><span class="toc-number">2.3.</span> <span class="toc-text">学习模型的选择与使用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83"><span class="toc-number">3.</span> <span class="toc-text">一些思考</span></a></li></ol>
+        </nav>
+    </div>
+</aside>
+
+
+
+
+
+        </section>
+        <footer class="hidden lg:block fixed bottom-0 left-0 sm:w-1/12 lg:w-1/6 bg-gray-100 z-40">
+    
+    <div class="footer-social-links">
+        
+            <a target="_blank" rel="noopener" href="https://github.com/ymy-forever">
+                <i class="iconfont icon-github"></i>
+            </a>
+        
+            <a href="/atom.xml">
+                <i class="iconfont icon-rss"></i>
+            </a>
+        
+    </div>
+    
+    
+</footer>
+
+        <div id="mask" class="hidden mask fixed inset-0 bg-gray-900 opacity-75 z-40"></div>
+        <div id="search-view-container" class="hidden shadow-xl"></div>
+        
+<script src="/js/dom-event.min.js"></script>
+
+
+
+<script src="/js/local-search.min.js"></script>
+
+
+
+    <script src="//cdn.jsdelivr.net/npm/lightgallery.js@1.1.3/dist/js/lightgallery.min.js"></script>
+    
+<script src="/js/light-gallery.min.js"></script>
+
+
+
+
+
+
+    </body>
+</html>
