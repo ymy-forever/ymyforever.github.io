@@ -13,7 +13,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://ymyforever.netlify.app/2022/10/20/%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0/image-20221022163248461.png">
 <meta property="article:published_time" content="2022-10-20T08:17:51.000Z">
-<meta property="article:modified_time" content="2022-10-25T07:10:24.068Z">
+<meta property="article:modified_time" content="2022-10-25T07:22:22.447Z">
 <meta property="article:author" content="ymy">
 <meta property="article:tag" content="对比学习">
 <meta property="article:tag" content="综述">
@@ -28,6 +28,8 @@
 
 
 
+    
+        <link href="//cdn.jsdelivr.net/npm/katex@0.9.0/dist/katex.min.css" rel="stylesheet">
     
     
     
@@ -195,7 +197,7 @@
                 </span>
                 
     
-        <span class="post-wordcount" itemprop="wordCount">字数统计: 681(字)</span>
+        <span class="post-wordcount" itemprop="wordCount">字数统计: 669(字)</span>
     
     
         <span class="post-readcount" itemprop="timeRequired">阅读时长: 2(分)</span>
@@ -210,7 +212,7 @@
 <li>参考视频：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV19S4y1M7hm">https://www.bilibili.com/video/BV19S4y1M7hm</a></li>
 </ul>
 <h2 id="何为对比学习？"><a href="#何为对比学习？" class="headerlink" title="何为对比学习？"></a>何为对比学习？</h2><p>对比学习是无监督或自监督学习方法的一种，其思想与NLP领域中的Bert类似，即从大量的无标签数据中吸取图像的先验知识分布，再在下游任务上微调，从而将预训练学习到的知识，迁移到下游任务上。</p>
-<p>对比学习是一种判别式自监督学习方法，对于对比学习，尚不存在明确的定义，但其存在一套固定的指导原则：通过&#x3D;&#x3D;构造相似实例和不相似实例&#x3D;&#x3D;，训练得到一个&#x3D;&#x3D;表示学习模型&#x3D;&#x3D;，通过这个模型，使得相似的实例在投影空间中比较接近，不相似的实例在投影空间中距离比较远，然后将这个表示学习模型用到下游任务上进行&#x3D;&#x3D;微调&#x3D;&#x3D;。</p>
+<p>对比学习是一种判别式自监督学习方法，对于对比学习，尚不存在明确的定义，但其存在一套固定的指导原则：通过==构造相似实例和不相似实例==，训练得到一个==表示学习模型==，通过这个模型，使得相似的实例在投影空间中比较接近，不相似的实例在投影空间中距离比较远，然后将这个表示学习模型用到下游任务上进行==微调==。</p>
 <p>对比学习有如下几个关键点：</p>
 <ol>
 <li>如何构造相似、不相似实例；</li>
@@ -231,8 +233,7 @@
 <p>负样本：所有其它图片</p>
 <p>损失函数：使用NCE Loss作为对比学习的损失函数</p>
 <p>Memory Bank：存储所有图片的特征，memory bank里的特征是动量更新的。</p>
-<img src="/2022/10/20/%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0/image-20221022163248461.png" alt="image-20221022163248461" style="zoom:80%; margin:auto;">
-
+<p><img src="/2022/10/20/%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0/image-20221022163248461.png" alt="image-20221022163248461" style="zoom:80%; margin:auto;"></p>
 <p>主要贡献：</p>
 <ol>
 <li>提出了代理任务<strong>个体判别</strong>，将每个实例看作一个类别，目的是学习一个特征，从而把每个图片区分开来。</li>
