@@ -19,7 +19,7 @@
 <meta property="og:image" content="https://ymyforever.netlify.app/2022/10/27/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ARhythmNet-End-to-End-Heart-Rate-Estimation-From-Face-via-Spatial-Temporal-Representation/image-20221028135023127.png">
 <meta property="og:image" content="https://ymyforever.netlify.app/2022/10/27/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ARhythmNet-End-to-End-Heart-Rate-Estimation-From-Face-via-Spatial-Temporal-Representation/image-20221028140443111.png">
 <meta property="article:published_time" content="2022-10-27T00:50:59.000Z">
-<meta property="article:modified_time" content="2022-10-28T06:36:01.070Z">
+<meta property="article:modified_time" content="2022-10-28T06:43:23.700Z">
 <meta property="article:author" content="ymy">
 <meta property="article:tag" content="rPPG">
 <meta name="twitter:card" content="summary">
@@ -33,6 +33,8 @@
 
 
 
+    
+        <link href="//cdn.jsdelivr.net/npm/katex@0.9.0/dist/katex.min.css" rel="stylesheet">
     
     
     
@@ -225,7 +227,7 @@
 <p>现存的非接触式的HR估计方法都是基于rPPG的方法，原因是在约束较少的场景下，面部的颜色变化比微弱的头部运动更容易捕捉。</p>
 <p>（2021年有篇文章用多模态的方法，联合使用了rPPG和BCG信号。）</p>
 <h3 id="GRU-Gated-Recurrent-Unit"><a href="#GRU-Gated-Recurrent-Unit" class="headerlink" title="GRU(Gated Recurrent Unit)"></a>GRU(Gated Recurrent Unit)</h3><p>GRU是循环神经网络的一种，也是为了解决长期记忆和反向传播中的梯度等问题提出来的。其效果与LSTM相似，但更容易训练，其输入输出结构与普通RNN相同，如图所示，其中$x^t$表示当前节点的输入，$h^{t-1}$表示上一个节点传下来的隐状态。</p>
-<img src="https://pic2.zhimg.com/v2-49244046a83e30ef2383b94644bf0f31_r.jpg" alt="img" style="zoom: 50%;">
+<img src="https://pic2.zhimg.com/v2-49244046a83e30ef2383b94644bf0f31_r.jpg" alt="img" style="zoom: 50%; margin:auto;">
 
 <h2 id="模型评价"><a href="#模型评价" class="headerlink" title="模型评价"></a>模型评价</h2><p>模型旨在实现在低约束场景下的HR估计，包括人体姿势变化、光照变化和设备差异。</p>
 <h3 id="创新点"><a href="#创新点" class="headerlink" title="创新点"></a>创新点</h3><ol>
