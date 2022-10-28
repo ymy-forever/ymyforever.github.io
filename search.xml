@@ -1347,9 +1347,7 @@ B-->C[测量心动周期相关生理指标心率和心跳变异性等]</pre>
 <img src="/2022/10/25/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ADual-GAN-Joint-BVP-and-Noise-Modeling-for-Remote-Physiological-Measurement/image-20221026210717463.png" alt="image-20221026210717463" style="zoom:67%; margin:auto;">
 
 <ol start="3">
-<li><p>训练BVP信号估计器和噪声生成器。通过最小化Ljoint（使得生成的与真实的尽可能接近）训练得到BVP信号估计器的噪声生成器。</p>
-<p><strong>与步骤1训练得到的BVP信号估计器相比，此时的BVP信号估计器具有过滤噪声的能力。</strong></p>
-</li>
+<li>训练BVP信号估计器和噪声生成器。通过最小化Ljoint（使得生成的与真实的尽可能接近）训练得到BVP信号估计器的噪声生成器。</li>
 </ol>
 <img src="/2022/10/25/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ADual-GAN-Joint-BVP-and-Noise-Modeling-for-Remote-Physiological-Measurement/image-20221026211814134.png" alt="image-20221026211814134" style="zoom:67%; margin:auto;">
 
@@ -1416,7 +1414,7 @@ B-->C[测量心动周期相关生理指标心率和心跳变异性等]</pre>
 <li><p>将整个人脸划分为n个ROI块；</p>
 </li>
 <li><p>对于每个ROI，计算ROI在每帧色彩通道上的均值，并将该ROI的信号逐帧连接起来。即得到Txnxc形状的输出即STMap。</p>
-</li>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 对每一帧的ROI在通道上取均值</span></span><br><span class="line"><span class="keyword">for</span> idx, frame <span class="keyword">in</span> <span class="built_in">enumerate</span>(processed_frames[start_frame_index:end_frame_index]):</span><br><span class="line">    roi_blocks = chunkify(frame)</span><br><span class="line">    <span class="comment"># 每一个roi block</span></span><br><span class="line">    <span class="keyword">for</span> block_idx, block <span class="keyword">in</span> <span class="built_in">enumerate</span>(roi_blocks):</span><br><span class="line">        avg_pixels = cv2.mean(block)	<span class="comment"># 按通道取均值</span></span><br><span class="line">        spatio_temporal_map[idx, block_idx, <span class="number">0</span>] = avg_pixels[<span class="number">0</span>]</span><br><span class="line">        spatio_temporal_map[idx, block_idx, <span class="number">1</span>] = avg_pixels[<span class="number">1</span>]</span><br><span class="line">        spatio_temporal_map[idx, block_idx, <span class="number">2</span>] = avg_pixels[<span class="number">2</span>]</span><br></pre></td></tr></table></figure></li>
 </ol>
 <p>⭐这里有一个值得注意的策略是，对于某些帧可能识别不到人脸（当对象移动过快或旋转时），会导致STMap和HR信号的丢失。为了解决这个问题，作者随机对一小部分STMap在时间维度上进行mask，从而模拟这种数据丢失的情况，从而加强RhythmNet的健壮性。</p>
 <h3 id="HR估计模型"><a href="#HR估计模型" class="headerlink" title="HR估计模型"></a>HR估计模型</h3><ul>

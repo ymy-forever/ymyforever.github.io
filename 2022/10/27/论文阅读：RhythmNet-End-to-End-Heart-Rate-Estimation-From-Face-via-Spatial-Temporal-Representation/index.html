@@ -19,7 +19,7 @@
 <meta property="og:image" content="https://ymyforever.netlify.app/2022/10/27/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ARhythmNet-End-to-End-Heart-Rate-Estimation-From-Face-via-Spatial-Temporal-Representation/image-20221028135023127.png">
 <meta property="og:image" content="https://ymyforever.netlify.app/2022/10/27/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ARhythmNet-End-to-End-Heart-Rate-Estimation-From-Face-via-Spatial-Temporal-Representation/image-20221028140443111.png">
 <meta property="article:published_time" content="2022-10-27T00:50:59.000Z">
-<meta property="article:modified_time" content="2022-10-28T06:43:23.700Z">
+<meta property="article:modified_time" content="2022-10-28T08:39:45.123Z">
 <meta property="article:author" content="ymy">
 <meta property="article:tag" content="rPPG">
 <meta name="twitter:card" content="summary">
@@ -202,7 +202,7 @@
                 </span>
                 
     
-        <span class="post-wordcount" itemprop="wordCount">字数统计: 1.1k(字)</span>
+        <span class="post-wordcount" itemprop="wordCount">字数统计: 1.2k(字)</span>
     
     
         <span class="post-readcount" itemprop="timeRequired">阅读时长: 4(分)</span>
@@ -253,7 +253,7 @@
 <li><p>将整个人脸划分为n个ROI块；</p>
 </li>
 <li><p>对于每个ROI，计算ROI在每帧色彩通道上的均值，并将该ROI的信号逐帧连接起来。即得到Txnxc形状的输出即STMap。</p>
-</li>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 对每一帧的ROI在通道上取均值</span></span><br><span class="line"><span class="keyword">for</span> idx, frame <span class="keyword">in</span> <span class="built_in">enumerate</span>(processed_frames[start_frame_index:end_frame_index]):</span><br><span class="line">    roi_blocks = chunkify(frame)</span><br><span class="line">    <span class="comment"># 每一个roi block</span></span><br><span class="line">    <span class="keyword">for</span> block_idx, block <span class="keyword">in</span> <span class="built_in">enumerate</span>(roi_blocks):</span><br><span class="line">        avg_pixels = cv2.mean(block)	<span class="comment"># 按通道取均值</span></span><br><span class="line">        spatio_temporal_map[idx, block_idx, <span class="number">0</span>] = avg_pixels[<span class="number">0</span>]</span><br><span class="line">        spatio_temporal_map[idx, block_idx, <span class="number">1</span>] = avg_pixels[<span class="number">1</span>]</span><br><span class="line">        spatio_temporal_map[idx, block_idx, <span class="number">2</span>] = avg_pixels[<span class="number">2</span>]</span><br></pre></td></tr></table></figure></li>
 </ol>
 <p>⭐这里有一个值得注意的策略是，对于某些帧可能识别不到人脸（当对象移动过快或旋转时），会导致STMap和HR信号的丢失。为了解决这个问题，作者随机对一小部分STMap在时间维度上进行mask，从而模拟这种数据丢失的情况，从而加强RhythmNet的健壮性。</p>
 <h3 id="HR估计模型"><a href="#HR估计模型" class="headerlink" title="HR估计模型"></a>HR估计模型</h3><ul>
