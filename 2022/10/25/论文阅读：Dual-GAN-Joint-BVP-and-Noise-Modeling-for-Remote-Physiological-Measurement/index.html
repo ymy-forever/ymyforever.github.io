@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html  lang="zh-CN" >
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, maximum-scale=5, viewport-fit=cover">
+    <title>论文阅读：Dual-GAN: Joint BVP and Noise Modeling for Remote Physiological Measurement | ymy is watching u!!!!</title>
+    <meta name="description" content="发表信息：CVPR 2021  又是一篇没有代码的论文。。。看个思想吧 前置知识对偶学习参考博客：https:&#x2F;&#x2F;www.jiqizhixin.com&#x2F;articles&#x2F;2016-11-18 对偶学习最早应用在NLP领域，利用互为对偶的人工智能任务（例如中译英和英译中，语音识别和语音合成等），利用互为对偶的任务相互提供反馈，使从没有标注的数据中学习成为可能，为解决无监督学习提供了新的思路。 例如">
+<meta property="og:type" content="article">
+<meta property="og:title" content="论文阅读：Dual-GAN: Joint BVP and Noise Modeling for Remote Physiological Measurement">
+<meta property="og:url" content="https://ymyforever.netlify.app/2022/10/25/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ADual-GAN-Joint-BVP-and-Noise-Modeling-for-Remote-Physiological-Measurement/index.html">
+<meta property="og:site_name" content="ymy is watching u!!!!">
+<meta property="og:description" content="发表信息：CVPR 2021  又是一篇没有代码的论文。。。看个思想吧 前置知识对偶学习参考博客：https:&#x2F;&#x2F;www.jiqizhixin.com&#x2F;articles&#x2F;2016-11-18 对偶学习最早应用在NLP领域，利用互为对偶的人工智能任务（例如中译英和英译中，语音识别和语音合成等），利用互为对偶的任务相互提供反馈，使从没有标注的数据中学习成为可能，为解决无监督学习提供了新的思路。 例如">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pic.36krcnd.com/201708/08083825/nhnzya3bdxiaoz42">
+<meta property="og:image" content="https://ymyforever.netlify.app/2022/10/25/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ADual-GAN-Joint-BVP-and-Noise-Modeling-for-Remote-Physiological-Measurement/image-20221026091934621.png">
+<meta property="og:image" content="https://ymyforever.netlify.app/2022/10/25/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ADual-GAN-Joint-BVP-and-Noise-Modeling-for-Remote-Physiological-Measurement/image-20221026112336966.png">
+<meta property="og:image" content="https://ymyforever.netlify.app/2022/10/25/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ADual-GAN-Joint-BVP-and-Noise-Modeling-for-Remote-Physiological-Measurement/image-20221026214637932.png">
+<meta property="og:image" content="https://ymyforever.netlify.app/2022/10/25/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ADual-GAN-Joint-BVP-and-Noise-Modeling-for-Remote-Physiological-Measurement/image-20221026214808146.png">
+<meta property="og:image" content="https://ymyforever.netlify.app/2022/10/25/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ADual-GAN-Joint-BVP-and-Noise-Modeling-for-Remote-Physiological-Measurement/image-20221026210519839.png">
+<meta property="og:image" content="https://ymyforever.netlify.app/2022/10/25/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ADual-GAN-Joint-BVP-and-Noise-Modeling-for-Remote-Physiological-Measurement/image-20221026210717463.png">
+<meta property="og:image" content="https://ymyforever.netlify.app/2022/10/25/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ADual-GAN-Joint-BVP-and-Noise-Modeling-for-Remote-Physiological-Measurement/image-20221026211814134.png">
+<meta property="article:published_time" content="2022-10-25T08:56:49.000Z">
+<meta property="article:modified_time" content="2022-10-28T06:36:10.887Z">
+<meta property="article:author" content="ymy">
+<meta property="article:tag" content="rPPG">
+<meta property="article:tag" content="GAN">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic.36krcnd.com/201708/08083825/nhnzya3bdxiaoz42">
+
+    
+    <link rel="icon" href="/images.fvicon.ico" type="image/x-icon">
+
+    
+<link rel="stylesheet" href="/css/common.min.css">
+
+
+
+    
+        <link href="//cdn.jsdelivr.net/npm/katex@0.9.0/dist/katex.min.css" rel="stylesheet">
+    
+    
+    
+    
+        <link href="//cdn.jsdelivr.net/npm/lightgallery.js@1.1.3/dist/css/lightgallery.min.css" rel="stylesheet">
+    
+    
+    
+<link rel="stylesheet" href="/css/iconfont.min.css">
+
+    
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+    <body>
+        <header class="header header-fixture">
+    <div class="profile-search-wrap flex sm:block">
+        
+        
+        <div class="profile sm:text-center md:px-1 lg:px-3 sm:pb-4 sm:pt-6">
+            <a id="avatar" role="link" href="https://github.com/ymy-forever" class="inline-block lg:w-16 lg:h-16 w-8 h-8 m-2" target="_blank" rel="noopener" rel="noreferrer" >
+                <img src="/images/logo.png" class="rounded-full" alt="avatar">
+            </a>
+            <h2 id="name" class="hidden lg:block">ymy_forever</h2>
+            <h3 id="title" class="hidden lg:block">Student &amp; Coder</h3>
+            
+            <small id="location" class="hidden lg:block">
+                <i class="iconfont icon-map-icon"></i>
+                Xian, China
+            </small>
+            
+        </div>
+        
+        
+<div class="search flex-1 flex lg:inline-block sm:hidden lg:px-4 lg:mt-2 lg:mb-4 lg:w-full">
+    <form id="search-form" class="my-auto flex-1 lg:border lg:border-solid lg:border-gray-200">
+        <div class="input-group table bg-gray-100 lg:bg-white w-full">
+            <input id="search-input" type="text" placeholder="搜索" class="inline-block w-full bg-gray-100 lg:bg-white p-1">
+            <span class="table-cell">
+                <button name="search tigger button" disabled>
+                    <i class="iconfont icon-search m-2"></i>
+                </button>
+            </span>
+        </div>
+    </form>
+        
+<div id="content-json" data-placeholder="搜索" class="invisible hidden">/content.json</div>
+<script id="search-teamplate" type="text/html" data-path="/content.json">
+    <div>
+        <div class="search-header bg-gray-400">
+            <input id="actual-search-input" model="keyword" ref="input" class="inline-block w-full h-10 px-2 py-1" placeholder="搜索" type="text">
+        </div>
+        <div class="search-result bg-gray-200">
+            {{#each searchPosts}}
+            <a href="/{{ path }}" class="result-item block px-2 pb-3 mb-1 pt-1 hover:bg-indigo-100">
+                <i class="iconfont icon-file"></i>
+                <h1 class="result-title inline font-medium text-lg">{{ title }}</h1>
+                <p class="result-content text-gray-600 text-sm">{{{ text }}}</p>
+            </a>
+            {{/each}}
+        </div>
+    </div>
+</script>
+
+</div>
+
+
+        <button name="menu toogle button" id="menu-toggle-btn" class="block sm:hidden p-3" role="button" aria-expanded="false">
+            <i class="iconfont icon-hamburger"></i>
+        </button>
+    </div>
+    <nav id="menu-nav" class="hidden sm:flex flex-col">
+        
+        
+            <div class="menu-item menu-home" role="menuitem">
+                <a href="/.">
+                    <i class="iconfont icon-home" aria-hidden="true"></i>
+                    <span class="menu-title">首页</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-archives" role="menuitem">
+                <a href="/archives">
+                    <i class="iconfont icon-archive" aria-hidden="true"></i>
+                    <span class="menu-title">归档</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-tags" role="menuitem">
+                <a href="/tags">
+                    <i class="iconfont icon-tag" aria-hidden="true"></i>
+                    <span class="menu-title">标签</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-about" role="menuitem">
+                <a href="/about">
+                    <i class="iconfont icon-cup" aria-hidden="true"></i>
+                    <span class="menu-title">关于</span>
+                </a>
+            </div>
+        
+        
+<div class="social-links flex sm:flex-col lg:hidden mt-5">
+    
+        <span class="social-item text-center">
+            <a target="_blank" rel="noopener" href="https://github.com/ymy-forever">
+                <i class="iconfont social-icon icon-github"></i>
+                <span class="menu-title hidden lg:inline">menu.github</span>
+            </a>
+        </span>
+    
+        <span class="social-item text-center">
+            <a href="/atom.xml">
+                <i class="iconfont social-icon icon-rss"></i>
+                <span class="menu-title hidden lg:inline">menu.rss</span>
+            </a>
+        </span>
+    
+</div>
+
+
+    </nav>
+</header>
+
+        <section class="main-section">
+            
+    <main class="flex-1 px-4 py-14 md:px-5 lg:px-8 lg:py-4 relative min-h-screen">
+    
+
+    <article class="content article article-archives article-type-list" itemscope="">
+        <header class="article-header">
+            
+    
+        <h1 class="article-title text-lg" itemprop="name">
+            论文阅读：Dual-GAN: Joint BVP and Noise Modeling for Remote Physiological Measurement
+        </h1>
+    
+
+
+
+            <p class="article-meta mb-3 text-xs">
+                <span class="article-date">
+    <i class="iconfont icon-calendar-check"></i>
+	<a href="/2022/10/25/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ADual-GAN-Joint-BVP-and-Noise-Modeling-for-Remote-Physiological-Measurement/" class="article-date">
+	  <time datetime="2022-10-25T08:56:49.000Z" itemprop="datePublished">10月 25</time>
+	</a>
+</span>
+
+                
+
+                
+    <span class="article-tags">
+    <i class="iconfont icon-tag"></i>
+    <a class="article-tag-none-link" href="/tags/GAN/" rel="tag">GAN</a>, <a class="article-tag-none-link" href="/tags/rPPG/" rel="tag">rPPG</a>
+  </span>
+
+
+                <span class="_partial/post-comment"><i class="icon icon-comment"></i>
+                    <a href="/2022/10/25/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ADual-GAN-Joint-BVP-and-Noise-Modeling-for-Remote-Physiological-Measurement/#comments" class="article-comment-link">
+                        评论
+                    </a>
+                </span>
+                
+    
+        <span class="post-wordcount" itemprop="wordCount">字数统计: 1.4k(字)</span>
+    
+    
+        <span class="post-readcount" itemprop="timeRequired">阅读时长: 5(分)</span>
+    
+
+
+            </p>
+        </header>
+        <div class="marked-body article-body">
+            <ul>
+<li>发表信息：CVPR 2021</li>
+</ul>
+<p><em>又是一篇没有代码的论文。。。看个思想吧</em></p>
+<h2 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h2><h3 id="对偶学习"><a href="#对偶学习" class="headerlink" title="对偶学习"></a>对偶学习</h3><p><em>参考博客：<a target="_blank" rel="noopener" href="https://www.jiqizhixin.com/articles/2016-11-18">https://www.jiqizhixin.com/articles/2016-11-18</a></em></p>
+<p>对偶学习最早应用在NLP领域，利用互为对偶的人工智能任务（例如中译英和英译中，语音识别和语音合成等），利用互为对偶的任务相互提供反馈，使从没有标注的数据中学习成为可能，为解决无监督学习提供了新的思路。</p>
+<p>例如，对于英汉互译模型，只有英文句子x作为输入，首先输入模型1翻译为中文，再由模型2翻译为英文，通过比较这个英文句子和原始的英文句子，就可以对两个翻译模型进行评价，从而实现无监督学习。</p>
+<p><img src="https://pic.36krcnd.com/201708/08083825/nhnzya3bdxiaoz42" alt="img"></p>
+<p><em>这种方法其实与强化学习方法的思想相似，利用对偶游戏结果作为反馈。</em></p>
+<h3 id="Dual-GAN"><a href="#Dual-GAN" class="headerlink" title="Dual GAN"></a>Dual GAN</h3><p>Dual GAN就是将对偶学习的思想引入GAN中，进行无监督学习，将GAN原来的生成和识别两个问题，进一步扩展为两个相互耦合的GAN，即使用两个生成器和判别器。</p>
+<p>例如对于素描与照片的转换任务，生成器A将照片1转换为素描，再由生成器B转化为照片，对于素描2，由生成器B转为照片，再由生成器A转换为素描，通过衡量两次转后得到的素描与照片与初始输入的差距，对生成器A、B进行评估。</p>
+<h3 id="名词解释"><a href="#名词解释" class="headerlink" title="名词解释"></a>名词解释</h3><ul>
+<li>STMap：Spatial-Temporal Map，即时空图</li>
+</ul>
+<h2 id="模型架构"><a href="#模型架构" class="headerlink" title="模型架构"></a>模型架构</h2><p>文章使用的Dual GAN架构如图所示，使用非直接监督的方式，实现了对BVP信号预测器和噪声分布的建模。</p>
+<img src="/2022/10/25/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ADual-GAN-Joint-BVP-and-Noise-Modeling-for-Remote-Physiological-Measurement/image-20221026091934621.png" alt="image-20221026091934621" style="zoom:67%; margin:auto;">
+
+<h3 id="模型基于的想法"><a href="#模型基于的想法" class="headerlink" title="模型基于的想法"></a>模型基于的想法</h3><ol>
+<li>不同ROI的时间信号，应该有不同的噪声分布和BVP信号分布；</li>
+<li>使用合成了人工噪声的生理信号，有利于基于基于DL的生理信号测量方法；</li>
+<li>很多工作忽略了对主导视频内容的背景噪声的建模。</li>
+</ol>
+<h3 id="BVP-Modeling"><a href="#BVP-Modeling" class="headerlink" title="BVP Modeling"></a>BVP Modeling</h3><p>该部分首先从视频帧序列中获取STMap，然后进行对抗学习：</p>
+<ul>
+<li>输入：STMap</li>
+<li>生成器：从STMap中预测BVP信号（和心率信号，这是一个额外的任务）；</li>
+<li>判别器：判断BVP信号是真实的还是合成的；</li>
+</ul>
+<p>对于生成器，为了缓解不同ROI区域BVP信号和噪声分布的不同，作者提出了一个即插即用的ROI对齐与融合模块（ROI-AF Block，ROI Assignment and Fusion Block），使用ROI-wise的卷积，从一个更大的感受野中融合BVP特征。</p>
+<p>ROI-AF Block的结构如图所示。其中N代表ROI数，C代表通道数，L代表帧数。在ST Map中，一行代表一个ROI区域，首先在Alignment阶段，对每个ROI区域进行特征对齐；在Fusion阶段，上部的Global Average Pooling和FC层作为通道注意力模型，获得融合的特征映射，最后将输出reshape到与原来相同的维度。</p>
+<img src="/2022/10/25/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ADual-GAN-Joint-BVP-and-Noise-Modeling-for-Remote-Physiological-Measurement/image-20221026112336966.png" alt="image-20221026112336966" style="zoom:80%; margin:auto;">
+
+<p>需要注意的是，这里的BVP信号估计器需要完成两个任务，其中HR估计的任务用于辅助模型训练。BVP信号估计器的整体结构如图：</p>
+<img src="/2022/10/25/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ADual-GAN-Joint-BVP-and-Noise-Modeling-for-Remote-Physiological-Measurement/image-20221026214637932.png" alt="image-20221026214637932" style="zoom:67%; margin:auto;">
+
+<p>对于判别器，同时将STMap和BVP信号作为输入，并且与后面的噪声模型共享同一个判别器。</p>
+<img src="/2022/10/25/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ADual-GAN-Joint-BVP-and-Noise-Modeling-for-Remote-Physiological-Measurement/image-20221026214808146.png" alt="image-20221026214808146" style="zoom: 67%; margin:auto;">
+
+<h3 id="Noise-Modeling"><a href="#Noise-Modeling" class="headerlink" title="Noise Modeling"></a>Noise Modeling</h3><p>该部分使用双通道的生成器，以实现生成带有噪声的STMap。</p>
+<ul>
+<li>输入：真实的BVP信号、随机的噪声变量；</li>
+<li>STMap生成器：从真实的BVP信号生成STMap；</li>
+<li>noise生成器：根据噪声变量生成STMap的噪声；</li>
+<li>判别器：使用与上述相同的判别器，判断STMap是真实的还是合成的。</li>
+</ul>
+<h3 id="训练策略"><a href="#训练策略" class="headerlink" title="训练策略"></a>训练策略</h3><ol>
+<li><p>训练BVP信号估计器。使用STMap信号作为输入，得到预测的BVP信号和心率数据，与对应的ground truth计算loss。</p>
+<p>这里用信号估计器其实做了两个任务，即心率估计+BVP信号估计。</p>
+</li>
+</ol>
+<img src="/2022/10/25/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ADual-GAN-Joint-BVP-and-Noise-Modeling-for-Remote-Physiological-Measurement/image-20221026210519839.png" alt="image-20221026210519839" style="zoom:67%; margin:auto;">
+
+<ol start="2">
+<li>固定BVP信号估计器，训练STMap生成器。其目标是，使得使用真实的BVP信号，经过STMap生成器，生成的STMap经训练好的BVP估计器得到的BVP信号，与真实的BVP信号尽可能接近。（⭐这里可以看作对偶学习思想的体现）</li>
+</ol>
+<img src="/2022/10/25/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ADual-GAN-Joint-BVP-and-Noise-Modeling-for-Remote-Physiological-Measurement/image-20221026210717463.png" alt="image-20221026210717463" style="zoom:67%; margin:auto;">
+
+<ol start="3">
+<li><p>训练BVP信号估计器和噪声生成器。通过最小化Ljoint（使得生成的与真实的尽可能接近）训练得到BVP信号估计器的噪声生成器。</p>
+<p><strong>与步骤1训练得到的BVP信号估计器相比，此时的BVP信号估计器具有过滤噪声的能力。</strong></p>
+</li>
+</ol>
+<img src="/2022/10/25/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ADual-GAN-Joint-BVP-and-Noise-Modeling-for-Remote-Physiological-Measurement/image-20221026211814134.png" alt="image-20221026211814134" style="zoom:67%; margin:auto;">
+
+<ol start="4">
+<li>固定所有生成器，训练判别器。通过最大化Ljoint（对抗学习嘛）实现。</li>
+</ol>
+<h2 id="模型评价"><a href="#模型评价" class="headerlink" title="模型评价"></a>模型评价</h2><p>Dual-GAN在HR、HRV和RF估计的任务上，在多个数据集上，进行intra-dataset和cross-dataset测试都达到了SOTA。</p>
+<h3 id="创新点"><a href="#创新点" class="headerlink" title="创新点"></a>创新点</h3><ul>
+<li>把Dual-GAN应用到生理信号测量中，增加对噪声分布的建模（使用Dual GAN可以解决缺乏训练数据集的问题），可以获得一个对未见过的噪声更健壮的模型；</li>
+<li>提出了一个即插即用的ROI-AF模块，用在传统的卷积层之后，处理来自不同ROI的噪声与BVP信号的分布不一致；</li>
+</ul>
+<h2 id="拓展"><a href="#拓展" class="headerlink" title="拓展"></a>拓展</h2><ol>
+<li><p>STMap和ROI区域是怎么得到的？</p>
+<p>作者在文章中采用STMap计算方法，是Rhythmnet中的方法，我将在另一篇文章中进行介绍，而Rhythmnet的一作与Zitong Yu之后合作写了另一篇心率相关的文章CVD。</p>
+</li>
+</ol>
+
+        </div>
+        
+<blockquote class="copyright">
+    <p><strong>本文链接 : </strong><a class="permalink" href="https://ymyforever.netlify.app/2022/10/25/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9ADual-GAN-Joint-BVP-and-Noise-Modeling-for-Remote-Physiological-Measurement/">https://ymyforever.netlify.app/2022/10/25/论文阅读：Dual-GAN-Joint-BVP-and-Noise-Modeling-for-Remote-Physiological-Measurement/</a></p>
+    <p><strong>This article is available under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer">Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</a> License</strong></p>
+</blockquote>
+
+
+    </article>
+    
+    <section id="comments">
+        
+    </section>
+
+
+    
+
+</main>
+
+
+<aside style="" id="sidebar" class="aside aside-fixture">
+    <div class="toc-sidebar">
+        <nav id="toc" class="article-toc">
+            <h3 class="toc-title">文章目录</h3>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86"><span class="toc-number">1.</span> <span class="toc-text">前置知识</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E5%81%B6%E5%AD%A6%E4%B9%A0"><span class="toc-number">1.1.</span> <span class="toc-text">对偶学习</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Dual-GAN"><span class="toc-number">1.2.</span> <span class="toc-text">Dual GAN</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A"><span class="toc-number">1.3.</span> <span class="toc-text">名词解释</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E6%9E%B6%E6%9E%84"><span class="toc-number">2.</span> <span class="toc-text">模型架构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E5%9F%BA%E4%BA%8E%E7%9A%84%E6%83%B3%E6%B3%95"><span class="toc-number">2.1.</span> <span class="toc-text">模型基于的想法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BVP-Modeling"><span class="toc-number">2.2.</span> <span class="toc-text">BVP Modeling</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Noise-Modeling"><span class="toc-number">2.3.</span> <span class="toc-text">Noise Modeling</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%AD%E7%BB%83%E7%AD%96%E7%95%A5"><span class="toc-number">2.4.</span> <span class="toc-text">训练策略</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BB%B7"><span class="toc-number">3.</span> <span class="toc-text">模型评价</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E6%96%B0%E7%82%B9"><span class="toc-number">3.1.</span> <span class="toc-text">创新点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8B%93%E5%B1%95"><span class="toc-number">4.</span> <span class="toc-text">拓展</span></a></li></ol>
+        </nav>
+    </div>
+</aside>
+
+
+
+
+
+        </section>
+        <footer class="hidden lg:block fixed bottom-0 left-0 sm:w-1/12 lg:w-1/6 bg-gray-100 z-40">
+    
+    <div class="footer-social-links">
+        
+            <a target="_blank" rel="noopener" href="https://github.com/ymy-forever">
+                <i class="iconfont icon-github"></i>
+            </a>
+        
+            <a href="/atom.xml">
+                <i class="iconfont icon-rss"></i>
+            </a>
+        
+    </div>
+    
+    
+</footer>
+
+        <div id="mask" class="hidden mask fixed inset-0 bg-gray-900 opacity-75 z-40"></div>
+        <div id="search-view-container" class="hidden shadow-xl"></div>
+        
+<script src="/js/dom-event.min.js"></script>
+
+
+
+<script src="/js/local-search.min.js"></script>
+
+
+
+    <script src="//cdn.jsdelivr.net/npm/lightgallery.js@1.1.3/dist/js/lightgallery.min.js"></script>
+    
+<script src="/js/light-gallery.min.js"></script>
+
+
+
+
+
+
+    </body>
+</html>
