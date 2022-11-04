@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html  lang="zh-CN" >
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, maximum-scale=5, viewport-fit=cover">
+    <title>论文阅读：Video-based Remote Physiological Measurement via Self-supervised Learning | ymy is watching u!!!!</title>
+    <meta name="description" content="arXiv 2022 code（will available）  这是一篇基于The way to my heart的对比学习的文章，针对这篇文章中，负样本只是对原始的rPPG信号进行更高频率的采样，作者认为这种做法限制了样本的多样性，降低了模型的普遍性，进行了一些改进。 前置知识 混合专家模型（MOE, Mixture of Experts） MOE的采用分治思想，主要包括如下两点，这也是MO">
+<meta property="og:type" content="article">
+<meta property="og:title" content="论文阅读：Video-based Remote Physiological Measurement via Self-supervised Learning">
+<meta property="og:url" content="https://ymyforever.netlify.app/2022/11/01/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AVideo-based-Remote-Physiological-Measurement-via-Self-supervised-Learning/index.html">
+<meta property="og:site_name" content="ymy is watching u!!!!">
+<meta property="og:description" content="arXiv 2022 code（will available）  这是一篇基于The way to my heart的对比学习的文章，针对这篇文章中，负样本只是对原始的rPPG信号进行更高频率的采样，作者认为这种做法限制了样本的多样性，降低了模型的普遍性，进行了一些改进。 前置知识 混合专家模型（MOE, Mixture of Experts） MOE的采用分治思想，主要包括如下两点，这也是MO">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ymyforever.netlify.app/2022/11/01/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AVideo-based-Remote-Physiological-Measurement-via-Self-supervised-Learning/image-20221101152448567.png">
+<meta property="og:image" content="https://ymyforever.netlify.app/2022/11/01/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AVideo-based-Remote-Physiological-Measurement-via-Self-supervised-Learning/image-20221101162347142.png">
+<meta property="og:image" content="https://ymyforever.netlify.app/2022/11/01/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AVideo-based-Remote-Physiological-Measurement-via-Self-supervised-Learning/image-20221101163317490.png">
+<meta property="og:image" content="https://ymyforever.netlify.app/2022/11/01/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AVideo-based-Remote-Physiological-Measurement-via-Self-supervised-Learning/image-20221103102029909.png">
+<meta property="og:image" content="https://ymyforever.netlify.app/2022/11/01/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AVideo-based-Remote-Physiological-Measurement-via-Self-supervised-Learning/image-20221103102615459.png">
+<meta property="og:image" content="https://ymyforever.netlify.app/2022/11/01/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AVideo-based-Remote-Physiological-Measurement-via-Self-supervised-Learning/image-20221103103419025.png">
+<meta property="og:image" content="https://ymyforever.netlify.app/2022/11/01/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AVideo-based-Remote-Physiological-Measurement-via-Self-supervised-Learning/image-20221103111527414.png">
+<meta property="og:image" content="https://ymyforever.netlify.app/2022/11/01/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AVideo-based-Remote-Physiological-Measurement-via-Self-supervised-Learning/image-20221103211652702.png">
+<meta property="og:image" content="https://ymyforever.netlify.app/2022/11/01/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AVideo-based-Remote-Physiological-Measurement-via-Self-supervised-Learning/image-20221103112307027.png">
+<meta property="og:image" content="https://ymyforever.netlify.app/2022/11/01/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AVideo-based-Remote-Physiological-Measurement-via-Self-supervised-Learning/image-20221101155121681.png">
+<meta property="og:image" content="https://ymyforever.netlify.app/2022/11/01/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AVideo-based-Remote-Physiological-Measurement-via-Self-supervised-Learning/image-20221101160259134.png">
+<meta property="og:image" content="https://ymyforever.netlify.app/2022/11/01/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AVideo-based-Remote-Physiological-Measurement-via-Self-supervised-Learning/image-20221101160409720.png">
+<meta property="article:published_time" content="2022-11-01T05:40:51.000Z">
+<meta property="article:modified_time" content="2022-11-04T03:00:30.288Z">
+<meta property="article:author" content="ymy">
+<meta property="article:tag" content="rPPG">
+<meta property="article:tag" content="对比学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ymyforever.netlify.app/2022/11/01/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AVideo-based-Remote-Physiological-Measurement-via-Self-supervised-Learning/image-20221101152448567.png">
+
+    
+    <link rel="icon" href="/images.fvicon.ico" type="image/x-icon">
+
+    
+<link rel="stylesheet" href="/css/common.min.css">
+
+
+
+    
+    
+    
+    
+        <link href="//cdn.jsdelivr.net/npm/lightgallery.js@1.1.3/dist/css/lightgallery.min.css" rel="stylesheet">
+    
+    
+    
+<link rel="stylesheet" href="/css/iconfont.min.css">
+
+    
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+    <body>
+        <header class="header header-fixture">
+    <div class="profile-search-wrap flex sm:block">
+        
+        
+        <div class="profile sm:text-center md:px-1 lg:px-3 sm:pb-4 sm:pt-6">
+            <a id="avatar" role="link" href="https://github.com/ymy-forever" class="inline-block lg:w-16 lg:h-16 w-8 h-8 m-2" target="_blank" rel="noopener" rel="noreferrer" >
+                <img src="/images/logo.png" class="rounded-full" alt="avatar">
+            </a>
+            <h2 id="name" class="hidden lg:block">ymy_forever</h2>
+            <h3 id="title" class="hidden lg:block">Student &amp; Coder</h3>
+            
+            <small id="location" class="hidden lg:block">
+                <i class="iconfont icon-map-icon"></i>
+                Xian, China
+            </small>
+            
+        </div>
+        
+        
+<div class="search flex-1 flex lg:inline-block sm:hidden lg:px-4 lg:mt-2 lg:mb-4 lg:w-full">
+    <form id="search-form" class="my-auto flex-1 lg:border lg:border-solid lg:border-gray-200">
+        <div class="input-group table bg-gray-100 lg:bg-white w-full">
+            <input id="search-input" type="text" placeholder="搜索" class="inline-block w-full bg-gray-100 lg:bg-white p-1">
+            <span class="table-cell">
+                <button name="search tigger button" disabled>
+                    <i class="iconfont icon-search m-2"></i>
+                </button>
+            </span>
+        </div>
+    </form>
+        
+<div id="content-json" data-placeholder="搜索" class="invisible hidden">/content.json</div>
+<script id="search-teamplate" type="text/html" data-path="/content.json">
+    <div>
+        <div class="search-header bg-gray-400">
+            <input id="actual-search-input" model="keyword" ref="input" class="inline-block w-full h-10 px-2 py-1" placeholder="搜索" type="text">
+        </div>
+        <div class="search-result bg-gray-200">
+            {{#each searchPosts}}
+            <a href="/{{ path }}" class="result-item block px-2 pb-3 mb-1 pt-1 hover:bg-indigo-100">
+                <i class="iconfont icon-file"></i>
+                <h1 class="result-title inline font-medium text-lg">{{ title }}</h1>
+                <p class="result-content text-gray-600 text-sm">{{{ text }}}</p>
+            </a>
+            {{/each}}
+        </div>
+    </div>
+</script>
+
+</div>
+
+
+        <button name="menu toogle button" id="menu-toggle-btn" class="block sm:hidden p-3" role="button" aria-expanded="false">
+            <i class="iconfont icon-hamburger"></i>
+        </button>
+    </div>
+    <nav id="menu-nav" class="hidden sm:flex flex-col">
+        
+        
+            <div class="menu-item menu-home" role="menuitem">
+                <a href="/.">
+                    <i class="iconfont icon-home" aria-hidden="true"></i>
+                    <span class="menu-title">首页</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-archives" role="menuitem">
+                <a href="/archives">
+                    <i class="iconfont icon-archive" aria-hidden="true"></i>
+                    <span class="menu-title">归档</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-tags" role="menuitem">
+                <a href="/tags">
+                    <i class="iconfont icon-tag" aria-hidden="true"></i>
+                    <span class="menu-title">标签</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-about" role="menuitem">
+                <a href="/about">
+                    <i class="iconfont icon-cup" aria-hidden="true"></i>
+                    <span class="menu-title">关于</span>
+                </a>
+            </div>
+        
+        
+<div class="social-links flex sm:flex-col lg:hidden mt-5">
+    
+        <span class="social-item text-center">
+            <a target="_blank" rel="noopener" href="https://github.com/ymy-forever">
+                <i class="iconfont social-icon icon-github"></i>
+                <span class="menu-title hidden lg:inline">menu.github</span>
+            </a>
+        </span>
+    
+        <span class="social-item text-center">
+            <a href="/atom.xml">
+                <i class="iconfont social-icon icon-rss"></i>
+                <span class="menu-title hidden lg:inline">menu.rss</span>
+            </a>
+        </span>
+    
+</div>
+
+
+    </nav>
+</header>
+
+        <section class="main-section">
+            
+    <main class="flex-1 px-4 py-14 md:px-5 lg:px-8 lg:py-4 relative min-h-screen">
+    
+
+    <article class="content article article-archives article-type-list" itemscope="">
+        <header class="article-header">
+            
+    
+        <h1 class="article-title text-lg" itemprop="name">
+            论文阅读：Video-based Remote Physiological Measurement via Self-supervised Learning
+        </h1>
+    
+
+
+
+            <p class="article-meta mb-3 text-xs">
+                <span class="article-date">
+    <i class="iconfont icon-calendar-check"></i>
+	<a href="/2022/11/01/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AVideo-based-Remote-Physiological-Measurement-via-Self-supervised-Learning/" class="article-date">
+	  <time datetime="2022-11-01T05:40:51.000Z" itemprop="datePublished">11月 1</time>
+	</a>
+</span>
+
+                
+
+                
+    <span class="article-tags">
+    <i class="iconfont icon-tag"></i>
+    <a class="article-tag-none-link" href="/tags/rPPG/" rel="tag">rPPG</a>, <a class="article-tag-none-link" href="/tags/%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0/" rel="tag">对比学习</a>
+  </span>
+
+
+                <span class="_partial/post-comment"><i class="icon icon-comment"></i>
+                    <a href="/2022/11/01/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AVideo-based-Remote-Physiological-Measurement-via-Self-supervised-Learning/#comments" class="article-comment-link">
+                        评论
+                    </a>
+                </span>
+                
+    
+        <span class="post-wordcount" itemprop="wordCount">字数统计: 1.3k(字)</span>
+    
+    
+        <span class="post-readcount" itemprop="timeRequired">阅读时长: 4(分)</span>
+    
+
+
+            </p>
+        </header>
+        <div class="marked-body article-body">
+            <ul>
+<li>arXiv 2022</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/yuezijie/Video-based-Remote-Physiological-Measurement-via-Self-supervised-Learning">code（will available）</a></li>
+</ul>
+<p>这是一篇基于<a href="https://ymyforever.netlify.app/2022/10/17/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9Athe-way-to-my-heart-is-through-contrastive-learning-remote-ppg-from-unlabelled-video/">The way to my heart</a>的对比学习的文章，针对这篇文章中，负样本只是对原始的rPPG信号进行更高频率的采样，作者认为这种做法限制了样本的多样性，降低了模型的普遍性，进行了一些改进。</p>
+<h2 id="前置知识">前置知识</h2>
+<h3 id="混合专家模型（MOE-Mixture-of-Experts）"><a target="_blank" rel="noopener" href="https://congchan.github.io/Mixture-of-Experts-(MOE)-Sparsely-Gated-Mixture-of-Experts-layer/">混合专家模型（MOE, Mixture of Experts）</a></h3>
+<p>MOE的采用分治思想，主要包括如下两点，这也是MOE方法的关键：</p>
+<ol>
+<li>子任务划分：将复杂的任务分解为多个简单的子任务，训练每个子任务的专用模型；</li>
+<li>结果组合：使用门控模型，组合多个专家模型的结果，作为最终任务的输出。</li>
+</ol>
+<h2 id="文章概述">文章概述</h2>
+<h3 id="创新点">创新点</h3>
+<p>文章的创新点包括：</p>
+<ol>
+<li>负样本的生成方式：使用一个可以学习的模块LFA改变视频的rPPG信号频率，而不是通过传统的采样方法；</li>
+<li>Temporal Neighbors：使用clips时间上相邻的clips辅助rPPG估计器的训练；</li>
+<li>rPPG信号估计器：使用混合专家模型，估计不同面部区域的信号，然后再聚合。（这个改进是基于面部不同区域的血管和噪声分布不同，在<a href="https://ymyforever.netlify.app/2022/10/25/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9Adual-gan-joint-bvp-and-noise-modeling-for-remote-physiological-measurement/#BVP-Modeling">Dual GAN</a>里这个问题是通过一个ROI对齐与融合模块解决的。）</li>
+</ol>
+<h2 id="模型架构">模型架构</h2>
+<p>模型的整体架构如下图所示：</p>
+<img src="/2022/11/01/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AVideo-based-Remote-Physiological-Measurement-via-Self-supervised-Learning/image-20221101152448567.png" alt="image-20221101152448567" style="zoom:80%; margin:auto;">
+<h3 id="对比学习设置">对比学习设置</h3>
+<p>模型使用了三种样本：</p>
+<ul>
+<li>正样本：对同一个clip进行空间变换；</li>
+<li>负样本：对同一个clip进行频率变换，使用LFA（learnable frequency augmentation）；</li>
+<li>neighbor：与当前clip来自同一个video的其它clips。</li>
+</ul>
+<p>作者采用了三种基于频率的损失函数：</p>
+<ul>
+<li>
+<p>Frequency Contrastive Loss：目的是使正样本间的距离尽可能接近，负样本间的距离尽可能远，这里使用的是经典的InfoNCE loss。对于两个输出间的距离，参考The way to my heart中的文章，使用两个信号的功率谱密度的MSE值。</p>
+<img src="/2022/11/01/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AVideo-based-Remote-Physiological-Measurement-via-Self-supervised-Learning/image-20221101162347142.png" alt="image-20221101162347142" style="zoom:67%; margin:auto;">
+</li>
+<li>
+<p>Frequency Ratio Consistency Loss：这里基于的原则是，负样本和正样本间的频率比，应该与输入LFA的比率r一致，是为了确保LPA生成的负样本的rPPG信号频率是我们想要的频率。其中P指使用快速傅里叶变换计算信号的主频。</p>
+<img src="/2022/11/01/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AVideo-based-Remote-Physiological-Measurement-via-Self-supervised-Learning/image-20221101163317490.png" alt="image-20221101163317490" style="zoom:80%; margin:auto;">
+</li>
+<li>
+<p>Cross-video Frequency Agreement Loss：这里基于的原则是，在短时间内，rPPG信号的频率不会发生大幅变化。因此，每个clips与其时间上相邻的clips的频率应该一致。这里的d也是使用的The way to my heart那篇文章里的信号相似性度量方式。</p>
+<img src="/2022/11/01/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AVideo-based-Remote-Physiological-Measurement-via-Self-supervised-Learning/image-20221103102029909.png" alt="image-20221103102029909" style="zoom: 80%; margin:auto;">
+</li>
+</ul>
+<p>除了三个基于频率的loss函数，作者还设置了一个Video reconstruction loss，计算像素级的颜色差距，用于限制LFA模块生成的负样本，在视觉外观上与anchor保持一致。</p>
+<img src="/2022/11/01/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AVideo-based-Remote-Physiological-Measurement-via-Self-supervised-Learning/image-20221103102615459.png" alt="image-20221103102615459" style="zoom:80%; margin:auto;">
+<p>整个模型的损失函数即为上述四个损失之和：</p>
+<img src="/2022/11/01/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AVideo-based-Remote-Physiological-Measurement-via-Self-supervised-Learning/image-20221103103419025.png" alt="image-20221103103419025" style="zoom: 80%; margin:auto;">
+<h3 id="LFA模块（Learnable-Frequency-Augmentation）">LFA模块（Learnable Frequency Augmentation）</h3>
+<ul>
+<li>输入：anchor+调频比r（r在0.3到0.8，1.2和1.7之间变动，解决了前面提到的the way to my heart那篇文章里负样本频率单一的问题。）</li>
+<li>输出：负样本</li>
+<li>RB：Res-Block</li>
+<li>FMB：Frequency Modulation Block，这里z表示的是一个粗糙的rPPG信号，通过与r进行非线性变换（线性变换只能改变振幅）改变信号的频率；</li>
+<li>GAP：Global Average Pooling</li>
+</ul>
+<img src="/2022/11/01/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AVideo-based-Remote-Physiological-Measurement-via-Self-supervised-Learning/image-20221103111527414.png" alt="image-20221103111527414" style="zoom: 67%; margin:auto;">
+<h3 id="REA模块（rPPG-Expert-Aggregation）">REA模块（rPPG Expert Aggregation）</h3>
+<ul>
+<li>
+<p>输入：视频clip</p>
+</li>
+<li>
+<p>输出：rPPG信号</p>
+</li>
+<li>
+<p>⭐Region-attention Block：在REA模块里，是把整张人脸作为输入，因此作者加了一个区域注意力模块帮助模型关注可以反映颜色变化的区域。</p>
+</li>
+<li>
+<p>⭐Spatio-temporal Gating Net：作者认为，对于最终的rPPG信号，每一个专家信号在不同时刻具有不同的权重，因此通过ST Gating Net生成L个权重向量。最终的输出计算方式如下：</p>
+<img src="/2022/11/01/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AVideo-based-Remote-Physiological-Measurement-via-Self-supervised-Learning/image-20221103211652702.png" alt="image-20221103211652702" style="zoom:67%; margin:auto;"> 
+</li>
+</ul>
+<img src="/2022/11/01/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AVideo-based-Remote-Physiological-Measurement-via-Self-supervised-Learning/image-20221103112307027.png" alt="image-20221103112307027" style="zoom:150%; margin:auto;">
+<h2 id="实验结果">实验结果</h2>
+<p>总的来说，文章提出的对比学习模型全面超过了The way to my heart的结果，在相关性系数r上的表现普遍超过了有监督模型，以后对比学习的指标怕是不好刷了。</p>
+<h3 id="HR估计结果">HR估计结果</h3>
+<img src="/2022/11/01/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AVideo-based-Remote-Physiological-Measurement-via-Self-supervised-Learning/image-20221101155121681.png" alt="image-20221101155121681" style="zoom:80%; margin:auto;">
+<h3 id="RF和HRV估计结果">RF和HRV估计结果</h3>
+<img src="/2022/11/01/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AVideo-based-Remote-Physiological-Measurement-via-Self-supervised-Learning/image-20221101160259134.png" alt="image-20221101160259134" style="zoom:80%; margin:auto;">
+<h3 id="跨数据集HR估计结果">跨数据集HR估计结果</h3>
+<img src="/2022/11/01/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AVideo-based-Remote-Physiological-Measurement-via-Self-supervised-Learning/image-20221101160409720.png" alt="image-20221101160409720" style="zoom:80%; margin:auto;">
+<h2 id="思考">思考</h2>
+<h3 id="问题">问题</h3>
+<ol start="4">
+<li>LFA要比传统的重采样好嘛？（这块作者的实验结果里没有显示）</li>
+<li>为什么不把neigbor直接用作正样本呢？</li>
+<li>rPPG估计器的输入是整张人脸，而不是ROI区域或皮肤分割后的结果，对于人脸通过一个region attention block处理，这会不会影响预测结果？</li>
+</ol>
+<h3 id="可以改进的方向">可以改进的方向</h3>
+<ol>
+<li>
+<p>正样本的构造方法：</p>
+<p>a. 去除人脸ID信息影响（mask掉关键点或）；</p>
+<p>b. 添加来自不同subject但rPPG信号相近的clips。这种方法的一个问题是，可能训练集中并不存在这种样本， 可以考虑：</p>
+<ul>
+<li>
+<p>使用生成负样本时使用的LFA模块，改变subject的频率；</p>
+</li>
+<li>
+<p>使用时间上的neighbors；</p>
+</li>
+<li>
+<p>使用根据rPPG信号合成人脸视频的方法，最近提出了几篇<a href="https://ymyforever.netlify.app/2022/10/24/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9Asynthetic-generation-of-face-videos-with-plethysmograph-physiology/">根据rPPG信号合成人脸视频的文章</a>。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>负样本的构造方法：</p>
+<p>a. 试试加上不同subject且rPPG信号频率不同的clips；</p>
+</li>
+</ol>
+
+        </div>
+        
+<blockquote class="copyright">
+    <p><strong>本文链接 : </strong><a class="permalink" href="https://ymyforever.netlify.app/2022/11/01/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AVideo-based-Remote-Physiological-Measurement-via-Self-supervised-Learning/">https://ymyforever.netlify.app/2022/11/01/论文阅读：Video-based-Remote-Physiological-Measurement-via-Self-supervised-Learning/</a></p>
+    <p><strong>This article is available under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer">Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</a> License</strong></p>
+</blockquote>
+
+
+    </article>
+    
+    <section id="comments">
+        
+    </section>
+
+
+    
+
+</main>
+
+
+<aside style="" id="sidebar" class="aside aside-fixture">
+    <div class="toc-sidebar">
+        <nav id="toc" class="article-toc">
+            <h3 class="toc-title">文章目录</h3>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86"><span class="toc-number">1.</span> <span class="toc-text">前置知识</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%B7%E5%90%88%E4%B8%93%E5%AE%B6%E6%A8%A1%E5%9E%8B%EF%BC%88MOE-Mixture-of-Experts%EF%BC%89"><span class="toc-number">1.1.</span> <span class="toc-text">混合专家模型（MOE, Mixture of Experts）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E7%AB%A0%E6%A6%82%E8%BF%B0"><span class="toc-number">2.</span> <span class="toc-text">文章概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E6%96%B0%E7%82%B9"><span class="toc-number">2.1.</span> <span class="toc-text">创新点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E6%9E%B6%E6%9E%84"><span class="toc-number">3.</span> <span class="toc-text">模型架构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0%E8%AE%BE%E7%BD%AE"><span class="toc-number">3.1.</span> <span class="toc-text">对比学习设置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LFA%E6%A8%A1%E5%9D%97%EF%BC%88Learnable-Frequency-Augmentation%EF%BC%89"><span class="toc-number">3.2.</span> <span class="toc-text">LFA模块（Learnable Frequency Augmentation）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#REA%E6%A8%A1%E5%9D%97%EF%BC%88rPPG-Expert-Aggregation%EF%BC%89"><span class="toc-number">3.3.</span> <span class="toc-text">REA模块（rPPG Expert Aggregation）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E7%BB%93%E6%9E%9C"><span class="toc-number">4.</span> <span class="toc-text">实验结果</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#HR%E4%BC%B0%E8%AE%A1%E7%BB%93%E6%9E%9C"><span class="toc-number">4.1.</span> <span class="toc-text">HR估计结果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RF%E5%92%8CHRV%E4%BC%B0%E8%AE%A1%E7%BB%93%E6%9E%9C"><span class="toc-number">4.2.</span> <span class="toc-text">RF和HRV估计结果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B7%A8%E6%95%B0%E6%8D%AE%E9%9B%86HR%E4%BC%B0%E8%AE%A1%E7%BB%93%E6%9E%9C"><span class="toc-number">4.3.</span> <span class="toc-text">跨数据集HR估计结果</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%9D%E8%80%83"><span class="toc-number">5.</span> <span class="toc-text">思考</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%98"><span class="toc-number">5.1.</span> <span class="toc-text">问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%AF%E4%BB%A5%E6%94%B9%E8%BF%9B%E7%9A%84%E6%96%B9%E5%90%91"><span class="toc-number">5.2.</span> <span class="toc-text">可以改进的方向</span></a></li></ol></li></ol>
+        </nav>
+    </div>
+</aside>
+
+
+
+
+
+        </section>
+        <footer class="hidden lg:block fixed bottom-0 left-0 sm:w-1/12 lg:w-1/6 bg-gray-100 z-40">
+    
+    <div class="footer-social-links">
+        
+            <a target="_blank" rel="noopener" href="https://github.com/ymy-forever">
+                <i class="iconfont icon-github"></i>
+            </a>
+        
+            <a href="/atom.xml">
+                <i class="iconfont icon-rss"></i>
+            </a>
+        
+    </div>
+    
+    
+</footer>
+
+        <div id="mask" class="hidden mask fixed inset-0 bg-gray-900 opacity-75 z-40"></div>
+        <div id="search-view-container" class="hidden shadow-xl"></div>
+        
+<script src="/js/dom-event.min.js"></script>
+
+
+
+<script src="/js/local-search.min.js"></script>
+
+
+
+    <script src="//cdn.jsdelivr.net/npm/lightgallery.js@1.1.3/dist/js/lightgallery.min.js"></script>
+    
+<script src="/js/light-gallery.min.js"></script>
+
+
+
+
+
+
+    </body>
+</html>
