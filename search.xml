@@ -1056,7 +1056,7 @@ B-->C[测量心动周期相关生理指标心率和心跳变异性等]</pre>
 <li>参考视频：<a href="https://www.bilibili.com/video/BV19S4y1M7hm">https://www.bilibili.com/video/BV19S4y1M7hm</a></li>
 </ul>
 <h2 id="何为对比学习？"><a href="#何为对比学习？" class="headerlink" title="何为对比学习？"></a>何为对比学习？</h2><p>对比学习是无监督或自监督学习方法的一种，其思想与NLP领域中的Bert类似，即从大量的无标签数据中吸取图像的先验知识分布，再在下游任务上微调，从而将预训练学习到的知识，迁移到下游任务上。</p>
-<p>对比学习是一种判别式自监督学习方法，对于对比学习，尚不存在明确的定义，但其存在一套固定的指导原则：通过==构造相似实例和不相似实例==，训练得到一个==表示学习模型==，通过这个模型，使得相似的实例在投影空间中比较接近，不相似的实例在投影空间中距离比较远，然后将这个表示学习模型用到下游任务上进行==微调==。</p>
+<p>对比学习是一种判别式自监督学习方法，对于对比学习，尚不存在明确的定义，但其存在一套固定的指导原则：通过&#x3D;&#x3D;构造相似实例和不相似实例&#x3D;&#x3D;，训练得到一个&#x3D;&#x3D;表示学习模型&#x3D;&#x3D;，通过这个模型，使得相似的实例在投影空间中比较接近，不相似的实例在投影空间中距离比较远，然后将这个表示学习模型用到下游任务上进行&#x3D;&#x3D;微调&#x3D;&#x3D;。</p>
 <p>对比学习有如下几个关键点：</p>
 <ol>
 <li>如何构造相似、不相似实例；</li>
@@ -1077,7 +1077,8 @@ B-->C[测量心动周期相关生理指标心率和心跳变异性等]</pre>
 <p>负样本：所有其它图片</p>
 <p>损失函数：使用NCE Loss作为对比学习的损失函数</p>
 <p>Memory Bank：存储所有图片的特征，memory bank里的特征是动量更新的。</p>
-<p><img src="/2022/10/20/%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0/image-20221022163248461.png" alt="image-20221022163248461" style="zoom:80%; margin:auto;"></p>
+<img src="/2022/10/20/%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0/image-20221022163248461.png" alt="image-20221022163248461" style="zoom:80%; margin:auto;">
+
 <p>主要贡献：</p>
 <ol>
 <li>提出了代理任务<strong>个体判别</strong>，将每个实例看作一个类别，目的是学习一个特征，从而把每个图片区分开来。</li>
@@ -1085,12 +1086,28 @@ B-->C[测量心动周期相关生理指标心率和心跳变异性等]</pre>
 </ol>
 <h3 id="InvaSpread"><a href="#InvaSpread" class="headerlink" title="InvaSpread"></a>InvaSpread</h3><p>论文：<em>Unsupervised Embedding Learning via Invariant and Spreading Instance Feature</em></p>
 <p>发表时间：2019</p>
-<p>评价：SimCLR的前身</p>
-<p>模型结构：没有使用额外的结构存储负样本，正负样本来自同一个mini batch，只使用一个编码器进行端到端的学习。</p>
+<p>评价：SimCLR的前身，但因为字典不够大，效果不如SimCLR好。</p>
+<p>模型结构：还是使用个体判别作为代理任务，没有使用额外的结构存储负样本，正负样本来自同一个mini batch，只使用一个编码器进行端到端的学习。</p>
 <p>基本思想：相似的图片具有相似的特征，不同的图片特征差异也大。</p>
-<p>正样本：</p>
-<p>负样本：</p>
-<h2 id="CV双雄"><a href="#CV双雄" class="headerlink" title="CV双雄"></a>CV双雄</h2><h2 id="不用负样本"><a href="#不用负样本" class="headerlink" title="不用负样本"></a>不用负样本</h2><h2 id="Transformer"><a href="#Transformer" class="headerlink" title="Transformer"></a>Transformer</h2>]]></content>
+<p>正样本：数据增强前后的图像</p>
+<p>负样本：minibatch里其它图像以及其数据增强后的结果。</p>
+<img src="/C:/Users/zxkj/AppData/Roaming/Typora/typora-user-images/image-20221104170806433.png" alt="image-20221104170806433" style="zoom:80%;">
+
+<h3 id="CPC"><a href="#CPC" class="headerlink" title="CPC"></a>CPC</h3><p>论文：Representation Learning with Contrastive Predictive Coding</p>
+<p>评价：与InstDisc和InvaSpread采用个体判别作为代理任务不同，CPC采用的是生成预测式的代理任务，CPC是一种通用的框架，可以用在语音、文本、图片等多种任务上。</p>
+<p>anchor：由上下文信息得到的预测输出</p>
+<p>正样本：未来的输入通过编码器以后得到的输出；</p>
+<p>负样本：构造方法较多，可以通过选取任意输入通过编码器得到的输出。</p>
+<img src="/C:/Users/zxkj/AppData/Roaming/Typora/typora-user-images/image-20221104171645662.png" alt="image-20221104171645662" style="zoom:80%;">
+
+<h3 id="CMC"><a href="#CMC" class="headerlink" title="CMC"></a>CMC</h3><p>论文：Contrastive Multiview Coding</p>
+<p>评价：采用一种更广义的正样本定义方式，第一个做多视角的对比学习模型（后来被拓展到多模态任务上，如clip）。</p>
+<p>正样本：将一个物体的多个视角看作正样本（Matching views）；</p>
+<p>负样本：Unmatching view</p>
+<img src="/C:/Users/zxkj/AppData/Roaming/Typora/typora-user-images/image-20221104174535243.png" alt="image-20221104174535243" style="zoom:80%;">
+
+<h2 id="CV双雄"><a href="#CV双雄" class="headerlink" title="CV双雄"></a>CV双雄</h2><p>17min</p>
+<h2 id="不用负样本"><a href="#不用负样本" class="headerlink" title="不用负样本"></a>不用负样本</h2><h2 id="Transformer"><a href="#Transformer" class="headerlink" title="Transformer"></a>Transformer</h2>]]></content>
       <tags>
         <tag>对比学习</tag>
         <tag>综述</tag>
@@ -1522,7 +1539,7 @@ B-->C[测量心动周期相关生理指标心率和心跳变异性等]</pre>
     <title>论文阅读：Video-based Remote Physiological Measurement via Self-supervised Learning</title>
     <url>/2022/11/01/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AVideo-based-Remote-Physiological-Measurement-via-Self-supervised-Learning/</url>
     <content><![CDATA[<ul>
-<li>arXiv 2022</li>
+<li><a href="https://arxiv.org/pdf/2210.15401.pdf">arXiv 2022</a></li>
 <li><a href="https://github.com/yuezijie/Video-based-Remote-Physiological-Measurement-via-Self-supervised-Learning">code（will available）</a></li>
 </ul>
 <p>这是一篇基于<a href="https://ymyforever.netlify.app/2022/10/17/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9Athe-way-to-my-heart-is-through-contrastive-learning-remote-ppg-from-unlabelled-video/">The way to my heart</a>的对比学习的文章，针对这篇文章中，负样本只是对原始的rPPG信号进行更高频率的采样，作者认为这种做法限制了样本的多样性，降低了模型的普遍性，进行了一些改进。</p>
@@ -1531,7 +1548,7 @@ B-->C[测量心动周期相关生理指标心率和心跳变异性等]</pre>
 <li>子任务划分：将复杂的任务分解为多个简单的子任务，训练每个子任务的专用模型；</li>
 <li>结果组合：使用门控模型，组合多个专家模型的结果，作为最终任务的输出。</li>
 </ol>
-<h2 id="文章概述"><a href="#文章概述" class="headerlink" title="文章概述"></a>文章概述</h2><h3 id="创新点"><a href="#创新点" class="headerlink" title="创新点"></a>创新点</h3><p>文章的创新点包括：</p>
+<h2 id="创新点"><a href="#创新点" class="headerlink" title="创新点"></a>创新点</h2><p>文章的创新点包括：</p>
 <ol>
 <li>负样本的生成方式：使用一个可以学习的模块LFA改变视频的rPPG信号频率，而不是通过传统的采样方法；</li>
 <li>Temporal Neighbors：使用clips时间上相邻的clips辅助rPPG估计器的训练；</li>
@@ -1587,19 +1604,34 @@ B-->C[测量心动周期相关生理指标心率和心跳变异性等]</pre>
 <h2 id="实验结果"><a href="#实验结果" class="headerlink" title="实验结果"></a>实验结果</h2><p>总的来说，文章提出的对比学习模型全面超过了The way to my heart的结果，在相关性系数r上的表现普遍超过了有监督模型，以后对比学习的指标怕是不好刷了。</p>
 <h3 id="HR估计结果"><a href="#HR估计结果" class="headerlink" title="HR估计结果"></a>HR估计结果</h3><img src="/2022/11/01/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AVideo-based-Remote-Physiological-Measurement-via-Self-supervised-Learning/image-20221101155121681.png" alt="image-20221101155121681" style="zoom:80%; margin:auto;">
 
-<h3 id="RF和HRV估计结果"><a href="#RF和HRV估计结果" class="headerlink" title="RF和HRV估计结果"></a>RF和HRV估计结果</h3><img src="/2022/11/01/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AVideo-based-Remote-Physiological-Measurement-via-Self-supervised-Learning/image-20221101160259134.png" alt="image-20221101160259134" style="zoom:80%; margin:auto;">
+<h3 id="RF和HRV估计结果"><a href="#RF和HRV估计结果" class="headerlink" title="RF和HRV估计结果"></a>RF和HRV估计结果</h3><ul>
+<li>HRV：心率变异性</li>
+<li>RF：呼吸频率</li>
+</ul>
+<img src="/2022/11/01/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AVideo-based-Remote-Physiological-Measurement-via-Self-supervised-Learning/image-20221101160259134.png" alt="image-20221101160259134" style="zoom:80%; margin:auto;">
 
 <h3 id="跨数据集HR估计结果"><a href="#跨数据集HR估计结果" class="headerlink" title="跨数据集HR估计结果"></a>跨数据集HR估计结果</h3><img src="/2022/11/01/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AVideo-based-Remote-Physiological-Measurement-via-Self-supervised-Learning/image-20221101160409720.png" alt="image-20221101160409720" style="zoom:80%; margin:auto;">
 
-<h2 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h2><h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><ol start="4">
-<li>LFA要比传统的重采样好嘛？（这块作者的实验结果里没有显示）</li>
-<li>为什么不把neigbor直接用作正样本呢？</li>
-<li>rPPG估计器的输入是整张人脸，而不是ROI区域或皮肤分割后的结果，对于人脸通过一个region attention block处理，这会不会影响预测结果？</li>
+<h2 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h2><h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><ol>
+<li><p>LFA要比传统的重采样好嘛？（这块作者的实验结果里没有显示）</p>
+</li>
+<li><p>为什么不把neigbor直接用作正样本呢？</p>
+</li>
+<li><p>rPPG估计器的输入是整张人脸，而不是ROI区域或皮肤分割后的结果，对于人脸通过一个region attention block处理，这会不会影响预测结果？</p>
+</li>
 </ol>
 <h3 id="可以改进的方向"><a href="#可以改进的方向" class="headerlink" title="可以改进的方向"></a>可以改进的方向</h3><ol>
 <li><p>正样本的构造方法：</p>
-<p>a. 去除人脸ID信息影响（mask掉关键点或）；</p>
-<p>b. 添加来自不同subject但rPPG信号相近的clips。</p>
+<p>a. 去除人脸ID信息影响（mask掉关键点，这个效果是不是相当于皮肤分割？）；</p>
+<p>b. 添加来自不同subject但rPPG信号相近的clips。这种方法的一个问题是，可能训练集中并不存在这种样本， 可以考虑：</p>
+<ul>
+<li><p>使用生成负样本时使用的LFA模块，改变subject的频率；</p>
+</li>
+<li><p>使用时间上的neighbors；</p>
+</li>
+<li><p>使用根据rPPG信号合成人脸视频的方法，最近提出了几篇<a href="https://ymyforever.netlify.app/2022/10/24/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9Asynthetic-generation-of-face-videos-with-plethysmograph-physiology/">根据rPPG信号合成人脸视频的文章</a>。</p>
+</li>
+</ul>
 </li>
 <li><p>负样本的构造方法：</p>
 <p>a. 试试加上不同subject且rPPG信号频率不同的clips；</p>
