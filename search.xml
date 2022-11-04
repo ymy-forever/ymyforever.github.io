@@ -1526,26 +1526,21 @@ B-->C[测量心动周期相关生理指标心率和心跳变异性等]</pre>
 <li><a href="https://github.com/yuezijie/Video-based-Remote-Physiological-Measurement-via-Self-supervised-Learning">code（will available）</a></li>
 </ul>
 <p>这是一篇基于<a href="https://ymyforever.netlify.app/2022/10/17/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9Athe-way-to-my-heart-is-through-contrastive-learning-remote-ppg-from-unlabelled-video/">The way to my heart</a>的对比学习的文章，针对这篇文章中，负样本只是对原始的rPPG信号进行更高频率的采样，作者认为这种做法限制了样本的多样性，降低了模型的普遍性，进行了一些改进。</p>
-<h2 id="前置知识">前置知识</h2>
-<h3 id="混合专家模型（MOE-Mixture-of-Experts）"><a href="https://congchan.github.io/Mixture-of-Experts-(MOE)-Sparsely-Gated-Mixture-of-Experts-layer/">混合专家模型（MOE, Mixture of Experts）</a></h3>
-<p>MOE的采用分治思想，主要包括如下两点，这也是MOE方法的关键：</p>
+<h2 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h2><h3 id="混合专家模型（MOE-Mixture-of-Experts）"><a href="#混合专家模型（MOE-Mixture-of-Experts）" class="headerlink" title="混合专家模型（MOE, Mixture of Experts）"></a><a href="https://congchan.github.io/Mixture-of-Experts-(MOE)-Sparsely-Gated-Mixture-of-Experts-layer/">混合专家模型（MOE, Mixture of Experts）</a></h3><p>MOE的采用分治思想，主要包括如下两点，这也是MOE方法的关键：</p>
 <ol>
 <li>子任务划分：将复杂的任务分解为多个简单的子任务，训练每个子任务的专用模型；</li>
 <li>结果组合：使用门控模型，组合多个专家模型的结果，作为最终任务的输出。</li>
 </ol>
-<h2 id="文章概述">文章概述</h2>
-<h3 id="创新点">创新点</h3>
-<p>文章的创新点包括：</p>
+<h2 id="文章概述"><a href="#文章概述" class="headerlink" title="文章概述"></a>文章概述</h2><h3 id="创新点"><a href="#创新点" class="headerlink" title="创新点"></a>创新点</h3><p>文章的创新点包括：</p>
 <ol>
 <li>负样本的生成方式：使用一个可以学习的模块LFA改变视频的rPPG信号频率，而不是通过传统的采样方法；</li>
 <li>Temporal Neighbors：使用clips时间上相邻的clips辅助rPPG估计器的训练；</li>
 <li>rPPG信号估计器：使用混合专家模型，估计不同面部区域的信号，然后再聚合。（这个改进是基于面部不同区域的血管和噪声分布不同，在<a href="https://ymyforever.netlify.app/2022/10/25/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9Adual-gan-joint-bvp-and-noise-modeling-for-remote-physiological-measurement/#BVP-Modeling">Dual GAN</a>里这个问题是通过一个ROI对齐与融合模块解决的。）</li>
 </ol>
-<h2 id="模型架构">模型架构</h2>
-<p>模型的整体架构如下图所示：</p>
+<h2 id="模型架构"><a href="#模型架构" class="headerlink" title="模型架构"></a>模型架构</h2><p>模型的整体架构如下图所示：</p>
 <img src="/2022/11/01/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AVideo-based-Remote-Physiological-Measurement-via-Self-supervised-Learning/image-20221101152448567.png" alt="image-20221101152448567" style="zoom:80%; margin:auto;">
-<h3 id="对比学习设置">对比学习设置</h3>
-<p>模型使用了三种样本：</p>
+
+<h3 id="对比学习设置"><a href="#对比学习设置" class="headerlink" title="对比学习设置"></a>对比学习设置</h3><p>模型使用了三种样本：</p>
 <ul>
 <li>正样本：对同一个clip进行空间变换；</li>
 <li>负样本：对同一个clip进行频率变换，使用LFA（learnable frequency augmentation）；</li>
@@ -1553,25 +1548,22 @@ B-->C[测量心动周期相关生理指标心率和心跳变异性等]</pre>
 </ul>
 <p>作者采用了三种基于频率的损失函数：</p>
 <ul>
-<li>
-<p>Frequency Contrastive Loss：目的是使正样本间的距离尽可能接近，负样本间的距离尽可能远，这里使用的是经典的InfoNCE loss。对于两个输出间的距离，参考The way to my heart中的文章，使用两个信号的功率谱密度的MSE值。</p>
+<li><p>Frequency Contrastive Loss：目的是使正样本间的距离尽可能接近，负样本间的距离尽可能远，这里使用的是经典的InfoNCE loss。对于两个输出间的距离，参考The way to my heart中的文章，使用两个信号的功率谱密度的MSE值。</p>
 <img src="/2022/11/01/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AVideo-based-Remote-Physiological-Measurement-via-Self-supervised-Learning/image-20221101162347142.png" alt="image-20221101162347142" style="zoom:67%; margin:auto;">
 </li>
-<li>
-<p>Frequency Ratio Consistency Loss：这里基于的原则是，负样本和正样本间的频率比，应该与输入LFA的比率r一致，是为了确保LPA生成的负样本的rPPG信号频率是我们想要的频率。其中P指使用快速傅里叶变换计算信号的主频。</p>
+<li><p>Frequency Ratio Consistency Loss：这里基于的原则是，负样本和正样本间的频率比，应该与输入LFA的比率r一致，是为了确保LPA生成的负样本的rPPG信号频率是我们想要的频率。其中P指使用快速傅里叶变换计算信号的主频。</p>
 <img src="/2022/11/01/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AVideo-based-Remote-Physiological-Measurement-via-Self-supervised-Learning/image-20221101163317490.png" alt="image-20221101163317490" style="zoom:80%; margin:auto;">
 </li>
-<li>
-<p>Cross-video Frequency Agreement Loss：这里基于的原则是，在短时间内，rPPG信号的频率不会发生大幅变化。因此，每个clips与其时间上相邻的clips的频率应该一致。这里的d也是使用的The way to my heart那篇文章里的信号相似性度量方式。</p>
-<img src="/2022/11/01/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AVideo-based-Remote-Physiological-Measurement-via-Self-supervised-Learning/image-20221103102029909.png" alt="image-20221103102029909" style="zoom: 80%; margin:auto;">
-</li>
+<li><p>Cross-video Frequency Agreement Loss：这里基于的原则是，在短时间内，rPPG信号的频率不会发生大幅变化。因此，每个clips与其时间上相邻的clips的频率应该一致。这里的d也是使用的The way to my heart那篇文章里的信号相似性度量方式。</p>
+<img src="/2022/11/01/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AVideo-based-Remote-Physiological-Measurement-via-Self-supervised-Learning/image-20221103102029909.png" alt="image-20221103102029909" style="zoom: 80%; margin:auto;"></li>
 </ul>
 <p>除了三个基于频率的loss函数，作者还设置了一个Video reconstruction loss，计算像素级的颜色差距，用于限制LFA模块生成的负样本，在视觉外观上与anchor保持一致。</p>
 <img src="/2022/11/01/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AVideo-based-Remote-Physiological-Measurement-via-Self-supervised-Learning/image-20221103102615459.png" alt="image-20221103102615459" style="zoom:80%; margin:auto;">
+
 <p>整个模型的损失函数即为上述四个损失之和：</p>
 <img src="/2022/11/01/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AVideo-based-Remote-Physiological-Measurement-via-Self-supervised-Learning/image-20221103103419025.png" alt="image-20221103103419025" style="zoom: 80%; margin:auto;">
-<h3 id="LFA模块（Learnable-Frequency-Augmentation）">LFA模块（Learnable Frequency Augmentation）</h3>
-<ul>
+
+<h3 id="LFA模块（Learnable-Frequency-Augmentation）"><a href="#LFA模块（Learnable-Frequency-Augmentation）" class="headerlink" title="LFA模块（Learnable Frequency Augmentation）"></a>LFA模块（Learnable Frequency Augmentation）</h3><ul>
 <li>输入：anchor+调频比r（r在0.3到0.8，1.2和1.7之间变动，解决了前面提到的the way to my heart那篇文章里负样本频率单一的问题。）</li>
 <li>输出：负样本</li>
 <li>RB：Res-Block</li>
@@ -1579,58 +1571,37 @@ B-->C[测量心动周期相关生理指标心率和心跳变异性等]</pre>
 <li>GAP：Global Average Pooling</li>
 </ul>
 <img src="/2022/11/01/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AVideo-based-Remote-Physiological-Measurement-via-Self-supervised-Learning/image-20221103111527414.png" alt="image-20221103111527414" style="zoom: 67%; margin:auto;">
-<h3 id="REA模块（rPPG-Expert-Aggregation）">REA模块（rPPG Expert Aggregation）</h3>
-<ul>
-<li>
-<p>输入：视频clip</p>
+
+<h3 id="REA模块（rPPG-Expert-Aggregation）"><a href="#REA模块（rPPG-Expert-Aggregation）" class="headerlink" title="REA模块（rPPG Expert Aggregation）"></a>REA模块（rPPG Expert Aggregation）</h3><ul>
+<li><p>输入：视频clip</p>
 </li>
-<li>
-<p>输出：rPPG信号</p>
+<li><p>输出：rPPG信号</p>
 </li>
-<li>
-<p>⭐Region-attention Block：在REA模块里，是把整张人脸作为输入，因此作者加了一个区域注意力模块帮助模型关注可以反映颜色变化的区域。</p>
+<li><p>⭐Region-attention Block：在REA模块里，是把整张人脸作为输入，因此作者加了一个区域注意力模块帮助模型关注可以反映颜色变化的区域。</p>
 </li>
-<li>
-<p>⭐Spatio-temporal Gating Net：作者认为，对于最终的rPPG信号，每一个专家信号在不同时刻具有不同的权重，因此通过ST Gating Net生成L个权重向量。最终的输出计算方式如下：</p>
-<img src="/2022/11/01/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AVideo-based-Remote-Physiological-Measurement-via-Self-supervised-Learning/image-20221103211652702.png" alt="image-20221103211652702" style="zoom:67%; margin:auto;"> 
-</li>
+<li><p>⭐Spatio-temporal Gating Net：作者认为，对于最终的rPPG信号，每一个专家信号在不同时刻具有不同的权重，因此通过ST Gating Net生成L个权重向量。最终的输出计算方式如下：</p>
+<img src="/2022/11/01/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AVideo-based-Remote-Physiological-Measurement-via-Self-supervised-Learning/image-20221103211652702.png" alt="image-20221103211652702" style="zoom:67%; margin:auto;"></li>
 </ul>
 <img src="/2022/11/01/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AVideo-based-Remote-Physiological-Measurement-via-Self-supervised-Learning/image-20221103112307027.png" alt="image-20221103112307027" style="zoom:150%; margin:auto;">
-<h2 id="实验结果">实验结果</h2>
-<p>总的来说，文章提出的对比学习模型全面超过了The way to my heart的结果，在相关性系数r上的表现普遍超过了有监督模型，以后对比学习的指标怕是不好刷了。</p>
-<h3 id="HR估计结果">HR估计结果</h3>
-<img src="/2022/11/01/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AVideo-based-Remote-Physiological-Measurement-via-Self-supervised-Learning/image-20221101155121681.png" alt="image-20221101155121681" style="zoom:80%; margin:auto;">
-<h3 id="RF和HRV估计结果">RF和HRV估计结果</h3>
-<img src="/2022/11/01/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AVideo-based-Remote-Physiological-Measurement-via-Self-supervised-Learning/image-20221101160259134.png" alt="image-20221101160259134" style="zoom:80%; margin:auto;">
-<h3 id="跨数据集HR估计结果">跨数据集HR估计结果</h3>
-<img src="/2022/11/01/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AVideo-based-Remote-Physiological-Measurement-via-Self-supervised-Learning/image-20221101160409720.png" alt="image-20221101160409720" style="zoom:80%; margin:auto;">
-<h2 id="思考">思考</h2>
-<h3 id="问题">问题</h3>
-<ol start="4">
+
+<h2 id="实验结果"><a href="#实验结果" class="headerlink" title="实验结果"></a>实验结果</h2><p>总的来说，文章提出的对比学习模型全面超过了The way to my heart的结果，在相关性系数r上的表现普遍超过了有监督模型，以后对比学习的指标怕是不好刷了。</p>
+<h3 id="HR估计结果"><a href="#HR估计结果" class="headerlink" title="HR估计结果"></a>HR估计结果</h3><img src="/2022/11/01/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AVideo-based-Remote-Physiological-Measurement-via-Self-supervised-Learning/image-20221101155121681.png" alt="image-20221101155121681" style="zoom:80%; margin:auto;">
+
+<h3 id="RF和HRV估计结果"><a href="#RF和HRV估计结果" class="headerlink" title="RF和HRV估计结果"></a>RF和HRV估计结果</h3><img src="/2022/11/01/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AVideo-based-Remote-Physiological-Measurement-via-Self-supervised-Learning/image-20221101160259134.png" alt="image-20221101160259134" style="zoom:80%; margin:auto;">
+
+<h3 id="跨数据集HR估计结果"><a href="#跨数据集HR估计结果" class="headerlink" title="跨数据集HR估计结果"></a>跨数据集HR估计结果</h3><img src="/2022/11/01/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9AVideo-based-Remote-Physiological-Measurement-via-Self-supervised-Learning/image-20221101160409720.png" alt="image-20221101160409720" style="zoom:80%; margin:auto;">
+
+<h2 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h2><h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><ol start="4">
 <li>LFA要比传统的重采样好嘛？（这块作者的实验结果里没有显示）</li>
 <li>为什么不把neigbor直接用作正样本呢？</li>
 <li>rPPG估计器的输入是整张人脸，而不是ROI区域或皮肤分割后的结果，对于人脸通过一个region attention block处理，这会不会影响预测结果？</li>
 </ol>
-<h3 id="可以改进的方向">可以改进的方向</h3>
-<ol>
-<li>
-<p>正样本的构造方法：</p>
+<h3 id="可以改进的方向"><a href="#可以改进的方向" class="headerlink" title="可以改进的方向"></a>可以改进的方向</h3><ol>
+<li><p>正样本的构造方法：</p>
 <p>a. 去除人脸ID信息影响（mask掉关键点或）；</p>
-<p>b. 添加来自不同subject但rPPG信号相近的clips。这种方法的一个问题是，可能训练集中并不存在这种样本， 可以考虑：</p>
-<ul>
-<li>
-<p>使用生成负样本时使用的LFA模块，改变subject的频率；</p>
+<p>b. 添加来自不同subject但rPPG信号相近的clips。</p>
 </li>
-<li>
-<p>使用时间上的neighbors；</p>
-</li>
-<li>
-<p>使用根据rPPG信号合成人脸视频的方法，最近提出了几篇<a href="https://ymyforever.netlify.app/2022/10/24/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%9Asynthetic-generation-of-face-videos-with-plethysmograph-physiology/">根据rPPG信号合成人脸视频的文章</a>。</p>
-</li>
-</ul>
-</li>
-<li>
-<p>负样本的构造方法：</p>
+<li><p>负样本的构造方法：</p>
 <p>a. 试试加上不同subject且rPPG信号频率不同的clips；</p>
 </li>
 </ol>
